@@ -1,0 +1,18 @@
+{% extends 'base.html'%}
+{%block content %}
+<h1> yellows </h1>
+{% for product in Product_list %}
+<li>
+<img src="{{MEDIA_URL}}{{product.image.url}}" alt="{{product.title}}">
+<h1>{{product.title}}</h1>
+<p>{{product.description}}</p>
+<strong>{{product.price}}</strong>
+<form method="POST" action="{% url 'product' %}">
+    {% csrf_token %}
+    <input type="hidden" name="producttitle" value="{{product.title}}" />
+    <input min="1" value=1 type="number" name="quantity">
+    <input class="btn btn-dark" type="submit" value="Add to Cart">
+</form>
+</li>
+{% endfor %}
+{%endblock content %}
