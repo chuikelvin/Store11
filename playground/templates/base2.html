@@ -1,0 +1,54 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link href="{% static 'css/styles.css' %}" rel='stylesheet'>
+    <title>Home</title>
+</head>
+
+<body>
+    <header class="head" id="navigator">
+        <nav class="nav">
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="bx bx-menu"></i>
+            </div>
+
+            <div>
+                <a href="{% url 'home' %}" class="nav__logo">Kelvin</a>
+            </div>
+
+            <div class="nav__menu" id="nav-menu">
+                <div class="nav__close" id="nav-close">
+                    <i class="bx bx-x"></i>
+                </div>
+
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="{% url 'home' %}" class="nav__link">
+                            <div>Home</div>
+                        </a></li>
+                    <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">
+                            <div>About</div>
+                        </a></li>
+                        <li class="nav__item"><a href="{% url 'store' %}" class="nav__link">
+                            <div>Store</div>
+                        </a></li>
+                    <li class="nav__item"><a href="{% url 'contact' %}" class="nav__link">
+                            <div>Contactme</div>
+                        </a></li>
+
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    {%block content%}
+    {%endblock content%}
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+
+</html>

@@ -33,9 +33,18 @@ def contact(request):
 def about(request):
     return render(request, 'about.html')
 
-def product(request):
+def store(request):
+    # product = Product.objects.get(id=pk)
+    if request.method == 'POST':
+        # status = ""
+        product_name = request.POST["producttitle"]
+        quantity = request.POST["quantity"]
+        print("adding to cart")
+        # email = request.POST["email"]
+        # password = request.POST['password']
+    # if request.method == 'GET':
     Product_list = Product.objects.all()
-    response = render(request, 'product.html',{'Product_list':Product_list})
+    response = render(request, 'store.html',{'Product_list':Product_list})
     if not request.COOKIES.get("id"):
         unique_id = uuid.uuid4()
         response.set_cookie(key='id', value=unique_id)
