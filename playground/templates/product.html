@@ -4,7 +4,7 @@
 {% for product in Product_list %}
 <li>
     <a data-hover="Are You At Risk?" href="{% url 'home' %}#container">My link</a>
-<img src="{{MEDIA_URL}}{{product.image.url}}" alt="{{product.title}}">
+<img src="{{MEDIA_URL}}{{product.image.url}}" alt="{{product.title}}" id="product_image">
 <h1>{{product.title}}</h1>
 <p>{{product.description}}</p>
 <strong>{{product.price}}</strong>

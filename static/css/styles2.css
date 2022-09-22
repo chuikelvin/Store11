@@ -31,14 +31,16 @@ header {
 }
 
 .main {
-     position: relative;
-     top: 0;
+     /* position: relative; */
+     /* top: 0; */
+     position:fixed;
      left: 0;
      text-align: center;
      color: white;
      background: rgba(0, 0, 0, 0.503);
      width: 100%;
      height: 100%;
+     overflow:scroll;
 }
 
 .navbartxt a {
@@ -183,18 +185,20 @@ img {
      flex-direction: column;
      top: 0;
      left: 0;
-     height: 100%;
+     height: 460px;
      width: 100%;
-     padding: 9%;
-     border-radius: 5%;
+     /* padding: 9%; */
+     padding:5px;
+     border-radius: 20px;
      background-image: linear-gradient(40deg, rgba(101, 22, 56, 1) 0%, rgba(29, 32, 47, 1) 47%);
      transform: scale(1);
      transform: translate(0px, 0px);
      transition: all 0.1s;
      z-index: 1;
+     overflow: hidden;
 }
 
-.gradient:hover {
+/* .gradient:hover {
      position: relative;
      top: 0;
      left: 0;
@@ -227,7 +231,7 @@ img {
 
 .gradient:hover::before {
      opacity: 1;
-}
+} */
 
 .gradient div {
      flex: 1;
@@ -290,10 +294,15 @@ h3 {
 }
 
 .container1 {
+     /* position:fixed;
+     top: 0;
+     left: 0; */
+     padding-top: 25px;
      display: grid;
      margin: 0 10% 0 10%;
-     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
      justify-content: space-around;
+     /* height: 10vh; */
      height: 100%;
 }
 
@@ -324,4 +333,12 @@ h3 {
 
 .floating-icon {
      font-size: 4rem;
+}
+
+#product_image {
+     /* width: 100%; */
+     height: 300px;
+     /* height:50%; */
+     border-radius: 3px;
+     padding-top: 0;
 }
