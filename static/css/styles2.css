@@ -25,7 +25,7 @@ header {
 }
 
 .navbarimg {
-     padding-right: 1rem;
+     padding-right: 10.5rem;
      line-height: 1;
 
 }
@@ -117,7 +117,8 @@ img {
 .dropdown-item {
      min-width: 0;
      text-align: right;
-     color: #fff;
+     /* color: #fff; */
+     color:#999aa1;
      border: none;
      background-color: #1d202f;
 }
@@ -136,9 +137,11 @@ img {
 
 .nav-link {
      text-align: right;
-     color: #fff;
+     /* color: #fff; */
+     color:#999aa1;
      font-weight: 500;
      text-decoration: none;
+     font-size: 13px;
 }
 
 .nav-link:hover {
@@ -154,6 +157,9 @@ img {
 
 .chaguo {
      color: #8b0e3a;
+}
+.navbar-collapse {
+     margin-right: 140px;
 }
 
 .navbar-toggler {
@@ -365,4 +371,66 @@ h3 {
 p,h3 {
      font-size: 12px;
      /* margin:0; */
+}
+
+.icon {
+     color:#999aa1;
+     font-size: 1.5rem;
+}
+
+.dropdown {
+     /* margin-right: 60px; */
+     /* margin-top: 4px; */
+     /* padding-right: 60px; */
+}
+
+.non_collapse{
+     font-size: 1.5rem;
+     float: right;
+     position:absolute;
+     right:20px;
+     top:32px;
+     display: flex;
+     flex-direction: row;
+     line-height: 1;
+}
+
+.cart_icon {
+     font-size: 1.5rem;
+     /* float: right;
+     position:absolute;
+     right:20px;
+     top:28px; */
+     /* padding-left:200px; */
+     /* color: #ffffff; */
+     /* margin-right: 2rem; */
+}
+
+#add_to_cart_button {
+     border:1px solid #FF4B2B;
+     /* background-color: #FF4B2B; */
+     border-radius: 20px;
+     border: 1px solid #FF4B2B;
+     /* background-color: #FF4B2B; */
+     color: #FFFFFF;
+     font-size: 12px;
+     font-weight: bold;
+     /* padding: 12px 45px; */
+     letter-spacing: 1px;
+
+}
+
+@media screen and (max-width: 768px) {
+     .dropdown {
+          margin-right:18px;
+          /* padding-right: 60px; */
+     }
+     .navbarimg {
+     padding-right: 10.5rem;
+     line-height: 1;
+     }
+     .navbar-collapse {
+          margin-right: 10px;
+     }
+
 }
