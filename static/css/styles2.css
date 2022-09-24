@@ -8,13 +8,13 @@ body {
      font-family: "Roboto", Sans-Serif;
 }
 
-header {
+/* header {
 
      background-color: #1d202f;
      justify-content: space-between;
      display: flex;
      align-items: center;
-}
+} */
 
 .header {
      background-color: #1d202f;
@@ -64,9 +64,9 @@ img {
 }
 
 
-.container {
+/* .container {
      justify-content: space-around;
-}
+} */
 
 .col-sm {
      /* margin: 0 20px 50px 20px; */
@@ -375,7 +375,11 @@ p,h3 {
 
 .icon {
      color:#999aa1;
-     font-size: 1.5rem;
+     font-size: 2rem;
+}
+#cart_number {
+     font-size:6px;
+     /* width: */
 }
 
 .dropdown {

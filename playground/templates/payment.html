@@ -1,0 +1,78 @@
+{% extends 'base.html'%}
+{% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+{%endblock css%}
+
+{%block content %}
+<div class="main-container">
+    <!-- <div class="user_container">
+         <h1>Hi Kelvin!</h1> 
+    </div> -->
+    <div class=" payment_container delivery_method">
+        <h2>Select a payment method</h2>
+        <div class="payment_options">
+            <div class="option">
+                <!-- <input type="radio" name="delivery" value="pick up" checked>
+                <p>Pick up from our physical address</p> -->
+                <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
+                
+            </div>
+            <div class="option" disabled>
+                <!-- <input type="radio" name="delivery" value="pick up" checked>
+                <p>Pick up from our physical address</p> -->
+                <img src="{% static 'img/store11-logo.png' %}" class="img" alt="Store11 logo">
+            </div>
+        </div>
+
+        </form>
+        <br>
+        <div class="payment_details">
+            <h2 class="order_details_title">payment Details</h2>
+            <div >
+                <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
+                <div class="details_container">
+                    <p>amount</p>
+                <p id="total">ksh: 50,000</p>
+                </div>
+               
+                <form action="">
+                    <input type="text" value="+254" disabled id="country_code">
+                    <input type="number" name="number" id="number" maxlength="10">
+                    <!-- <input type="submit" value="send">
+                </form> -->
+            </div>
+            <br>
+            <div class="actions_container">
+                <input type="submit" value="Place order">
+                <a href="{% url 'store' %}" id="backtostore">back to cart</a>
+                </form>
+            </div>
+            <br>
+        </div>
+
+    </div>
+
+    <div class="payment_container payment_details">
+        <h2 class="order_details_title">payment Details</h2>
+        <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
+        <div class="items_container">
+           <p>amount</p>
+            <p id="total">ksh: 50000</p>
+            <form action="">
+                <input type="number" value="254" disabled width="40">
+                <input type="number" name="number" id="" maxlength="10">
+                <!-- <input type="submit" value="send">
+            </form> -->
+        </div>
+        <div class="actions_container">
+            <input type="submit" value="Place order">
+            <a href="{% url 'store' %}" id="backtostore">back to cart</a>
+            </form>
+        </div>
+        <!-- <br> -->
+    </div>
+</div>
+
+{%endblock content %}

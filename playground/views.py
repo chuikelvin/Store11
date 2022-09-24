@@ -1,5 +1,6 @@
 # from re import X
-from django.shortcuts import render
+import re
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,FileResponse, Http404
 # from .models import Product
 from django.apps import apps
@@ -9,31 +10,37 @@ import uuid
 # from django.db import models
 from store.models import Product, Customer, Cart
 
-# Product
 
-# app_models = apps.get_app_config('store').get_models()
-# for model in app_models:
-#     if model == store:
+def is_logged_in(request):
+    if request.session.has_key('status'):
+        # print ("request.session['status']")
+        if request.session['status'] == 1:
+            # print('test')
+            return {"user_status" :'bg-success','action':'sign out'}
+        else :
+            return {"user_status" :'bg-secondary','action':'sign in'}
 
-#     print(model)
-    # try:
-    #     admin.site.register(model)
-    # except AlreadyRegistered:
-    #     pass
+    else:
+        request.session['status'] = 0
+        return {"user_status" :'bg-secondary','action':'sign in'}
+
 
 
 # Create your views here.
 
-def home(request):
-    return render(request, 'home.html')
+# def home(request):
+#     return render(request, 'home.html')
 
 def contact(request):
-    return render(request, 'contact.html')
+    check= is_logged_in(request)
+    return render(request, 'contact.html',check)
 
 def about(request):
-    return render(request, 'about.html')
+    check= is_logged_in(request)
+    return render(request, 'about.html',check)
 
 def store(request):
+    check= is_logged_in(request)
     # product = Product.objects.get(id=pk)
     if request.method == 'POST':
         # status = ""
@@ -44,7 +51,8 @@ def store(request):
         # password = request.POST['password']
     # if request.method == 'GET':
     Product_list = Product.objects.all()
-    response = render(request, 'store.html',{'Product_list':Product_list})
+    check.update({'Product_list':Product_list})
+    response = render(request, 'store.html',check)
     if not request.COOKIES.get("id"):
         unique_id = uuid.uuid4()
         response.set_cookie(key='id', value=unique_id)
@@ -64,16 +72,17 @@ def store(request):
     return render(request, 'product.html',{'Product_list':Product_list})
 
 def cart(request):
-    request.session[0]='cart'
-    sess = request.session[0]
-    cart = Cart.objects.all()
+    check= is_logged_in(request)
+    # request.session[0]='cart'
+    # sess = request.session[0]
+    # cart = Cart.objects.all()
 
-    print(cart)
     # print(cart)
-    # print(created)
-    # order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    context ={"cart":cart}
-    return render(request, 'cart.html', context)
+    # # print(cart)
+    # # print(created)
+    # # order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    # context ={"cart":cart}
+    return render(request, 'cart.html',check)
     # {"status":status}
 	# return render(request, 'cart.html', context)
     # return render(request, 'cart.html', context)
@@ -90,7 +99,31 @@ def pdf_view(request):
 #     def get(self):
 #         return render(request, 'register.html')
 
+def checkout(request):
+    print(request.path)
+    if request.session['status'] == 0:
+        return redirect('/sign/',request.path)
+    check= is_logged_in(request)
+    return render(request, 'checkout.html',check)
+
+def payment(request):
+    if request.session['status'] == 0:
+        return redirect('/sign/')
+    check= is_logged_in(request)
+    # if request.session.has_key('status'):
+    #     print (request.session['status'])
+    #     if request.session['status'] == 'login':
+    #         return render(request, 'payment.html', {"user_status" :'bg-success'})
+            
+    #   username = request.session['status']
+    #   return render(request, 'loggedin.html', {"username" :'bg-secondary'})
+#    else:
+    #   return render(request, 'login.html', {})
+    
+    return render(request, 'payment.html',check)
+
 def register(request):
+    check= is_logged_in(request)
     status = ""
     if request.method == 'POST':
         status = ""
@@ -111,7 +144,13 @@ def register(request):
     if request.method == 'GET':
         return render(request, 'register.html',{"status":status})
 
-def sign(request):
+def sign(request,*args,**kwargs):
+    print(**kwargs)
+    check= is_logged_in(request)
+    # if request.session.has_key('status'):
+    #     print (request.session['status'])
+    #     if request.session['status'] == 'login':
+    #         return render(request, 'payment.html', {"user_status" :'bg-success'})
     status = ""
     if request.method == 'POST':
         if 'signUp' in request.POST:
@@ -136,10 +175,33 @@ def sign(request):
         
             if Customer.objects.filter(email=email).exists():
                 status = 'success'
-                return render(request, 'product.html',{"status":status})
+                print(status)
+                request.session['status']=1
+                return redirect('/')
+                return render(request, 'store.html',check)
             else:
                 status = 'no user'
-                return render(request, 'sign.html',{"status":status})
+                print(status)
+                return redirect('/sign/')
+                return render(request, 'store.html',{"status":status})
 
     if request.method == 'GET':
-        return render(request, 'sign.html',{"status":status})
+        print(check)
+        return render(request, 'sign.html',check)
+
+def userhandler(request):
+    check= is_logged_in(request)
+    print (check['action'])
+    if check['action'] == 'sign out':
+        try:
+            request.session['status'] = 0
+            # del request.session['username']
+        except:
+            pass
+        return redirect('/')
+    else:
+        return redirect('/sign/')
+        return render(request, 'sign.html',check)
+        print (request.session['status'])
+        if request.session['status'] == 'login':
+            return render(request, 'payment.html', {"user_status" :'bg-success'})

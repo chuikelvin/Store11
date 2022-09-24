@@ -1,0 +1,129 @@
+{% extends 'base.html'%}
+{% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{%endblock css%}
+
+{%block content %}
+<div class="main-container">
+    <!-- <div class="user_container">
+        <h1>Hi Kelvin!</h1>
+    </div> -->
+    <div class="checkout_container address">
+        <div class="manage_address">
+            <h2>Your address</h2>
+            <a href="{% url 'store' %}">change address</a>
+        </div>  
+        <div class="current">
+            <p class="user_name">Kelvin Chui</p>
+            <p class="user_address">7835 - 00300 <br> Nairobi</p>
+            <p class="user_contact">+254-701234567 <br>
+            +254-74554978</p>
+        </div>
+        <br>
+    </div>
+    <br> 
+    <div class=" checkout_container delivery_method">
+        <h2>select a delivery method</h2>
+        <form action="">
+            <div class="pick_up">
+                <input type="radio" name="delivery" value="pick up" checked>
+                <p>Pick up from our physical address</p>
+
+            </div>
+            
+            <div class="delivery">
+                <input type="radio" name="delivery" value="" value="delivery" >
+                <p>Have it delivered to your doorstep.</p>
+
+            </div>
+        </form>
+        <br>
+
+    </div>
+
+    <div class=" checkout_container order_details">
+        <h2 class="order_details_title">Order Details</h2>
+        <div class="items_container">
+            <div class="item_details">
+                <div class="item_quantity">
+                    <p class="item_description">1x</p>
+                    </div>
+                <div class="item_description">
+                    <p class="item_description">Fashion Women Shoulder Bags 
+                        Sling Small Bag-Multi Color</p>
+                </div>
+            </div>
+            <div class="item_details">
+                <div class="item_quantity">
+                    <p class="item_description">1x</p>
+                    </div>
+                <div class="item_description">
+                    <p class="item_description">Fashion Women Shoulder Bags 
+                        Sling Small Bag-Multi Color</p>
+                </div>
+            </div>
+            <div class="item_details">
+                <div class="item_quantity">
+                    <p class="item_description">1x</p>
+                    </div>
+                <div class="item_description">
+                    <p class="item_description">Fashion Women Shoulder Bags 
+                        Sling Small Bag-Multi Color</p>
+                </div>
+            </div>
+            <div class="item_details">
+                <div class="item_quantity">
+                    <p class="item_description">1x</p>
+                    </div>
+                <div class="item_description">
+                    <p class="item_description">Fashion Women Shoulder Bags 
+                        Sling Small Bag-Multi Color</p>
+                </div>
+            </div>
+            <div class="item_details">
+                <div class="item_quantity">
+                    <p class="item_description">1x</p>
+                    </div>
+                <div class="item_description">
+                    <p class="item_description">Fashion Women Shoulder Bags 
+                        Sling Small Bag-Multi Color</p>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <div class="checkout_container order_summary">
+        <h2>Order Summary</h2>
+        <div class="myrow">
+            <p>Items Total</p>
+            <p>1000</p>
+        </div>
+        <div class="myrow">
+            <p>VAT</p>
+            <p>1000</p>
+        </div>
+        <div class="myrow">
+            <p>Shipping charges</p>
+            <p>1000</p>
+        </div>
+        <div class="myrow_total">
+            <p>Total</p>
+            <p id="total">5000</p>
+        </div>
+        <br>
+    </div>
+    <br>
+
+    <div class="actions_container">
+        <a href="{% url 'store' %}" id="backtostore">back to cart(ksh 5000)</a>
+        <a href="{% url 'payment' %}">Proceed to pay with mpesa</a>
+    </div>
+    
+
+
+</div>
+
+{%endblock content %}
