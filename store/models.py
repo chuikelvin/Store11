@@ -1,81 +1,57 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 def upload_path(instance, filname):
-    return '/'.join(['cover', str(instance.title), filname])    
+    return '/'.join(['cover', str(instance.title), filname])
 
-class Promotion(models.Model):
-    description = models.CharField(max_length=255)
-    discount = models.FloatField()
+class User(AbstractUser):
+    username = models.EmailField(max_length=30,unique=True)
+    # username = models.CharField(max_length=30,unique=True)
+    password = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    # email = models.EmailField(max_length=255,unique=True)
+    phone=models.CharField(max_length=255,null=True)
+    birth_date = models.DateField(null=True)
 
-class Collection(models.Model):
-    title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+',blank=True)
+    # username = None
 
-    # def __str__(self):
-    #     return self.title + "   " + self.featured_product
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+
+
+class Customer(models.Model):
+    # username = models.EmailField(unique=True, null=True)
+    email = models.EmailField(max_length=255,unique=True)
+    password = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone=models.CharField(max_length=255)
+    birth_date = models.DateField(null=True)
+
+    def __str__(self):
+        return self.email
 
 class Product(models.Model):
-    # sku = models.CharField(max_length=255, primary_key=True)
     title = models.CharField(max_length=255)
     image = models.ImageField(null=True, upload_to=upload_path)
     description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.IntegerField()
     inventory_type = models.IntegerField()
     last_updated = models.DateTimeField(auto_now=True)
-    collection =models.ForeignKey(Collection, on_delete=models.PROTECT, null=True, blank=True)
-    promotions =models.ManyToManyField(Promotion, blank=True)
+
 
     def __str__(self):
         return self.title + "   " + self.description
 
-class Customer(models.Model):
-    MEMBERSHIP_BRONZE = 'B'
-    MEMBERSHIP_SILVER = 'S'
-    MEMBERSHIP_GOLD = 'G'
-
-    MEMBERSHIP_CHOICES =[
-            (MEMBERSHIP_BRONZE,'Bronze'),
-            (MEMBERSHIP_SILVER,'Silver'),
-            (MEMBERSHIP_GOLD,'Gold')
-    ]
-
+class Address(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    email = models.EmailField(max_length=255,unique=True)
     phone=models.CharField(max_length=255)
-    birth_date = models.DateField(null=True)
-    membership =models.CharField(max_length=1,choices=MEMBERSHIP_CHOICES,default=MEMBERSHIP_BRONZE )
-
-    # def __str__(self):
-    #     return self.first_name + "   " + self.email
-
-class Order(models.Model):
-    PAYMENT_STATUS_PENDING = 'P'
-    PAYMENT_STATUS_COMPLETE = 'C'
-    PAYMENT_STATUS_FAILED = 'F'
-
-    PAYMENT_STATUS_CHOICES=[
-        (PAYMENT_STATUS_PENDING, 'Pending'),
-        (PAYMENT_STATUS_COMPLETE, 'Complete'),
-        (PAYMENT_STATUS_FAILED, 'Failed'),
-    ]
-
-    placed_at= models.DateTimeField(auto_now_add=True)
-    payment_status =models.CharField(max_length=1 ,choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
-    customer =models.ForeignKey(Customer, on_delete=models.PROTECT)
-
-class Address(models.Model):
-    street = models.CharField(max_length=255)
+    region = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    quantity = models.PositiveSmallIntegerField()
-    unit_price =models.DecimalField(max_digits=10, decimal_places=2)
 
 class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
@@ -103,3 +79,23 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
+
+class Order(models.Model):
+    PAYMENT_STATUS_PENDING = 'P'
+    PAYMENT_STATUS_COMPLETE = 'C'
+    PAYMENT_STATUS_FAILED = 'F'
+
+    PAYMENT_STATUS_CHOICES=[
+        (PAYMENT_STATUS_PENDING, 'Pending'),
+        (PAYMENT_STATUS_COMPLETE, 'Complete'),
+        (PAYMENT_STATUS_FAILED, 'Failed'),
+    ]
+    placed_at= models.DateTimeField(auto_now_add=True)
+    payment_status =models.CharField(max_length=1 ,choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
+    customer =models.ForeignKey(Customer, on_delete=models.PROTECT)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    quantity = models.PositiveSmallIntegerField()
+    unit_price =models.DecimalField(max_digits=10, decimal_places=2)

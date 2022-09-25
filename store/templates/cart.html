@@ -7,20 +7,7 @@
 
 {%block content %}
 <div class="main-container">
-
-    <div class="no_item_container">
-        <img id="logo" src="{% static 'img/store11-logo.png' %}" alt="store11-logo">
-        <div class="no_cart_icon_container">
-            <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-        </div>
-        <br>
-        <h1>Your cart is empty!</h1>
-        <br>
-        <h2>add some items to get started</h2>
-        <a href="{% url 'store' %}">back to store</a>
-
-    </div>
-    <br> 
+    {% if cart %}    
     <div class="cart_container">
         <!-- <img id="logo" src="{% static 'img/store11-logo.png' %}" alt="store11-logo"> -->
         <!-- <div class="cart_icon_container">
@@ -285,11 +272,25 @@
 
         </div>
         <!-- item end -->
-
         <div class="checkout_container">
             <a href="{% url 'checkout' %}">CHECHOUT(ksh 5000)</a>
         </div>
         <br><br><br>
+        {% else %}
+        <div class="no_item_container">
+            <img id="logo" src="{% static 'img/store11-logo.png' %}" alt="store11-logo">
+            <div class="no_cart_icon_container">
+                <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
+            </div>
+            <br>
+            <h1>Your cart is empty!</h1>
+            <br>
+            <h2>add some items to get started</h2>
+            <a href="{% url 'store' %}">back to store</a>
+    
+        </div>
+        {% endif %} 
+
 
     </div>
 
