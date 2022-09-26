@@ -108,7 +108,7 @@
           $.ajax({
             url: "{% url 'cartHandler' %}",
             type:"GET",
-            data:{action:$(this).attr('id')} ,
+            data:{action:$(this).attr('id'),ref:$(this).attr('name')} ,
           })
       })
     })

@@ -19,7 +19,7 @@
                 <div class="item_logo_container">
                     {% for details in item %}
                     <img src="{{MEDIA_URL}}{{details.image.url}}" alt="{{product.title}}" id="product_image">
-                    <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
+                    <!-- <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i> -->
                 </div>
                 <div class="item_data">
                     <p class="item_description">{{details.title}}</p>
@@ -44,21 +44,25 @@
                     <a href="">remove</a>
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <a href="" id="minus" class="item_btn">-</a>
+                        <!-- <a href="" id="minus" class="item_btn">-</a> -->
                         <button type="button">-</button>
-                        <input min="1" value={{value}} type="number" name="quantity">
-                        <button id="minus" class="item_btn" type="button">+</button>
-                        <a href="" id="add" class="item_btn">+</a>
+                        <input min="1" value={{value}} type="number" name="quantity" readonly>
+                        <button id="add" class="item_btn" name="{{details.id}}"type="button">+</button>
+                        <!-- <a href="" id="add" class="item_btn">+</a> -->
                     </form>
             </div>
             {% endfor %}
         </div>
         {% endfor %}
         <!-- item end -->
+        <!-- <div class="update_container">
+            <a href="{% url 'checkout' %}">UPDATE </a>
+        </div> -->
         
 
         <div class="checkout_container">
-            <a href="{% url 'checkout' %}">CHECHOUT(ksh 5000)</a>
+            <a href="{% url 'checkout' %}">UPDATE </a>
+            <a href="{% url 'checkout' %}">CHECHOUT(ksh {{total}})</a>
         </div>
         <br><br><br>
         {% else %}
@@ -81,5 +85,8 @@
 
 
 </div>
+<script>
+
+</script>
 
 {%endblock content %}

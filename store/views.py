@@ -118,12 +118,19 @@ def cart(request):
     # print(request.session['cart'])
     cart_items={}
     cart={}
-
+    total_cost=0
     for key, val in request.session['cart'].items():
         
         
         cart_items[key]=Product.objects.filter(id =key)
+        # for item, value in cart_items:
+        #     print(value.cost)
+        # print(cart_items[key].cost)
+        # item_cost=Product.objects.all().values('eng_name','rank')
         cart[cart_items[key]]=val
+
+        # for item in cart:
+        #     print(item)
         # cart=Product.objects.filter(id =key)
         # cart.append({cart_items:val})
         # cart.append(Product.objects.filter(id =key))
@@ -142,7 +149,17 @@ def cart(request):
     # print(cart_items)
     # print(cart)
     check.update({'cart':cart})
-    # # print(cart)
+    for items,values in cart.items():
+        for details in items:
+            # print(details.price*values)
+            total_cost += details.price*values
+            print(total_cost)
+        # for items in cart.values():
+        #     print(items)
+            # print(value)
+
+    # print(cart)
+    check.update({'total':total_cost})
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
@@ -215,7 +232,7 @@ def sign(request):
             email = request.POST["email"]
             password = request.POST['password']
         
-            if User.objects.filter(email=email).exists():
+            if User.objects.filter(username=email).exists():
                 status = 'user exists'
                 return render(request, 'sign.html',{"status":status})
             else:
@@ -228,7 +245,7 @@ def sign(request):
             email = request.POST["email"]
             password = request.POST['password']
         
-            if User.objects.filter(email=email).exists():
+            if User.objects.filter(username=email).exists():
                 status = 'success'
                 print(status)
                 request.session['status']=1
@@ -263,9 +280,17 @@ def userhandler(request):
 
 
 def cart_handler(request):
+    key = request.session['cart']
+    value = request.GET['ref']
     print('accessed')
     if request.method == 'GET':
         action = request.GET['action']
+        if action == 'add':
+            key[value] = key.get(value)+1
+            # print(request.GET['ref'])
+            # key.get(product_id)+1
+            # key[value] =key[value]+1
+            print(key[value])
         # inputtype = request.POST.get('action', None)
         # payload = {"response":str(inputtype)} if inputtype is not None else {"response":"please type something"}
         print(action)
