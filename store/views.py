@@ -115,17 +115,39 @@ def cart(request):
     except:
         request.session['cart']=defaultdict(lambda: 0)
 
-    print(request.session['cart'])
+    # print(request.session['cart'])
+    cart_items={}
+    cart={}
+
+    for key, val in request.session['cart'].items():
+        
+        
+        cart_items[key]=Product.objects.filter(id =key)
+        cart[cart_items[key]]=val
+        # cart=Product.objects.filter(id =key)
+        # cart.append({cart_items:val})
+        # cart.append(Product.objects.filter(id =key))
+        # check.update({'cart':cart,'quantity':val})
+        # print(cart_items)
+        # print(cart)
+        # cart[cart_items]=val
+        # for key, val in cart_items:
+            # print(key)
+        # check.update({'cart':cart_items,'quantity':val})
+        # print(cart)
     # request.session[0]='cart'
     # sess = request.session[0]
     # cart = Cart.objects.all()
-
+    # check.update({'cart':cart_items,'quantity':val})
+    # print(cart_items)
     # print(cart)
+    check.update({'cart':cart,'quantity':val})
     # # print(cart)
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
-    check.update({'cart':request.session['cart']})
+    print(check)
+    # check.update({'cart':request.session['cart']})
     return render(request, 'cart.html',check)
     # {"status":status}
 	# return render(request, 'cart.html', context)

@@ -13,45 +13,23 @@
         <!-- <div class="cart_icon_container">
             <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
         </div> -->
-        {% comment %}
-        <!-- <div class="item_container">
-            <div class="item_logo_container">
-                <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-            </div>
-            <div class="item_data">
-                <p class="item_description">Fashion Women Shoulder Bags Sling Small Bag-Multi Color</p>
-                <div class="price_quantity">
-                    <p>KSh 228</p>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <h3>{{product.price}}</h3>
-                         </div> -->
-                        <!-- <p>{{product.description}}</p> -->
-
-                        <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> 
-                        <input min="1" value=1 type="number" name="quantity">
-                         <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
-                        <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
-                            value="Add to Cart"> 
-                    </form>
-                </div>
-            </div>
-        </div> --> {% endcomment %}
 
         <!-- item start -->
+        {% for item in cart %}
         <div class="item_container">
             <div class="item_details">
                 <div class="item_logo_container">
+                    {% for details in item %}
+                    <img src="{{MEDIA_URL}}{{details.image.url}}" alt="{{product.title}}" id="product_image">
                     <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
                 </div>
                 <div class="item_data">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
+                    <p class="item_description">{{details.title}}</p>
                     <div class="price">
-                        <p>KSh 228</p>
+                        <p>KSh {{details.price}}</p>
                         <form method="POST" action="">
                             {% csrf_token %}
-                            <h3>{{product.price}}</h3>
+                            <!-- <h3>{{details}}:{{details}}</h3> -->
                             <!-- </div> -->
                             <!-- <p>{{product.description}}</p> -->
     
@@ -69,209 +47,15 @@
                     <form method="POST" action="">
                         {% csrf_token %}
                         <button>-</button>
-                        <input min="1" value=1 type="number" name="quantity">
+                        <input min="1" value={{item}} type="number" name="quantity">
                         <button>+</button>
                     </form>
             </div>
-
+            {% endfor %}
         </div>
+        {% endfor %}
         <!-- item end -->
 
-        
-        <!-- item start -->
-        <div class="item_container">
-            <div class="item_details">
-                <div class="item_logo_container">
-                    <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-                </div>
-                <div class="item_data">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                    <div class="price">
-                        <p>KSh 228</p>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <h3>{{product.price}}</h3>
-                            <!-- </div> -->
-                            <!-- <p>{{product.description}}</p> -->
-    
-                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
-                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
-                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
-                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
-                                value="Add to Cart"> -->
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="quantity">
-                    <a href="">remove</a>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <button>-</button>
-                        <input min="1" value=1 type="number" name="quantity">
-                        <button>+</button>
-                    </form>
-            </div>
-
-        </div>
-        <!-- item end -->
-
-        <!-- item start -->
-        <div class="item_container">
-            <div class="item_details">
-                <div class="item_logo_container">
-                    <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-                </div>
-                <div class="item_data">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                    <div class="price">
-                        <p>KSh 228</p>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <h3>{{product.price}}</h3>
-                            <!-- </div> -->
-                            <!-- <p>{{product.description}}</p> -->
-    
-                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
-                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
-                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
-                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
-                                value="Add to Cart"> -->
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="quantity">
-                    <a href="">remove</a>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <button>-</button>
-                        <input min="1" value=1 type="number" name="quantity">
-                        <button>+</button>
-                    </form>
-            </div>
-
-        </div>
-        <!-- item end -->
-
-        <!-- item start -->
-        <div class="item_container">
-            <div class="item_details">
-                <div class="item_logo_container">
-                    <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-                </div>
-                <div class="item_data">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                    <div class="price">
-                        <p>KSh 228</p>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <h3>{{product.price}}</h3>
-                            <!-- </div> -->
-                            <!-- <p>{{product.description}}</p> -->
-    
-                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
-                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
-                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
-                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
-                                value="Add to Cart"> -->
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="quantity">
-                    <a href="">remove</a>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <button>-</button>
-                        <input min="1" value=1 type="number" name="quantity">
-                        <button>+</button>
-                    </form>
-            </div>
-
-        </div>
-        <!-- item end -->
-        
-        <!-- item start -->
-        <div class="item_container">
-            <div class="item_details">
-                <div class="item_logo_container">
-                    <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-                </div>
-                <div class="item_data">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                    <div class="price">
-                        <p>KSh 228</p>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <h3>{{product.price}}</h3>
-                            <!-- </div> -->
-                            <!-- <p>{{product.description}}</p> -->
-    
-                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
-                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
-                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
-                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
-                                value="Add to Cart"> -->
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="quantity">
-                    <a href="">remove</a>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <button>-</button>
-                        <input min="1" value=1 type="number" name="quantity">
-                        <button>+</button>
-                    </form>
-            </div>
-
-        </div>
-        <!-- item end -->
-        
-        <!-- item start -->
-        <div class="item_container">
-            <div class="item_details">
-                <div class="item_logo_container">
-                    <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
-                </div>
-                <div class="item_data">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                    <div class="price">
-                        <p>KSh 228</p>
-                        <form method="POST" action="">
-                            {% csrf_token %}
-                            <h3>{{product.price}}</h3>
-                            <!-- </div> -->
-                            <!-- <p>{{product.description}}</p> -->
-    
-                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
-                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
-                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
-                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
-                                value="Add to Cart"> -->
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="quantity">
-                    <a href="">remove</a>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <button>-</button>
-                        <input min="1" value=1 type="number" name="quantity">
-                        <button>+</button>
-                    </form>
-            </div>
-
-        </div>
-        <!-- item end -->
         <div class="checkout_container">
             <a href="{% url 'checkout' %}">CHECHOUT(ksh 5000)</a>
         </div>
