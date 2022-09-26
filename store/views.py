@@ -141,7 +141,7 @@ def cart(request):
     # check.update({'cart':cart_items,'quantity':val})
     # print(cart_items)
     # print(cart)
-    check.update({'cart':cart,'quantity':val})
+    check.update({'cart':cart})
     # # print(cart)
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
@@ -260,3 +260,20 @@ def userhandler(request):
         print (request.session['status'])
         if request.session['status'] == 'login':
             return render(request, 'payment.html', {"user_status" :'bg-success'})
+
+
+def cart_handler(request):
+    print('accessed')
+    if request.method == 'GET':
+        action = request.GET['action']
+        # inputtype = request.POST.get('action', None)
+        # payload = {"response":str(inputtype)} if inputtype is not None else {"response":"please type something"}
+        print(action)
+        #    post_id = request.GET['post_id']
+        #    likedpost = Post.objects.get(pk=post_id) #getting the liked posts
+        #    m = Like(post=likedpost) # Creating Like Object
+        #    m.save()  # saving it to store in database
+        return HttpResponse("Success!") # Sending an success response
+        return redirect('/')
+    else:
+           return HttpResponse("Request method is not a GET")

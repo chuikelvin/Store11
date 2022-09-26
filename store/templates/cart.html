@@ -13,9 +13,7 @@
         <!-- <div class="cart_icon_container">
             <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
         </div> -->
-
-        <!-- item start -->
-        {% for item in cart %}
+        {% for item,value in cart.items %}
         <div class="item_container">
             <div class="item_details">
                 <div class="item_logo_container">
@@ -29,7 +27,7 @@
                         <p>KSh {{details.price}}</p>
                         <form method="POST" action="">
                             {% csrf_token %}
-                            <!-- <h3>{{details}}:{{details}}</h3> -->
+                            <!-- <h3>{{details}}</h3> -->
                             <!-- </div> -->
                             <!-- <p>{{product.description}}</p> -->
     
@@ -46,15 +44,18 @@
                     <a href="">remove</a>
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <button>-</button>
-                        <input min="1" value={{item}} type="number" name="quantity">
-                        <button>+</button>
+                        <a href="" id="minus" class="item_btn">-</a>
+                        <button type="button">-</button>
+                        <input min="1" value={{value}} type="number" name="quantity">
+                        <button id="minus" class="item_btn" type="button">+</button>
+                        <a href="" id="add" class="item_btn">+</a>
                     </form>
             </div>
             {% endfor %}
         </div>
         {% endfor %}
         <!-- item end -->
+        
 
         <div class="checkout_container">
             <a href="{% url 'checkout' %}">CHECHOUT(ksh 5000)</a>
