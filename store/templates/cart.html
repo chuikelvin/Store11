@@ -45,8 +45,8 @@
                     <form method="POST" action="">
                         {% csrf_token %}
                         <!-- <a href="" id="minus" class="item_btn">-</a> -->
-                        <button type="button">-</button>
-                        <input min="1" value={{value}} type="number" name="quantity" readonly>
+                        <button id="subtract" class="item_btn" name="{{details.id}}" type="button">-</button>
+                        <input min="1" value={{value}} type="number" name="quantity" class="item_quantity" readonly>
                         <button id="add" class="item_btn" name="{{details.id}}"type="button">+</button>
                         <!-- <a href="" id="add" class="item_btn">+</a> -->
                     </form>
