@@ -1,5 +1,7 @@
-# from re import X
-# import re
+import ast
+import json
+from django.http import JsonResponse
+from django.core import serializers
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,FileResponse, Http404
 from . import forms
@@ -114,6 +116,25 @@ def cart(request):
         request.session['cart']
     except:
         request.session['cart']=defaultdict(lambda: 0)
+
+    if request.method == 'POST':
+        
+        key = request.session['cart']
+        value = str(request.POST['delete'])
+        value.replace(" ", "")
+        value.strip()
+        # print(request.session['cart'])
+        print(value)
+        # key[value] = key.get(value)+1
+        key.pop(value)
+        request.session['cart']=key
+        # cart_dictrequest.session['cart']
+        
+        # cart_dict=defaultdict(lambda: 0)
+        # if request.session['cart'] is None:
+        #     request.session['cart']=defaultdict(lambda: 0)
+
+        
 
     # print(request.session['cart'])
     cart_items={}
@@ -281,16 +302,50 @@ def userhandler(request):
 
 def cart_handler(request):
     key = request.session['cart']
-    value = request.GET['ref']
-    print('accessed')
-    if request.method == 'GET':
-        action = request.GET['action']
-        if action == 'add':
-            key[value] = key.get(value)+1
+    # value = request.POST['ref']
+    # print('this')
+    # value=value.replace("{",'')
+    # value=value.replace("}",'')
+    # value=value.replace("\"",'')
+    # value=value.replace("\r","")
+    # value=value.replace("\n","")
+    # value =value.strip('\r\n')
+    # value =value.strip('\r')
+    # value =value.strip('\n')
+    # print(value)
+
+    # data=json.loads(str(value))
+
+    # str = " Jan = January; Feb = February; Mar = March"
+    # dictionary = dict(subString.split("=") for subString in str.split(";"))
+    # print(dictionary)
+
+    # data = dict(subString.split(":") for subString in value.split(","))
+
+    # data = ast.literal_eval(value)
+
+    # data = json.load(value)
+
+    # ser_instance = serializers.serialize('json', [ value ])
+
+    # print(data)
+    # print(request.session['cart'])
+    # for items,values in value.items():
+    #     print(values)
+    if request.method == 'POST':
+        action = request.POST['action']
+        # if action == 'add':
+            # key[value] = key.get(value)+1
             # print(request.GET['ref'])
             # key.get(product_id)+1
             # key[value] =key[value]+1
-            print(key[value])
+            # print(key[value])
+        # if action == 'remove':
+            # key[value] = key.get(value)+1
+            # key.pop(value)
+# print(myDict);
+            # print(key)
+            # print(request.session['cart'])
         # inputtype = request.POST.get('action', None)
         # payload = {"response":str(inputtype)} if inputtype is not None else {"response":"please type something"}
         print(action)
@@ -302,3 +357,8 @@ def cart_handler(request):
         return redirect('/')
     else:
            return HttpResponse("Request method is not a GET")
+
+
+def product_details(request,id):
+    product=Product.objects.get(id=id)
+    return render(request, 'product.html',{'product': product})

@@ -119,8 +119,8 @@
       })
     })
 
-    var addbuttons = document.querySelectorAll(".item_btn");
-    for (var i = 0; i < addbuttons.length; i++) {
+    let addbuttons = document.querySelectorAll(".item_btn");
+    for (let i = 0; i < addbuttons.length; i++) {
       addbuttons[i].onclick = function () {
         let buttontype = $(this).attr('id');
 
@@ -138,7 +138,7 @@
           }
           input.value++;
         }
-        else if(buttontype == 'subtract'){
+        else if (buttontype == 'subtract') {
           let placeholder = this.nextElementSibling;
           let input
 
@@ -153,8 +153,56 @@
           console.log(input.value)
           input.value--;
         }
-        }
       }
+    }
+
+    let update = document.getElementById('update');
+    // console.log(update.value)
+    update.onclick = function () {
+      // console.log("clicked")
+      let items = document.querySelectorAll(".item_quantity");      
+
+      var updated_val={};
+      let keys =[];
+      let values=[];
+      // letref
+      for (let i = 0; i < items.length; i++) {
+        // console.log(i)
+        var quantity = items[i].value;
+         var ref = items[i].getAttribute("ref");
+        keys.push(ref);
+        values.push(quantity);
+        // ref="helo";
+
+        // console.log();
+        // console.log(typeof ref);
+
+        // let buttontype = $(this).attr('id');
+
+        // let ref = $(this).attr('ref');
+        // let quantity = $(this).attr('value');
+
+        updated_val[ref]= quantity
+        // console.log(ref +":"+ quantity)
+      }
+      console.log(ref)
+
+      // $.ajax({
+      //     url: "{% url 'cartHandler' %}",
+      //     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+      //     contentType: "application/json",
+      //     dataType: 'json',
+      //     type: "POST",
+      //     data: {
+      //       'action': $(this).attr('id'),
+      //       'ref':"JSON.stringify(updated_val)"
+      //     },
+      //   })
+      console.log(updated_val)
+
+      // console.log();
+
+    }
   </Script>
 </body>
 
