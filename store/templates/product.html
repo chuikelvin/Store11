@@ -1,20 +1,25 @@
 {% extends 'base.html'%}
+
+{% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+{%endblock css%}
 {%block content %}
-<h1> yellows </h1>
-{% for product in Product_list %}
-<li>
-    <a data-hover="Are You At Risk?" href="{% url 'home' %}#container">My link</a>
+<div class="main-container">
+
+    <div class="product_container address">
 <img src="{{MEDIA_URL}}{{product.image.url}}" alt="{{product.title}}" id="product_image">
 <h1>{{product.title}}</h1>
 <p>{{product.description}}</p>
 <strong>{{product.price}}</strong>
-<form method="POST" action="{% url 'product' %}">
+<form method="POST" action="{% url 'store' %}">
     {% csrf_token %}
     <input type="hidden" name="producttitle" value="{{product.title}}" />
     <input min="1" value=1 type="number" name="quantity">
     <input class="btn btn-dark" name="view" type="submit" value="view product">
     <input class="btn btn-dark" name="cart" type="submit" value="Add to Cart">
 </form>
-</li>
-{% endfor %}
+</div>
+</div>
 {%endblock content %}
