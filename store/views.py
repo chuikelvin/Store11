@@ -1,7 +1,10 @@
 import ast
 import json
+<<<<<<< HEAD
 import os
 import sys
+=======
+>>>>>>> a426c4f90d57feae901107db2fc6f2194d06533a
 from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import render,redirect
