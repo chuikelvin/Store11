@@ -123,13 +123,41 @@ def store(request):
     return response
     return render(request, 'product.html',{'Product_list':Product_list})
 
+def usercart(request):
+    if request.user.is_authenticated:
+        check= is_logged_in(request)
+        # print(request.user)
+        cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
+        items =cartm.cartitem_set.all()
+        check.update({'cart':items})
+    # # print(created)
+    # # order, created = Order.objects.get_or_create(user=user, complete=False)
+    # context ={"cart":cart}
+        print(cartm.get_cart_total)
+    # check.update({'cart':request.session['cart']})
+        return render(request, 'cart2.html',{'cart':items,'total':cartm})
+
 def cart(request):
-    print(request.user)
-    check= is_logged_in(request)
-    try:
-        request.session['cart']
-    except:
-        request.session['cart']=defaultdict(lambda: 0)
+    if request.user.is_authenticated:
+        return redirect('/usercart/')
+        check= is_logged_in(request)
+        # print(request.user)
+        cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
+        items =cartm.cartitem_set.all()
+        check.update({'cart':items})
+    # # print(created)
+    # # order, created = Order.objects.get_or_create(user=user, complete=False)
+    # context ={"cart":cart}
+        print(items)
+    # check.update({'cart':request.session['cart']})
+        return render(request, 'cart.html',check)
+        # customer=
+    else:
+        check= is_logged_in(request)
+        try:
+            request.session['cart']
+        except:
+            request.session['cart']=defaultdict(lambda: 0)
 
     if request.method == 'POST':
         
@@ -138,7 +166,7 @@ def cart(request):
         value.replace(" ", "")
         value.strip()
         # print(request.session['cart'])
-        print(value)
+        # print(value)
         # key[value] = key.get(value)+1
         key.pop(value)
         request.session['cart']=key
@@ -188,7 +216,7 @@ def cart(request):
         for details in items:
             # print(details.price*values)
             total_cost += details.price*values
-            print(total_cost)
+            # print(total_cost)
         # for items in cart.values():
         #     print(items)
             # print(value)
@@ -198,7 +226,7 @@ def cart(request):
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
-    print(check)
+    # print(check)
     # check.update({'cart':request.session['cart']})
     return render(request, 'cart.html',check)
     # {"status":status}
@@ -206,28 +234,47 @@ def cart(request):
     # return render(request, 'cart.html', context)
 
 def checkout(request):
-    print(request.path)
+    # print(request.path)
+    if request.user.is_authenticated:
+        check= is_logged_in(request)
+        # print(request.user)
+        cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
+        items =cartm.cartitem_set.all()
+        check.update({'cart':items})
+    # # print(created)
+    # # order, created = Order.objects.get_or_create(user=user, complete=False)
+    # context ={"cart":cart}
+        print(cartm.get_cart_total)
+    # check.update({'cart':request.session['cart']})
+        return render(request, 'checkout.html',{'cart':items,'total':cartm})
     if request.session['status'] == 0:
         return redirect('/sign/',request.path)
     check= is_logged_in(request)
     return render(request, 'checkout.html',check)
 
 def payment(request):
-    if request.session['status'] == 0:
-        return redirect('/sign/')
-    check= is_logged_in(request)
+    if request.user.is_authenticated:
+        check= is_logged_in(request)
+        # print(request.user)
+        cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
+        # items =cartm.cartitem_set.all()
+        # check.update({'cart':items})
+    # # print(created)
+    # # order, created = Order.objects.get_or_create(user=user, complete=False)
+    # context ={"cart":cart}
+        ammount=cartm.get_total_payable
 
-    if request.method == 'POST':
-        print("posted")
-        number = request.POST["number"]
-        if number[0] == '0':
-            number = number.replace("0", "254", 1)
-        elif (number[0] == '7'):
-            number = number.replace("7", "2547", 1)
+        if request.method == 'POST':
+            print("posted")
+            number = request.POST["number"]
+            if number[0] == '0':
+                number = number.replace("0", "254", 1)
+        # elif (number[0] == '7'):
+        #     number = number.replace("7", "2547", 1)
 
         # text = text.replace("very", "not very", 1)
         # print(number)
-        lipa_na_mpesa(number)
+            lipa_na_mpesa(number,ammount)
     # if request.session.has_key('status'):
     #     print (request.session['status'])
     #     if request.session['status'] == 'login':
@@ -237,8 +284,9 @@ def payment(request):
     #   return render(request, 'loggedin.html', {"username" :'bg-secondary'})
 #    else:
     #   return render(request, 'login.html', {})
+    return render(request, 'payment.html',{'total':cartm})
     
-    return render(request, 'payment.html',check)
+    # return render(request, 'payment.html',check)
 
 def register(request):
     check= is_logged_in(request)

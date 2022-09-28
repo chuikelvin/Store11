@@ -21,7 +21,7 @@ DatabaseWrapper.data_types['DateTimeField'] = 'datetime' # fix for MySQL 5.5
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # BASE_DIR = Path(__file__).resolve().parent.parent
 
-print(BASE_DIR)
+# print(BASE_DIR)
 sys.path.append(BASE_DIR+'/daraja/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/

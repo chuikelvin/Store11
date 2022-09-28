@@ -1,58 +1,101 @@
 {% extends 'base.html'%}
+{% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{%endblock css%}
+
 {%block content %}
-{% if cart != None %}
-<h1 style="text-align:center;padding: 100px">Items in cart {{cart}}</h1>
-	{% comment %} <div class="row">
-		<div class="col-lg-12">
-			<div class="box-element">
+<div class="main-container">
+    {% if cart %}    
+    <div class="cart_container">
+        <!-- <img id="logo" src="{% static 'img/store11-logo.png' %}" alt="store11-logo"> -->
+        <!-- <div class="cart_icon_container">
+            <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
+        </div> -->
+        {% for item in cart %}
+        <div class="item_container">
+            <div class="item_details">
+                <div class="item_logo_container">
 
-				<a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+                    <img src="{{MEDIA_URL}}{{item.product.image.url}}" alt="{{product.title}}" id="product_image">
+                    <!-- <p>{{item.product}}</p> -->
+                    <!-- <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i> -->
+                </div>
+                <div class="item_data">
+                    <p class="item_description">{{item.product}}</p>
+                    <div class="price">
+                        <p>KSh {{item.product.price}}</p>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <!-- <h3>{{details}}</h3> -->
+                            <!-- </div> -->
+                            <!-- <p>{{product.description}}</p> -->
+    
+                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
+                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
+                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
+                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
+                                value="Add to Cart"> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="quantity">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="text" value="{{details.id}}" name="delete" hidden>
+                    <input type="submit" value="REMOVE">
+                </form>
+                    <!-- <a href="" type="button">remove</a> -->
+                    <!-- <button id="remove" class="item_btn" name="{{details.id}}" type="button">remove</button> -->
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <!-- <a href="" id="minus" class="item_btn">-</a> -->
+                        <button id="subtract" class="item_btn" name="{{details.id}}" type="button">-</button>
+                        <input min="1" value={{item.quantity}} type="number" name="quantity" class="item_quantity" ref="{{details.id}}" readonly>
+                        <button id="add" class="item_btn" name="{{details.id}}"type="button">+</button>
+                        <!-- <a href="" id="add" class="item_btn">+</a> -->
+                    
+            </div>
 
-				<br>
-				<br>
-				<table class="table">
-					<tr>
-						<th><h5>Items: <strong>{{cart.get_cart_items}}</strong></h5></th>
-						<th><h5>Total:<strong> ${{cart.get_cart_total|floatformat:2}}</strong></h5></th>
-						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="">Checkout</a>
-						</th>
-					</tr>
-				</table>
+        </div>
+        <br><br><br><br><br>
+        {% endfor %}
+        <!-- item end -->
+        <!-- <div class="update_container">
+            <a href="{% url 'checkout' %}">UPDATE </a>
+        </div> -->
+    </div>
+    <div class="checkout_container">
+        <!-- <input type="submit" value="UPDATE"> -->
+        <button id="update" class="item_btn" name="{{details.id}}"type="button">UPDATE</button>
+        <!-- <a href="{% url 'checkout' %}" onclick="return false;" id="update">UPDATE </a> -->
+    </form>
+        <a href="{% url 'checkout' %}">CHECHOUT(ksh {{total.get_cart_total}})</a>
+    </div>
+        
+        <!-- <br><br><br> -->
+        {% else %}
+        <div class="cart_container">
+        <div class="no_item_container">
+            <img id="logo" src="{% static 'img/store11-logo.png' %}" alt="store11-logo">
+            <div class="no_cart_icon_container">
+                <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i>
+            </div>
+            <br>
+            <h1>Your cart is empty!</h1>
+            <br>
+            <h2>add some items to get started</h2>
+            <a href="{% url 'store' %}">back to store</a>
+    
+        </div>
+    </div>
+        {% endif %} 
+</div>
+<script>
 
-			</div>
+</script>
 
-			<br>
-			<div class="box-element">
-				<div class="cart-row">
-					<div style="flex:2"></div>
-					<div style="flex:2"><strong>Item</strong></div>
-					<div style="flex:1"><strong>Price</strong></div>
-					<div style="flex:1"><strong>Quantity</strong></div>
-					<div style="flex:1"><strong>Total</strong></div>
-					<div style="flex:1"><strong>Update</strong></div>
-					<div style="flex:1"><strong>Remove</strong></div>
-
-				</div>
-				{% for item in cart.orderitem_set.all %}
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{item.product.name}}</p></div>
-					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
-					<div style="flex:1"><p class="quantity">{{item.quantity}}</p></div>
-					<div style="flex:1"><p>${{item.get_total|floatformat:2}}</p></div>
-					<div style="flex:1">
-						<a class="btn btn-sm btn-dark" href="{% url 'product' item.product.id %}">Update</a>
-					</div>
-					<div style="flex:1">
-						<a class="btn btn-sm btn-danger" href="">Remove</a>
-					</div>
-				</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div> {% endcomment %}
-	{% else %}
-	<h1 style="text-align:center;padding: 100px">No Items in cart</h1>
-	{% endif %}
 {%endblock content %}
+

@@ -34,7 +34,7 @@
                 <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
                 <div class="details_container">
                     <p>amount</p>
-                <p id="total">ksh: 50,000</p>
+                <p id="total">ksh: {{total.get_total_payable}}</p>
                 </div>
                
                 <form action="" method="POST">

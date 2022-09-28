@@ -42,76 +42,42 @@
         <br>
 
     </div>
-
+    
     <div class=" checkout_container order_details">
         <h2 class="order_details_title">Order Details</h2>
         <div class="items_container">
+            {% for item in cart %}
             <div class="item_details">
                 <div class="item_quantity">
-                    <p class="item_description">1x</p>
+                    <p class="item_description">{{item.quantity}}x</p>
                     </div>
                 <div class="item_description">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
+                    <p class="item_description">{{item.product}}</p>
                 </div>
             </div>
-            <div class="item_details">
-                <div class="item_quantity">
-                    <p class="item_description">1x</p>
-                    </div>
-                <div class="item_description">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                </div>
-            </div>
-            <div class="item_details">
-                <div class="item_quantity">
-                    <p class="item_description">1x</p>
-                    </div>
-                <div class="item_description">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                </div>
-            </div>
-            <div class="item_details">
-                <div class="item_quantity">
-                    <p class="item_description">1x</p>
-                    </div>
-                <div class="item_description">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                </div>
-            </div>
-            <div class="item_details">
-                <div class="item_quantity">
-                    <p class="item_description">1x</p>
-                    </div>
-                <div class="item_description">
-                    <p class="item_description">Fashion Women Shoulder Bags 
-                        Sling Small Bag-Multi Color</p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         <br>
     </div>
+    
 
     <div class="checkout_container order_summary">
         <h2>Order Summary</h2>
         <div class="myrow">
             <p>Items Total</p>
-            <p>1000</p>
+            <p>{{total.get_cart_total}}</p>
         </div>
         <div class="myrow">
             <p>VAT</p>
-            <p>1000</p>
+            <p>{{total.get_cart_vat}}</p>
         </div>
         <div class="myrow">
             <p>Shipping charges</p>
-            <p>1000</p>
+            <p>{{total.get_cart_shipping}}</p>
         </div>
         <div class="myrow_total">
             <p>Total</p>
-            <p id="total">5000</p>
+            <p id="total">{{total.get_total_payable}}</p>
         </div>
         <br>
     </div>

@@ -51,34 +51,57 @@ class Address(models.Model):
     phone=models.CharField(max_length=255)
     region = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Cart(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return str(self.id)
-		
+
     @property
     def get_cart_total(self):
-        orderitems = self.orderitem_set.all()
-        total = sum([item.get_total for item in orderitems])
+        cartitems = self.cartitem_set.all()
+        total = sum([item.get_total for item in cartitems])
         return total 
 
     @property
     def get_cart_items(self):
-        orderitems = self.orderitem_set.all()
-        total = sum([item.quantity for item in orderitems])
+        cartitems = self.cartitem_set.all()
+        total = sum([item.quantity for item in cartitems])
         return total 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def get_cart_vat(self):
+        # cartitems = self.cartitem_set.all()
+        total = self.get_cart_total*0.06
+        return total
+    
+    @property
+    def get_cart_shipping(self):
+        # cartitems = self.cartitem_set.all()
+        total = self.get_cart_total*0.02
+        return total
+
+    @property
+    def get_total_payable(self):
+        # cartitems = self.cartitem_set.all()
+        total = self.get_cart_total+self.get_cart_vat+self.get_cart_shipping
+        return total
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
+
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
@@ -92,7 +115,7 @@ class Order(models.Model):
     ]
     placed_at= models.DateTimeField(auto_now_add=True)
     payment_status =models.CharField(max_length=1 ,choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
-    customer =models.ForeignKey(Customer, on_delete=models.PROTECT)
+    user =models.ForeignKey(User, on_delete=models.PROTECT)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
