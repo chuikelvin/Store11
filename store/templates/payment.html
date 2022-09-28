@@ -37,9 +37,10 @@
                 <p id="total">ksh: 50,000</p>
                 </div>
                
-                <form action="">
+                <form action="" method="POST">
+                    {% csrf_token %}
                     <input type="text" value="+254" disabled id="country_code">
-                    <input type="number" name="number" id="number" maxlength="10">
+                    <input type="number" name="number" id="number" maxlength="10" required>
                     <!-- <input type="submit" value="send">
                 </form> -->
             </div>
@@ -52,26 +53,6 @@
             <br>
         </div>
 
-    </div>
-
-    <div class="payment_container payment_details">
-        <h2 class="order_details_title">payment Details</h2>
-        <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
-        <div class="items_container">
-           <p>amount</p>
-            <p id="total">ksh: 50000</p>
-            <form action="">
-                <input type="number" value="254" disabled width="40">
-                <input type="number" name="number" id="" maxlength="10">
-                <!-- <input type="submit" value="send">
-            </form> -->
-        </div>
-        <div class="actions_container">
-            <input type="submit" value="Place order">
-            <a href="{% url 'store' %}" id="backtostore">back to cart</a>
-            </form>
-        </div>
-        <!-- <br> -->
     </div>
 </div>
 

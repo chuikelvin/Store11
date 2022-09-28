@@ -1,10 +1,23 @@
 import ast
 import json
+import os
+import sys
 from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,FileResponse, Http404
 from . import forms
+
+# importing sys
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# sys.path.append('store')
+print(BASE_PATH)
+# from __pycache__
+from daraja.darajaconn import lipa_na_mpesa
+import sys
+ 
+# adding Folder_2 to the system path
+sys.path.insert(0, 'e:\\Documents\\Python\\unchained-plp\\store\\daraja\\')
 
 from collections import defaultdict
 
@@ -111,6 +124,7 @@ def store(request):
     return render(request, 'product.html',{'Product_list':Product_list})
 
 def cart(request):
+    print(request.user)
     check= is_logged_in(request)
     try:
         request.session['cart']
@@ -202,6 +216,18 @@ def payment(request):
     if request.session['status'] == 0:
         return redirect('/sign/')
     check= is_logged_in(request)
+
+    if request.method == 'POST':
+        print("posted")
+        number = request.POST["number"]
+        if number[0] == '0':
+            number = number.replace("0", "254", 1)
+        elif (number[0] == '7'):
+            number = number.replace("7", "2547", 1)
+
+        # text = text.replace("very", "not very", 1)
+        # print(number)
+        lipa_na_mpesa(number)
     # if request.session.has_key('status'):
     #     print (request.session['status'])
     #     if request.session['status'] == 'login':
@@ -247,26 +273,31 @@ def sign(request):
     status = ""
     if request.method == 'POST':
         if 'signUp' in request.POST:
-            print("sign up")
+            # print("sign up")
             first_name = request.POST["firstName"]
             last_name = request.POST["lastName"]
-            email = request.POST["email"]
+            username = request.POST["email"]
             password = request.POST['password']
         
-            if User.objects.filter(username=email).exists():
+            if User.objects.filter(username=username).exists():
                 status = 'user exists'
+                print("exists")
                 return render(request, 'sign.html',{"status":status})
             else:
-                user = User(first_name=first_name, last_name= last_name, email= email)
+                user = User(first_name=first_name, last_name= last_name, username= username,password=password)
                 user.save()
                 status = 'registered'
                 return render(request, 'product.html',{"status":status})
         elif 'signIn' in request.POST:
             print("sign in")
-            email = request.POST["email"]
+            username = request.POST["email"]
             password = request.POST['password']
+
+            user =authenticate(username =username,password=password)
+            if user is not None:
+                login(request, user)
         
-            if User.objects.filter(username=email).exists():
+            # if User.objects.filter(username=username).exists():
                 status = 'success'
                 print(status)
                 request.session['status']=1
@@ -353,6 +384,7 @@ def cart_handler(request):
         #    likedpost = Post.objects.get(pk=post_id) #getting the liked posts
         #    m = Like(post=likedpost) # Creating Like Object
         #    m.save()  # saving it to store in database
+        
         return HttpResponse("Success!") # Sending an success response
         return redirect('/')
     else:
