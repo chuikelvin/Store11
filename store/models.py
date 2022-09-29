@@ -51,6 +51,7 @@ class Address(models.Model):
     phone=models.CharField(max_length=255)
     region = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
+    postal_address =models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Cart(models.Model):
@@ -66,26 +67,26 @@ class Cart(models.Model):
     def get_cart_total(self):
         cartitems = self.cartitem_set.all()
         total = sum([item.get_total for item in cartitems])
-        return total 
+        return int(total) 
 
     @property
     def get_cart_items(self):
         cartitems = self.cartitem_set.all()
         total = sum([item.quantity for item in cartitems])
-        return total 
+        return int(total) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def get_cart_vat(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total*0.06
-        return total
+        return int(total)
     
     @property
     def get_cart_shipping(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total*0.02
-        return total
+        return int(total)
 
     @property
     def get_total_payable(self):
@@ -121,4 +122,4 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()
-    unit_price =models.DecimalField(max_digits=10, decimal_places=2)
+    unit_price =models.IntegerField()

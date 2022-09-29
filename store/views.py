@@ -28,7 +28,7 @@ from django.apps import apps
 from django.contrib import admin
 
 import uuid
-from store.models import Product, User, Cart, CartItem
+from store.models import Product, User, Cart, CartItem, Address
 
 
 
@@ -262,6 +262,11 @@ def checkout(request):
         cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
         items =cartm.cartitem_set.all()
         check.update({'cart':items})
+        if Address.objects.filter(user=request.user).exists():
+            address =Address.objects.get(user=request.user)
+            return render(request, 'checkout.html',{'details':address,'cart':items,'total':cartm})
+        else:
+            return redirect('/userdetails/',request.path)
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
@@ -489,4 +494,43 @@ def updatecart(request):
     return JsonResponse("requesteren",safe=False)
 
 def userdetails(request):
-    return render(request, 'userdetails.html',)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            first_name = request.POST["fname"]
+            last_name = request.POST["lname"]
+            phone = request.POST["number"]
+            if phone[0] == '0':
+                phone = phone.replace("0", "254", 1)
+            region = request.POST["region"]
+            postal_address =request.POST['postal_address']
+            city = request.POST['city']
+
+            if Address.objects.filter(user=request.user).exists():
+                address =Address.objects.get(user=request.user)  
+                address.first_name = (first_name)
+                address.last_name = (last_name)
+                address.region = (region)
+                address.phone = (phone)
+                address.city = (city)
+                address.postal_address=(postal_address)
+                address.save()
+            else:
+                 address =Address.objects.get_or_create(user=request.user,first_name=first_name, last_name= last_name,region=region,phone=phone,city=city,postal_address=postal_address)
+            # print(address)
+            return render(request, 'userdetails.html',{'details':address})
+        else:
+            # try:
+            #     address =Address.objects.get(user=request.user)
+            # except DoesNotExist:
+            #     print ...
+                
+            if Address.objects.filter(user=request.user).exists():
+                # Address.objects.get(user=request.user).DoesNotExist()
+                address =Address.objects.get(user=request.user)
+                return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
+            else:
+                return render(request, 'userdetails.html')
+            # return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
+        
+    else:
+        return redirect('/')

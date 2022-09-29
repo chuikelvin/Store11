@@ -13,13 +13,12 @@
     <div class="checkout_container address">
         <div class="manage_address">
             <h2>Your address</h2>
-            <a href="{% url 'store' %}">change address</a>
+            <a href="{% url 'userdetails' %}">change address</a>
         </div>  
         <div class="current">
-            <p class="user_name">Kelvin Chui</p>
-            <p class="user_address">7835 - 00300 <br> Nairobi</p>
-            <p class="user_contact">+254-701234567 <br>
-            +254-74554978</p>
+            <p class="user_name">{{details.first_name}} {{details.last_name}}</p>
+            <p class="user_address">{{details.postal_address}} <br> {{details.city}}</p>
+            <p class="user_contact">+254-{{details.phone}} <br></p>
         </div>
         <br>
     </div>
@@ -84,7 +83,7 @@
     <br>
 
     <div class="actions_container">
-        <a href="{% url 'store' %}" id="backtostore">back to cart(ksh 5000)</a>
+        <a href="{% url 'store' %}" id="backtostore">back to cart</a>
         <a href="{% url 'payment' %}">Proceed to pay with mpesa</a>
     </div>
     
