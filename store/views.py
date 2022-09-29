@@ -9,9 +9,9 @@ from django.http import HttpResponse,FileResponse, Http404
 from . import forms
 
 # importing sys
-BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # sys.path.append('store')
-print(BASE_PATH)
+# print(BASE_PATH)
 # from __pycache__
 from daraja.darajaconn import lipa_na_mpesa
 import sys
@@ -28,7 +28,7 @@ from django.apps import apps
 from django.contrib import admin
 
 import uuid
-from store.models import Product, User, Cart
+from store.models import Product, User, Cart, CartItem
 
 
 
@@ -71,11 +71,22 @@ def store(request):
     # request.session['cart']=defaultdict(lambda: 0)
     # product = Product.objects.get(id=pk)
     if request.method == 'POST':
-        # cart_dict=defaultdict(lambda: 0)
-        # if request.session['cart'] is None:
-        #     request.session['cart']=defaultdict(lambda: 0)
-
-        cart_dict=request.session['cart']
+        if request.user.is_authenticated:
+            product_id = request.POST.get('product_id', False)
+        # for productid,value in data.items():
+            product=Product.objects.get(id=product_id)
+            # print(request.user)
+            cart,created =Cart.objects.get_or_create(user=request.user,complete=False)
+            print(cart)
+            if CartItem.objects.filter(cart=cart,product=product).exists():
+                get_cartitem = CartItem.objects.get(cart=cart,product=product)
+                get_cartitem.quantity=(get_cartitem.quantity+1)
+                get_cartitem.save()
+                print(get_cartitem.quantity)
+            else:
+                cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product,quantity=1)
+        else:
+            cart_dict=request.session['cart']
         # request.session['status'] = cart_dict
         # if request.user.is_authenticated():
         #     print('gg')
@@ -83,31 +94,31 @@ def store(request):
 
         # status = ""
         
-        product_id = request.POST.get('product_id', False)
+            product_id = request.POST.get('product_id', False)
         # print(cart_dict)
         # if cart_dict.get(product_id) == '':
         #     cart_dict[product_id] = 0
         # # test_dict['best'] = test_dict.get('best', 0) + 3
         # cart_dict.setdefault([product_id], 0)
         # print(cart_dict[product_id])
-        try:
-            cart_dict[product_id]
-            cart_dict[product_id] = cart_dict.get(product_id)+1
-        except KeyError:
-            cart_dict[product_id] = 1
+            try:
+                cart_dict[product_id]
+                cart_dict[product_id] = cart_dict.get(product_id)+1
+            except KeyError:
+                cart_dict[product_id] = 1
         # quantity = request.POST["quantity"]
         # print(cart_dict[product_id])
         # email = request.POST["email"]
-        request.session['cart']=cart_dict
-        print(request.session['cart'])
+            request.session['cart']=cart_dict
+            print(request.session['cart'])
         # password = request.POST['password']
     # if request.method == 'GET':
     Product_list = Product.objects.all()
     check.update({'Product_list':Product_list})
     response = render(request, 'store.html',check)
-    if not request.COOKIES.get("id"):
-        unique_id = uuid.uuid4()
-        response.set_cookie(key='id', value=unique_id)
+    # if not request.COOKIES.get("id"):
+    #     unique_id = uuid.uuid4()
+    #     response.set_cookie(key='id', value=unique_id)
     # print(request.COOKIES.get("device_id"))
     # if request.COOKIES['device_id'] != '':
     #     print("cookie exists")
@@ -129,13 +140,21 @@ def usercart(request):
         # print(request.user)
         cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
         items =cartm.cartitem_set.all()
-        check.update({'cart':items})
+        if request.method == 'POST':
+            product_id=int(request.POST['delete'])
+            product=Product.objects.get(id=product_id)
+            get_cartitem = CartItem.objects.get(cart=cartm,product=product)
+            get_cartitem.delete()
+            # get_cartitem.quantity=(get_cartitem.quantity+1)
+        # check.update({'cart':items})
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
-        print(cartm.get_cart_total)
+        # print(cartm.get_cart_total)
     # check.update({'cart':request.session['cart']})
         return render(request, 'cart2.html',{'cart':items,'total':cartm})
+    else:
+        return redirect('/cart/')
 
 def cart(request):
     if request.user.is_authenticated:
@@ -214,8 +233,10 @@ def cart(request):
     check.update({'cart':cart})
     for items,values in cart.items():
         for details in items:
-            # print(details.price*values)
-            total_cost += details.price*values
+            # print(details.price)
+            # total_cost=5
+            # print(int(values))
+            total_cost += details.price*int(values)
             # print(total_cost)
         # for items in cart.values():
         #     print(items)
@@ -349,6 +370,7 @@ def sign(request):
                 status = 'success'
                 print(status)
                 request.session['status']=1
+                return redirect(request.META['HTTP_REFERER'])
                 return redirect('/')
                 return render(request, 'store.html',check)
             else:
@@ -442,3 +464,26 @@ def cart_handler(request):
 def product_details(request,id):
     product=Product.objects.get(id=id)
     return render(request, 'product.html',{'product': product})
+
+def updatecart(request):
+    data =json.loads(request.body)
+    if request.user.is_authenticated:
+        for productid,value in data.items():
+            product=Product.objects.get(id=productid)
+            # print(request.user)
+            cart,created =Cart.objects.get_or_create(user=request.user,complete=False)
+            # print(cart.)
+            cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product)
+            cartitem.quantity = (value)
+            cartitem.save()
+
+            if int(cartitem.quantity) <= 0:
+                cartitem.delete()
+            # print(cartitem.quantity)
+    else:
+        key = request.session['cart']
+        print(key)
+        print(data)
+        request.session['cart']=data
+    # print(data['2'])
+    return JsonResponse("requesteren",safe=False)

@@ -17,7 +17,8 @@ urlpatterns = [
     path('checkout/',views.checkout,name='checkout'),
     path('payment/',views.payment,name='payment'),
     path('userhandler/',views.userhandler,name='userhandler'),
-    path('cart_handler/',views.cart_handler,name='cartHandler')
+    path('cart_handler/',views.cart_handler,name='cartHandler'),
+    path('updatecart/',views.updatecart,name='updatecart'),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

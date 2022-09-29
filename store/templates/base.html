@@ -150,8 +150,10 @@
 
             placeholder = placeholder.nextElementSibling;
           }
-          console.log(input.value)
-          input.value--;
+          // console.log(input.value)
+          if (input.value >0){
+            input.value--;
+          }
         }
       }
     }
@@ -185,7 +187,23 @@
         updated_val[ref]= quantity
         // console.log(ref +":"+ quantity)
       }
-      console.log(ref)
+      console.log(JSON.stringify(updated_val))
+      var url='/updatecart/'
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken':'{{ csrf_token }}',
+        },
+        body:JSON.stringify(updated_val)
+      })
+      .then ((response) =>{
+        return response.json()
+      })
+      .then ((data)=>{
+        console.log('data', data)
+      })
+      
 
       // $.ajax({
       //     url: "{% url 'cartHandler' %}",

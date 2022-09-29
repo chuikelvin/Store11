@@ -44,7 +44,7 @@
             <div class="quantity">
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <input type="text" value="{{details.id}}" name="delete" hidden>
+                    <input type="text" value="{{item.product.id}}" name="delete" hidden>
                     <input type="submit" value="REMOVE">
                 </form>
                     <!-- <a href="" type="button">remove</a> -->
@@ -53,7 +53,7 @@
                         {% csrf_token %}
                         <!-- <a href="" id="minus" class="item_btn">-</a> -->
                         <button id="subtract" class="item_btn" name="{{details.id}}" type="button">-</button>
-                        <input min="1" value={{item.quantity}} type="number" name="quantity" class="item_quantity" ref="{{details.id}}" readonly>
+                        <input min="1" value={{item.quantity}} type="number" name="quantity" class="item_quantity" ref="{{item.product.id}}" readonly>
                         <button id="add" class="item_btn" name="{{details.id}}"type="button">+</button>
                         <!-- <a href="" id="add" class="item_btn">+</a> -->
                     
