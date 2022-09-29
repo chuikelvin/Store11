@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<link rel="stylesheet" href="{% static 'css/userdetails.css' %}">
+{%endblock css%}
+
+{%block content %}
+<div class="main-container">
+    <!-- <div class="user_container">
+         <h1>Hi Kelvin!</h1> 
+    </div> -->
+    <div class=" userdetails_container delivery_method">
+        <h2>Enter user details</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" name="fname" id="" placeholder="enter first name">
+                <input type="text" name="lname" id="" placeholder="enter last name">
+            </div>
+            <div>
+                <input type="text" value="+254" disabled id="country_code">
+                <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number">
+            </div>
+            <div>
+                <input type="text" name="region" id="" placeholder="region">
+            </div>
+            <div>
+                <input type="text" name="city" id="" placeholder="city">
+            </div>
+            <div class="actions_container">
+                <input type="submit" value="update">
+                <input type="reset" value="clear">
+            </div>
+        </form>
+    </div>
+</div>
+
+{%endblock content %}

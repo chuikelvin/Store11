@@ -487,3 +487,6 @@ def updatecart(request):
         request.session['cart']=data
     # print(data['2'])
     return JsonResponse("requesteren",safe=False)
+
+def userdetails(request):
+    return render(request, 'userdetails.html',)
