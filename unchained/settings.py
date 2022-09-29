@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 import sys
 from pathlib import Path
+import django_heroku
 
 from django.db.backends.mysql.base import DatabaseWrapper
 DatabaseWrapper.data_types['DateTimeField'] = 'datetime' # fix for MySQL 5.5
@@ -163,3 +164,5 @@ AUTH_USER_MODEL = 'store.User'
 
 CORS_ORIGIN_ALLOW_ALL =True
 CORS_ALLOW_CREDENTIALS = True
+
+django_heroku.settings(locals())
