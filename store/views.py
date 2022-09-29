@@ -5,14 +5,10 @@ import sys
 from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import render,redirect
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse,FileResponse, Http404
 from . import forms
 
-# importing sys
-# BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append('store')
-# print(BASE_PATH)
-# from __pycache__
 from daraja.darajaconn import lipa_na_mpesa
 import sys
  
@@ -33,10 +29,10 @@ from store.models import Product, User, Cart, CartItem, Address
 
 
 def is_logged_in(request):
-    if request.session.has_key('status'):
-        # print ("request.session['status']")
+    if request.user.is_authenticated:
+        return {"user_status" :'bg-success','action':'sign out'}
+    elif request.session.has_key('status'):
         if request.session['status'] == 1:
-            # print('test')
             return {"user_status" :'bg-success','action':'sign out'}
         else :
             return {"user_status" :'bg-secondary','action':'sign in'}
@@ -44,13 +40,6 @@ def is_logged_in(request):
     else:
         request.session['status'] = 0
         return {"user_status" :'bg-secondary','action':'sign in'}
-
-
-
-# Create your views here.
-
-# def home(request):
-#     return render(request, 'home.html')
 
 def contact(request):
     check= is_logged_in(request)
@@ -62,14 +51,10 @@ def about(request):
 
 def store(request):
     check= is_logged_in(request)
-    # print(request.user)
     try:
         request.session['cart']
     except:
         request.session['cart']=defaultdict(lambda: 0)
-
-    # request.session['cart']=defaultdict(lambda: 0)
-    # product = Product.objects.get(id=pk)
     if request.method == 'POST':
         if request.user.is_authenticated:
             product_id = request.POST.get('product_id', False)
@@ -110,29 +95,14 @@ def store(request):
         # print(cart_dict[product_id])
         # email = request.POST["email"]
             request.session['cart']=cart_dict
-            print(request.session['cart'])
+            # print(request.session['cart'])
         # password = request.POST['password']
     # if request.method == 'GET':
     Product_list = Product.objects.all()
     check.update({'Product_list':Product_list})
-    response = render(request, 'store.html',check)
-    # if not request.COOKIES.get("id"):
-    #     unique_id = uuid.uuid4()
-    #     response.set_cookie(key='id', value=unique_id)
-    # print(request.COOKIES.get("device_id"))
-    # if request.COOKIES['device_id'] != '':
-    #     print("cookie exists")
-    # username = request.COOKIES['device_id']
-    # unique_id = uuid.uuid4()
-    # # print(unique_id)
-    # Product_list = Product.objects.all()
-    # response = render(request, 'product.html',{'Product_list':Product_list})
-    # # uuid.uuid4
-    # response.set_cookie(key='id', value=1)
-    # tutorial  = request.COOKIES['java-tutorial']  
-    # return HttpResponse("java tutorials @: "+  tutorial);  
+    response = render(request, 'store.html',check) 
     return response
-    return render(request, 'product.html',{'Product_list':Product_list})
+    # return render(request, 'product.html',{'Product_list':Product_list})
 
 def usercart(request):
     if request.user.is_authenticated:
@@ -151,8 +121,8 @@ def usercart(request):
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
         # print(cartm.get_cart_total)
-    # check.update({'cart':request.session['cart']})
-        return render(request, 'cart2.html',{'cart':items,'total':cartm})
+        check.update({'cart':items,'total':cartm})
+        return render(request, 'cart2.html',check)
     else:
         return redirect('/cart/')
 
@@ -264,7 +234,8 @@ def checkout(request):
         check.update({'cart':items})
         if Address.objects.filter(user=request.user).exists():
             address =Address.objects.get(user=request.user)
-            return render(request, 'checkout.html',{'details':address,'cart':items,'total':cartm})
+            check.update({'details':address,'cart':items,'total':cartm})
+            return render(request, 'checkout.html',check)
         else:
             return redirect('/userdetails/',request.path)
     # # print(created)
@@ -275,8 +246,8 @@ def checkout(request):
         return render(request, 'checkout.html',{'cart':items,'total':cartm})
     if request.session['status'] == 0:
         return redirect('/sign/',request.path)
-    check= is_logged_in(request)
-    return render(request, 'checkout.html',check)
+    # check= is_logged_in(request)
+    # return render(request, 'checkout.html',check)
 
 def payment(request):
     if request.user.is_authenticated:
@@ -310,34 +281,37 @@ def payment(request):
     #   return render(request, 'loggedin.html', {"username" :'bg-secondary'})
 #    else:
     #   return render(request, 'login.html', {})
-    return render(request, 'payment.html',{'total':cartm})
+    check.update({'total':cartm})
+    
+    return render(request, 'payment.html',check)
     
     # return render(request, 'payment.html',check)
 
-def register(request):
-    check= is_logged_in(request)
-    status = ""
-    if request.method == 'POST':
-        status = ""
-        first_name = request.POST["firstName"]
-        last_name = request.POST["lastName"]
-        email = request.POST["email"]
-        password = request.POST['password']
+# def register(request):
+#     check= is_logged_in(request)
+#     status = ""
+#     if request.method == 'POST':
+#         status = ""
+#         first_name = request.POST["firstName"]
+#         last_name = request.POST["lastName"]
+#         email = request.POST["email"]
+#         password = request.POST['password']
         
-        if User.objects.filter(email=email).exists():
-            status = 'user exists'
-            return render(request, 'register.html',{"status":status})
-        else:
-            user = User(first_name=first_name, last_name= last_name, email= email)
-            user.save()
-            status = 'registered'
-            return render(request, 'register.html',{"status":status})
+#         if User.objects.filter(email=email).exists():
+#             status = 'user exists'
+#             return render(request, 'register.html',{"status":status})
+#         else:
+#             user = User(first_name=first_name, last_name= last_name, email= email)
+#             user.save()
+#             status = 'registered'
+#             return render(request, 'register.html',{"status":status})
 
-    if request.method == 'GET':
-        return render(request, 'register.html',{"status":status})
+#     if request.method == 'GET':
+#         return render(request, 'register.html',{"status":status})
 
 def sign(request):
-    # print(**kwargs)
+    if request.user.is_authenticated:
+        return redirect('/userdetails/',request.path)
     check= is_logged_in(request)
     # login= forms.UserForm()
     # if request.session.has_key('status'):
@@ -347,11 +321,10 @@ def sign(request):
     status = ""
     if request.method == 'POST':
         if 'signUp' in request.POST:
-            # print("sign up")
             first_name = request.POST["firstName"]
             last_name = request.POST["lastName"]
             username = request.POST["email"]
-            password = request.POST['password']
+            password = make_password(request.POST['password'])
         
             if User.objects.filter(username=username).exists():
                 status = 'user exists'
@@ -361,11 +334,12 @@ def sign(request):
                 user = User(first_name=first_name, last_name= last_name, username= username,password=password)
                 user.save()
                 status = 'registered'
-                return render(request, 'product.html',{"status":status})
+                return render(request, '/store/',{"status":status})
         elif 'signIn' in request.POST:
-            print("sign in")
             username = request.POST["email"]
             password = request.POST['password']
+
+            # print(username)
 
             user =authenticate(username =username,password=password)
             if user is not None:
@@ -375,7 +349,7 @@ def sign(request):
                 status = 'success'
                 print(status)
                 request.session['status']=1
-                return redirect(request.META['HTTP_REFERER'])
+                # return redirect(request.META['HTTP_REFERER'])
                 return redirect('/')
                 return render(request, 'store.html',check)
             else:
@@ -385,14 +359,15 @@ def sign(request):
                 return render(request, 'store.html',{"status":status})
 
     if request.method == 'GET':
-        print(check)
+        # print(check)
         return render(request, 'sign.html',check)
 
 def userhandler(request):
     check= is_logged_in(request)
-    print (check['action'])
+    # print (check['action'])
     if check['action'] == 'sign out':
         try:
+            logout(request)
             request.session['status'] = 0
             # del request.session['username']
         except:
@@ -467,8 +442,10 @@ def cart_handler(request):
 
 
 def product_details(request,id):
+    check= is_logged_in(request)
     product=Product.objects.get(id=id)
-    return render(request, 'product.html',{'product': product})
+    check.update({'product': product})
+    return render(request, 'product.html',check)
 
 def updatecart(request):
     data =json.loads(request.body)
@@ -487,14 +464,15 @@ def updatecart(request):
             # print(cartitem.quantity)
     else:
         key = request.session['cart']
-        print(key)
-        print(data)
+        # print(key)
+        # print(data)
         request.session['cart']=data
     # print(data['2'])
     return JsonResponse("requesteren",safe=False)
 
 def userdetails(request):
     if request.user.is_authenticated:
+        check= is_logged_in(request)
         if request.method == 'POST':
             first_name = request.POST["fname"]
             last_name = request.POST["lname"]
@@ -516,8 +494,8 @@ def userdetails(request):
                 address.save()
             else:
                  address =Address.objects.get_or_create(user=request.user,first_name=first_name, last_name= last_name,region=region,phone=phone,city=city,postal_address=postal_address)
-            # print(address)
-            return render(request, 'userdetails.html',{'details':address})
+            check.update({'details':address})
+            return render(request, 'userdetails.html',check)
         else:
             # try:
             #     address =Address.objects.get(user=request.user)
@@ -527,9 +505,11 @@ def userdetails(request):
             if Address.objects.filter(user=request.user).exists():
                 # Address.objects.get(user=request.user).DoesNotExist()
                 address =Address.objects.get(user=request.user)
-                return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
+                check.update({'details':address,'readonly':'disabled'})
+                return render(request, 'userdetails.html',check)
             else:
-                return render(request, 'userdetails.html')
+                # check.update({'details':address,'readonly':'disabled'})
+                return render(request, 'userdetails.html',check)
             # return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
         
     else:
