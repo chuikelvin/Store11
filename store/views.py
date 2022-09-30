@@ -29,8 +29,27 @@ from store.models import Product, User, Cart, CartItem, Address
 
 
 def is_logged_in(request):
+    state='visually-hidden'
     if request.user.is_authenticated:
-        return {"user_status" :'bg-success','action':'sign out'}
+        if Cart.objects.filter(user=request.user).exists():
+            cartm =Cart.objects.get(user=request.user)
+            items =cartm.get_cart_items
+            if items <= 0:
+                items=''
+                # state='visually-hidden'
+            else:
+                state=''
+
+            # return render(request, 'checkout.html',check)
+        else:
+            items=''
+            
+            # return redirect('/userdetails/',request.path)
+        
+        # cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
+        # items =cartm.get_cart_items
+
+        return {"user_status" :'bg-success','action':'sign out','items_no':items,'visually':state}
     elif request.session.has_key('status'):
         if request.session['status'] == 1:
             return {"user_status" :'bg-success','action':'sign out'}
@@ -39,7 +58,7 @@ def is_logged_in(request):
 
     else:
         request.session['status'] = 0
-        return {"user_status" :'bg-secondary','action':'sign in'}
+        return {"user_status" :'bg-secondary','action':'sign in','visually-hidden':'visually-hidden'}
 
 def contact(request):
     check= is_logged_in(request)

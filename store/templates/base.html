@@ -51,8 +51,8 @@
 
       <div class="cart_icon">
         <a href="{% url 'cart' %}"><i class='bx bx-cart-alt icon'></i>
-          <span class="visually-hidden position-absolute top-0 start-100 translate-middle p-1 text-light rounded-circle"
-            id="cart_number">12</span>
+          <span class="{{visually}} position-absolute top-0 start-100 translate-middle p-1 text-light rounded-circle"
+            id="cart_number">{{items_no}}</span>
         </a>
       </div>
 
