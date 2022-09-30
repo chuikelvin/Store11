@@ -30,6 +30,7 @@ from store.models import Product, User, Cart, CartItem, Address
 
 def is_logged_in(request):
     state='visually-hidden'
+    
     if request.user.is_authenticated:
         if Cart.objects.filter(user=request.user).exists():
             cartm =Cart.objects.get(user=request.user)
@@ -39,6 +40,7 @@ def is_logged_in(request):
                 # state='visually-hidden'
             else:
                 state=''
+
 
             # return render(request, 'checkout.html',check)
         else:

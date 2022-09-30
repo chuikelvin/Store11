@@ -391,7 +391,20 @@ p,h3 {
      font-size: 2rem;
 }
 #cart_number {
-     font-size:6px;
+     font-size:15px;
+     display:flex;
+     justify-content: center;
+     align-items: center;
+     vertical-align: middle;
+     border:1px solid white;
+     color: white !important;
+     text-align: center;
+     /* text-shadow:0 0 12px#8b0e3a; */
+     background-color: grey;
+     display: inline-block;
+     width:20px;
+     height:20px;
+     border-radius:50%;
      /* width: */
 }
 
