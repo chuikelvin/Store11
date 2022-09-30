@@ -122,7 +122,7 @@ def usercart(request):
     # context ={"cart":cart}
         # print(cartm.get_cart_total)
         check.update({'cart':items,'total':cartm})
-        return render(request, 'cart2.html',check)
+        return render(request, 'usercart.html',check)
     else:
         return redirect('/cart/')
 

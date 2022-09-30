@@ -5,29 +5,17 @@
         {% for product in Product_list %}
 
         <div class="col-sm">
-            <!-- course -->
+            <!-- item -->
             <div class="gradient" onclick="location.href='/product/{{product.id}}';" style="cursor:pointer;">
                 <div class="row" style="flex:2;">
                     <div id="product_image_container">
                         <img src="{{MEDIA_URL}}{{product.image.url}}" alt="{{product.title}}" id="product_image">
                     </div>
-                    <!-- <h3>{{product.title}}</h3> -->
-                    <!-- <strong>{{product.title}}</strong>
-                <div class="row">
-                     <strong>{{product.price}}</strong> -->
-                    <!-- <h3>{{product.price}}</h3>
-                </div>
-                <p>{{product.description}}</p> -->
-                    <!--<span class="progress-number">${subjectPercentages[index]}%</span>-->
-                    <!-- <span class="progress-bar progress-background"><span class="progress-foreground" style ="width:100%"></span></span> -->
-                    <!-- </div> -->
                     <div class="row" id="about_product">
                         <p>{{product.title}}</p>
                         <form method="POST" action="">
                             {% csrf_token %}
                             <h3>{{product.price}}</h3>
-                            <!-- </div> -->
-                            <!-- <p>{{product.description}}</p> -->
 
                             <input type="hidden" name="product_id" value="{{product.id}}" />
                             <!-- <input min="1" value=1 type="number" name="quantity"> -->
@@ -41,8 +29,7 @@
                 </div>
 
             </div>
-            <!-- </div> -->
-            <!-- course -->
+            <!-- item -->
 
         </div>
         {% endfor %}
