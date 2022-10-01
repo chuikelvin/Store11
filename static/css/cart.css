@@ -171,12 +171,12 @@ p{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     padding:5px 10px;
 
 }
 
-.quantity a{
+.quantity a,button,input[type="submit"]{
     /* position:absolute; */
     /* bottom: 20px; */
     /* background-color: #1d1a19; */
@@ -185,9 +185,10 @@ p{
     text-decoration: none;
     text-transform: uppercase;
     color: #FF4B2B;
+    border: none;
     /* font-size: 12px; */
     font-weight: bold;
-    padding: 8px 15px;
+    /* padding: 8px 15px; */
     /* letter-spacing: 1px; */
 }
 

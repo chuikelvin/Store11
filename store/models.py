@@ -51,8 +51,10 @@ class Address(models.Model):
     phone=models.CharField(max_length=255)
     region = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    postal_address =models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user)
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -67,26 +69,26 @@ class Cart(models.Model):
     def get_cart_total(self):
         cartitems = self.cartitem_set.all()
         total = sum([item.get_total for item in cartitems])
-        return int(total) 
+        return total 
 
     @property
     def get_cart_items(self):
         cartitems = self.cartitem_set.all()
         total = sum([item.quantity for item in cartitems])
-        return int(total) 
+        return total 
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def get_cart_vat(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total*0.06
-        return int(total)
+        return total
     
     @property
     def get_cart_shipping(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total*0.02
-        return int(total)
+        return total
 
     @property
     def get_total_payable(self):
@@ -116,10 +118,19 @@ class Order(models.Model):
     ]
     placed_at= models.DateTimeField(auto_now_add=True)
     payment_status =models.CharField(max_length=1 ,choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
+    order_id=models.CharField(max_length=255,unique=True)
     user =models.ForeignKey(User, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.order_id
+    # def __str__(self):
+    #     return self.title + "   " + self.description
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()
-    unit_price =models.IntegerField()
+    unit_price =models.DecimalField(max_digits=10, decimal_places=2)
+
+    # def __str__(self):
+        # return str(self.order+ "   " + self.product)

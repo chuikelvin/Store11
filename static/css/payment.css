@@ -60,26 +60,22 @@
     /* border:1px grey solid; */
 }
 
-.option {
+.option{
     border-radius:5px; 
-    border:1px grey solid;
+    /* border:1px grey solid; */
     margin:2px 10px;
-    width:100px;
+    /* width:100px; */
     height:100px;
     display:flex;
     justify-content:center;
     align-items:center;
-
 }
 
-/* .delivery_method div {
-    margin:5px 20px;
-    padding:20px 20px;
-    display:flex;
-    flex-direction: row;
-    border-radius:5px; */
-    /* border:1px grey solid; */
-/* } */
+.option img{
+    height:150px;
+}
+
+
 
 
 .payment_details {
@@ -139,8 +135,9 @@ input {
 }
 
 .order_details_title {
-    text-align:left;
+    /* text-align:left; */
     font-size: 20px;
+    color:#FF4B2B;
 }
 /* .order_details h2 {
     position:sticky;
@@ -200,7 +197,7 @@ h1{
 h2,p {
     font-size: 20px;
     text-transform: capitalize;
-    text-align: left;
+    text-align: center;
     margin:20px 0 0 20px ;
 }
 
@@ -252,6 +249,60 @@ p {
 
 }
 
+.fullscreen_loader {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0.713);
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.order-success {
+    display: flex;
+    flex-direction: column;
+    /* justify-content:center; */
+    padding-top: 50px;
+    align-items:center;
+    color:white;
+    background-color:white;
+    width: 80%;
+    height: 100%;
+    max-width:500px;
+    max-height: 500px;
+    margin:auto;
+    font-size:20px;
+    border-radius: 50px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.order-success p, .order-success h1, .order-success h2,.order-success{
+    margin:0;   
+}
+
+.spinner-border {
+    color: #ff4b2b !important;;
+}
+
+.hideable {
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    visibility:hidden;
+}
+
+.order-success a {
+position:absolute;
+bottom: 0;
+width: 100% !important;
+}
+
 .actions_container{
     /* position:fixed; */
     width:100%;
@@ -263,7 +314,8 @@ p {
     /* bottom: 20px; */
 
 }
-.actions_container a{
+
+.actions_container a, .order-success a{
     /* position:sticky; */
     margin:2px 0;
     bottom: 0;
@@ -280,6 +332,7 @@ p {
     min-width:360px;
     width: 50%;
 }
+
 input[type="submit"]{
     margin:2px 0;
     bottom: 0;
@@ -299,7 +352,6 @@ input[type="submit"]{
 }
 #backtostore{
     background-color: #181717;
-
 }
 
 @media screen and (max-width: 768px) {

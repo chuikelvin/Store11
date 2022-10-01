@@ -11,7 +11,8 @@
          <h1>Hi Kelvin!</h1> 
     </div> -->
     <div class=" payment_container delivery_method">
-        <h2>Select a payment method</h2>
+        <!-- <h2>payment method</h2> -->
+        <h2 class="order_details_title">payment Details</h2>
         <div class="payment_options">
             <div class="option">
                 <!-- <input type="radio" name="delivery" value="pick up" checked>
@@ -19,30 +20,29 @@
                 <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
                 
             </div>
-            <div class="option" disabled>
-                <!-- <input type="radio" name="delivery" value="pick up" checked>
-                <p>Pick up from our physical address</p> -->
+            <!-- <div class="option" disabled>
                 <img src="{% static 'img/store11-logo.png' %}" class="img" alt="Store11 logo">
-            </div>
+            </div> -->
         </div>
 
         </form>
-        <br>
+        <!-- <br> -->
         <div class="payment_details">
-            <h2 class="order_details_title">payment Details</h2>
+            <!-- <h2 class="order_details_title">payment Details</h2> -->
+            <!-- <br> -->
             <div >
-                <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo">
+                <!-- <img src="{% static 'img/safaricom.png' %}" class="img" alt="Store11 logo"> -->
                 <div class="details_container">
                     <p>amount</p>
                 <p id="total">ksh: {{total.get_total_payable}}</p>
                 </div>
                
-                <form action="" method="POST">
+                <form action="" method="POST" class="payment">
                     {% csrf_token %}
                     <input type="text" value="+254" disabled id="country_code">
-                    <input type="number" name="number" id="number" maxlength="10" required>
-                    <!-- <input type="submit" value="send">
-                </form> -->
+                    <input type="number" name="number" id="number" maxlength="10" required autofocus>
+                    <br><br>
+
             </div>
             <br>
             <div class="actions_container">
@@ -56,4 +56,52 @@
     </div>
 </div>
 
+<div class="fullscreen_loader">
+
+    <div class="payment_container order-success">
+        <h2>ORDER NUMBER</h2>
+        <br>
+        <h1 class="order_number"> #54LKJL </h1>
+        <!-- <br> -->
+        <br>
+        has been placed successfully
+        <br>
+        verifying payment
+        <div class="spinner-border text-light p-5 my-5"></div>
+        page will refresh automatically <br>
+        <div class="hideable">
+            <p>this is taking longer than expected</p>
+            <a href="">check order status</a>
+        </div>
+    </div>
+</div>
+
 {%endblock content %}
+
+{%block script%}
+<Script>
+  $(document).ready(function () {
+    var $myform =$(".payment")
+    $myform.submit(function(event){
+        event.preventDefault()
+        var $formdata= $(this).serialize()
+        // console.log($formdata)
+        $.ajax({
+            method: "POST",
+            url: "{% url 'placeorder' %}",
+            data:$formdata,
+            success: function(data){
+                console.log(data.order)
+                $('.order_number').html(data.order)
+                $(".fullscreen_loader").delay(200).css('visibility', 'visible');
+                setTimeout(function(){ $(".hideable").css('visibility', 'visible') }, 10000);
+            },
+            error: function(data){
+
+            }
+        })
+        
+    })
+  })
+  </Script>
+  {%endblock script%}

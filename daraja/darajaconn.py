@@ -12,7 +12,7 @@ import keys
 # sys.path.append('daraja')
 
 
-def lipa_na_mpesa(phone_number,ammount):
+def lipa_na_mpesa(phone_number,ammount,order_details):
     formatted_time = get_timestamp()
     decoded_password = generate_password(formatted_time)
     access_token = generate_access_token()
@@ -31,7 +31,7 @@ def lipa_na_mpesa(phone_number,ammount):
         "PartyB": keys.business_shortCode,
         "PhoneNumber": phone_number,
         "CallBackURL": "https://mydomain.com/pat",
-        "AccountReference": "store11",
+        "AccountReference": order_details,
         "TransactionDesc": "Pay School Fees",
     }
 

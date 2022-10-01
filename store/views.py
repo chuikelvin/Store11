@@ -24,7 +24,7 @@ from django.apps import apps
 from django.contrib import admin
 
 import uuid
-from store.models import Product, User, Cart, CartItem, Address
+from store.models import Order, OrderItem, Product, User, Cart, CartItem, Address
 
 
 
@@ -60,7 +60,7 @@ def is_logged_in(request):
 
     else:
         request.session['status'] = 0
-        return {"user_status" :'bg-secondary','action':'sign in','visually-hidden':'visually-hidden'}
+        return {"user_status" :'bg-secondary','action':'sign in','visually':'visually-hidden'}
 
 def contact(request):
     check= is_logged_in(request)
@@ -83,7 +83,7 @@ def store(request):
             product=Product.objects.get(id=product_id)
             # print(request.user)
             cart,created =Cart.objects.get_or_create(user=request.user,complete=False)
-            print(cart)
+            # print(cart)
             if CartItem.objects.filter(cart=cart,product=product).exists():
                 get_cartitem = CartItem.objects.get(cart=cart,product=product)
                 get_cartitem.quantity=(get_cartitem.quantity+1)
@@ -292,7 +292,8 @@ def payment(request):
 
         # text = text.replace("very", "not very", 1)
         # print(number)
-            lipa_na_mpesa(number,ammount)
+            lipa_na_mpesa(number,ammount,'store11 #54lkjl')
+            return JsonResponse({'response':'sent'})
     # if request.session.has_key('status'):
     #     print (request.session['status'])
     #     if request.session['status'] == 'login':
@@ -533,5 +534,31 @@ def userdetails(request):
                 return render(request, 'userdetails.html',check)
             # return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
         
+    else:
+        return redirect('/')
+
+def placeorder(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            order_id='#'
+            order_id+= str(uuid.uuid4())[:6]
+            cartitems =Cart.objects.get(user=request.user)
+            items =cartitems.cartitem_set.all()
+            order =Order.objects.get_or_create(user=request.user,order_id=order_id)
+            # # for order in order:
+            # print(order[0])
+            for item in items:
+                product=item.product
+                quantity=item.quantity
+                unit_price=item.product.price
+                get_cartitem = OrderItem.objects.get_or_create(order=order[0],product=product,quantity=quantity,unit_price=unit_price)
+                # print(quantity)
+            
+            
+            # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
+            # orderitem=items.orderitem_set.all()
+            # lipa_na_mpesa(number,ammount,'store11 #54lkjl')
+            print ('store11 '+order_id)
+            return JsonResponse({'order':order_id})
     else:
         return redirect('/')

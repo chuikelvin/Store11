@@ -83,6 +83,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js">
   </script>
+  {%block script%}
   <Script>
     $(document).ready(function () {
       $(".item_btn").click(function () {
@@ -90,13 +91,19 @@
           url: "{% url 'cartHandler' %}",
           type: "GET",
           data: {
-            action: $(this).attr('id'),
-            ref: $(this).attr('name')
+            'action': $(this).attr('id'),
+            'ref': $(this).attr('name')
           },
+          dataType: 'json',
+          success: function (data) {
+            // console.log(data)
+          }
         })
       })
     })
-
+    </Script>
+    {%endblock script%}
+    <Script>
     let addbuttons = document.querySelectorAll(".item_btn");
     for (let i = 0; i < addbuttons.length; i++) {
       addbuttons[i].onclick = function () {
