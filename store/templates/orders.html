@@ -1,0 +1,95 @@
+{% extends 'base.html'%}
+{% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{%endblock css%}
+
+{%block content %}
+<div class="main-container">
+    {% if order %}    
+    <div class="cart_container">
+        {% for item in order %}
+        <div class="item_container">
+            <div class="item_details">
+                <!-- <div class="item_logo_container">
+
+                    <img src="{{MEDIA_URL}}{{item.product.image.url}}" alt="{{product.title}}" id="product_image">
+                </div> -->
+                <div class="item_data">
+                    <p class="item_description">{{item}}</p>
+                    <div class="price">
+                        <p>KSh {{item.product.price}}</p>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <!-- <h3>{{details}}</h3> -->
+                            <!-- </div> -->
+                            <!-- <p>{{product.description}}</p> -->
+    
+                            <!-- <input type="hidden" name="producttitle" value="{{product.title}}" /> -->
+                            <!-- <input min="1" value=1 type="number" name="quantity"> -->
+                            <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
+                            <!-- <input id="add_to_cart_button" class="btn btn-dark" name="cart" type="submit"
+                                value="Add to Cart"> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="quantity">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="text" value="{{item.product.id}}" name="delete" hidden>
+                    <input type="submit" value="REMOVE">
+                </form>
+                    <!-- <a href="" type="button">remove</a> -->
+                    <!-- <button id="remove" class="item_btn" name="{{details.id}}" type="button">remove</button> -->
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <!-- <a href="" id="minus" class="item_btn">-</a> -->
+                        <button id="subtract" class="item_btn" name="{{details.id}}" type="button">-</button>
+                        <input min="1" value={{item.quantity}} type="number" name="quantity" class="item_quantity" ref="{{item.product.id}}" readonly>
+                        <button id="add" class="item_btn" name="{{details.id}}"type="button">+</button>
+                        <!-- <a href="" id="add" class="item_btn">+</a> -->
+                    
+            </div>
+
+        </div>
+        <br><br><br><br><br>
+        {% endfor %}
+        <!-- item end -->
+        <!-- <div class="update_container">
+            <a href="{% url 'checkout' %}">UPDATE </a>
+        </div> -->
+    </div>
+    <div class="checkout_container">
+        <!-- <input type="submit" value="UPDATE"> -->
+        <button id="update" class="item_btn" name="{{details.id}}"type="button">UPDATE</button>
+        <!-- <a href="{% url 'checkout' %}" onclick="return false;" id="update">UPDATE </a> -->
+    </form>
+        <a href="{% url 'checkout' %}">CHECHOUT(ksh {{total.get_cart_total}})</a>
+    </div>
+        
+        <!-- <br><br><br> -->
+        {% else %}
+        <div class="cart_container">
+        <div class="no_item_container">
+            <img id="logo" src="{% static 'img/store11-logo.png' %}" alt="store11-logo">
+            <div class="no_cart_icon_container">
+                <!-- <i class='bx bx-cart-alt bx-flashing cart_iconlg'></i> -->
+                <i class='bx bx-x bx-flashing cart_iconlg' ></i>
+            </div>
+            <br>
+            <h1>Your have no orders to view!</h1>
+            <br>
+            <h2>place orders and view them here</h2>
+            <a href="{% url 'store' %}">back to store</a>
+    
+        </div>
+    </div>
+        {% endif %} 
+</div>
+<script>
+
+</script>
+
+{%endblock content %}
+

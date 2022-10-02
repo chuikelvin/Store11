@@ -7,31 +7,83 @@
 
 {%block content %}
 <div class="main-container">
-    <div class=" userdetails_container delivery_method">
-        <h2>Enter user details</h2>
-        <form action="" method="post">
-            {% csrf_token %}
-            
-            <div>
-                <input type="text" name="fname" id="" placeholder="enter first name" value="{{details.first_name}}" >
-                <input type="text" name="lname" id="" placeholder="enter last name" value="{{details.last_name}}">
+    <!-- div -->
+    <div class=" userdetails_container ">
+        <div class="user_greet">
+            <h2>Hello Kelvin!</h2> 
+       </div>
+       <div class="sub_container">
+        <div class="sidebar">
+            <ul class="sections">
+                <li><a href=""><i class='bx bx-user'></i> <span>account details</span></a></li>
+                <li><a href=""><i class='bx bx-map' ></i> <span>address</span></a></li>
+                <li><a href=""><i class='bx bx-box' ></i> <span>orders</span></a></li>
+            </ul>
+            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                 <a class="navbar-brand" href="#">Navbar</a> 
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+                </div>
+              </nav> -->
+        </div>
+        <div class="detail_display">
+            <div class="address">
+                <h2>Enter user details</h2>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    
+                    <div>
+                        <input type="text" name="fname" id="" placeholder="enter first name" value="{{details.first_name}}" >
+                        <input type="text" name="lname" id="" placeholder="enter last name" value="{{details.last_name}}">
+                    </div>
+                    <div>
+                        <input type="text" value="+254" disabled id="country_code">
+                        <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{details.phone}}">
+                    </div>
+                    <div>
+                        <input type="text" name="region" id="" placeholder="region">
+                        <input type="text" name="postal_address" id="" placeholder="postal address">
+                    </div>
+                    <div>
+                        <input type="text" name="city" id="" placeholder="city">
+                    </div>
+                    <div class="actions_container">
+                        <input type="submit" value="update">
+                        <input type="reset" value="clear">
+                    </div>
+                </form>
             </div>
-            <div>
-                <input type="text" value="+254" disabled id="country_code">
-                <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{details.phone}}">
-            </div>
-            <div>
-                <input type="text" name="region" id="" placeholder="region">
-                <input type="text" name="postal_address" id="">
-            </div>
-            <div>
-                <input type="text" name="city" id="" placeholder="city">
-            </div>
-            <div class="actions_container">
-                <input type="submit" value="update">
-                <input type="reset" value="clear">
-            </div>
-        </form>
+        </div>
+       </div>
     </div>
 </div>
 

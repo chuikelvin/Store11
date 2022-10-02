@@ -54,13 +54,13 @@ def is_logged_in(request):
         return {"user_status" :'bg-success','action':'sign out','items_no':items,'visually':state}
     elif request.session.has_key('status'):
         if request.session['status'] == 1:
-            return {"user_status" :'bg-success','action':'sign out'}
+            return {"user_status" :'bg-success','action':'sign out','visually':state}
         else :
-            return {"user_status" :'bg-secondary','action':'sign in'}
+            return {"user_status" :'bg-secondary','action':'sign in','visually':state}
 
     else:
         request.session['status'] = 0
-        return {"user_status" :'bg-secondary','action':'sign in','visually':'visually-hidden'}
+        return {"user_status" :'bg-secondary','action':'sign in','visually':state}
 
 def contact(request):
     check= is_logged_in(request)
@@ -560,5 +560,15 @@ def placeorder(request):
             # lipa_na_mpesa(number,ammount,'store11 #54lkjl')
             print ('store11 '+order_id)
             return JsonResponse({'order':order_id})
+    else:
+        return redirect('/')
+
+def orders(request):
+    if request.user.is_authenticated:
+        order =Order.objects.filter(user=request.user)
+        for items in order:
+            print(items)
+        # print(order.order_id)
+        return render(request, 'orders.html',{'order':order})
     else:
         return redirect('/')
