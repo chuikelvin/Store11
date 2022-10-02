@@ -5,6 +5,9 @@ from django.contrib.auth.models import AbstractUser
 def upload_path(instance, filname):
     return '/'.join(['cover', str(instance.title), filname])
 
+def profile_upload_path(instance, filname):
+    return '/'.join(['profile', str(instance.username), filname])
+
 class User(AbstractUser):
     username = models.EmailField(max_length=30,unique=True)
     # username = models.CharField(max_length=30,unique=True)
@@ -14,6 +17,7 @@ class User(AbstractUser):
     # email = models.EmailField(max_length=255,unique=True)
     phone=models.CharField(max_length=255,null=True)
     birth_date = models.DateField(null=True)
+    profile_pic = models.ImageField(null=True, upload_to=profile_upload_path,default='/profile/user.png')
 
     # username = None
 
@@ -70,32 +74,32 @@ class Cart(models.Model):
     def get_cart_total(self):
         cartitems = self.cartitem_set.all()
         total = sum([item.get_total for item in cartitems])
-        return total 
+        return int(total) 
 
     @property
     def get_cart_items(self):
         cartitems = self.cartitem_set.all()
         total = sum([item.quantity for item in cartitems])
-        return total 
+        return int(total) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def get_cart_vat(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total*0.06
-        return total
+        return int(total)
     
     @property
     def get_cart_shipping(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total*0.02
-        return total
+        return int(total)
 
     @property
     def get_total_payable(self):
         # cartitems = self.cartitem_set.all()
         total = self.get_cart_total+self.get_cart_vat+self.get_cart_shipping
-        return total
+        return int(total)
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
@@ -105,7 +109,7 @@ class CartItem(models.Model):
     @property
     def get_total(self):
         total = self.product.price * self.quantity
-        return total
+        return int(total)
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'

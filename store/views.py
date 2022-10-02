@@ -51,16 +51,16 @@ def is_logged_in(request):
         # cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
         # items =cartm.get_cart_items
 
-        return {"user_status" :'bg-success','action':'sign out','items_no':items,'visually':state}
+        return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'visually':state}
     elif request.session.has_key('status'):
         if request.session['status'] == 1:
-            return {"user_status" :'bg-success','action':'sign out','visually':state}
+            return {"user_status" :'bg-success','action':'SIGN OUT','visually':state}
         else :
-            return {"user_status" :'bg-secondary','action':'sign in','visually':state}
+            return {"user_status" :'bg-secondary','action':'SIGN IN','visually':state}
 
     else:
         request.session['status'] = 0
-        return {"user_status" :'bg-secondary','action':'sign in','visually':state}
+        return {"user_status" :'bg-secondary','action':'SIGN IN','visually':state}
 
 def contact(request):
     check= is_logged_in(request)
@@ -373,12 +373,12 @@ def sign(request):
                 request.session['status']=1
                 # return redirect(request.META['HTTP_REFERER'])
                 return redirect('/')
-                return render(request, 'store.html',check)
+                # return render(request, 'store.html',check)
             else:
                 status = 'no user'
                 print(status)
                 return redirect('/sign/')
-                return render(request, 'store.html',{"status":status})
+                # return render(request, 'store.html',{"status":status})
 
     if request.method == 'GET':
         # print(check)
@@ -387,7 +387,7 @@ def sign(request):
 def userhandler(request):
     check= is_logged_in(request)
     # print (check['action'])
-    if check['action'] == 'sign out':
+    if check['action'] == 'SIGN OUT':
         try:
             logout(request)
             request.session['status'] = 0
@@ -535,7 +535,7 @@ def userdetails(request):
             # return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
         
     else:
-        return redirect('/')
+        return redirect('/sign/')
 
 def placeorder(request):
     if request.user.is_authenticated:

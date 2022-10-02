@@ -34,15 +34,23 @@
       <div class="nav-item dropdown">
         <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
-          <!-- <i class='bx bx-cart-alt cart_icon icon' ></i> -->
-          <i class='bx bx-user-circle icon'></i> 
-          <span>kelvin</span>
+          {%if request.user.first_name%}
+          <div class="profile_pic">
+            <img src="{{MEDIA_URL}}{{request.user.profile_pic.url}}" alt="{{request.user.first_name}}" id="">
+          </div>
+          <span class="users_name">{{request.user.first_name}}</span>
+          {%else%}
+          <i class='bx bx-user-circle icon'></i>
+          
+          
+          {%endif %}
           <!-- <i class='bx bx-user-x icon'></i> -->
           <span
             class="position-absolute top-0 start-100 translate-middle p-1 {{user_status}} border border-light rounded-circle"></span>
+
         </a>
         <div class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'userdetails' %}">account</a>
+          <a class="dropdown-item" href="{% url 'userdetails' %}">ACCOUNT</a>
           <a class="dropdown-item" href="{% url 'userhandler' %}">{{action}}</a>
           <!-- <a class="dropdown-item" href="#" onclick="signout()">SIGN OUT</a> -->
         </div>
@@ -101,6 +109,10 @@
           }
         })
       })
+      if (!$('.users_name').text().trim().length) {
+        // console.log('empty')
+        $(".users_name").css('display', 'none')
+    }
     })
     </Script>
     {%endblock script%}

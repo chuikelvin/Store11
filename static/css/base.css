@@ -2,6 +2,19 @@
      font-size: 12px;
  }
 
+ /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  text-align: left!important;
+}
+
 body {
      font-family: "Roboto", Sans-Serif;
      margin: 0;
@@ -407,15 +420,31 @@ p,h3 {
      border-radius:50%;
      /* width: */
 }
+.profile_pic {
+     width: 22px;
+     height: 22px;
+     border-radius:50%;
+     display:flex;
+     overflow: hidden;
+}
+.profile_pic img{
+     padding:0;
+     width:22px;
+     height:auto;
+}
 
 #navbarDropdown {
      display:flex;
      justify-content:space-around;
      align-items: center;
-     width:60px;
+     /* width:60px; */
      /* margin-right: 60px; */
      /* margin-top: 4px; */
      /* padding-right: 60px; */
+}
+#navbarDropdown span {
+     font-size:16px;
+     padding:0 2px;
 }
 
 .non_collapse{
