@@ -408,7 +408,11 @@ p,h3 {
      /* width: */
 }
 
-.dropdown {
+#navbarDropdown {
+     display:flex;
+     justify-content:space-around;
+     align-items: center;
+     width:60px;
      /* margin-right: 60px; */
      /* margin-top: 4px; */
      /* padding-right: 60px; */
