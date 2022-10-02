@@ -544,7 +544,11 @@ def placeorder(request):
             order_id+= str(uuid.uuid4())[:6]
             cartitems =Cart.objects.get(user=request.user)
             items =cartitems.cartitem_set.all()
-            order =Order.objects.get_or_create(user=request.user,order_id=order_id)
+            order_total=cartitems.get_total_payable
+            order =Order.objects.get_or_create(user=request.user,order_id=order_id,order_total=order_total)
+            phone = request.POST["number"]
+            if phone[0] == '0':
+                phone = phone.replace("0", "254", 1)
             # # for order in order:
             # print(order[0])
             for item in items:
@@ -552,12 +556,13 @@ def placeorder(request):
                 quantity=item.quantity
                 unit_price=item.product.price
                 get_cartitem = OrderItem.objects.get_or_create(order=order[0],product=product,quantity=quantity,unit_price=unit_price)
-                # print(quantity)
+                print(quantity)
             
             
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
-            # lipa_na_mpesa(number,ammount,'store11 #54lkjl')
+            cartitems.delete()
+            lipa_na_mpesa(phone,order_total,'store11 #54lkjl')
             print ('store11 '+order_id)
             return JsonResponse({'order':order_id})
     else:
@@ -572,3 +577,19 @@ def orders(request):
         return render(request, 'orders.html',{'order':order})
     else:
         return redirect('/')
+
+
+        cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
+        items =cartm.cartitem_set.all()
+        if request.method == 'POST':
+            product_id=int(request.POST['delete'])
+            product=Product.objects.get(id=product_id)
+            get_cartitem = CartItem.objects.get(cart=cartm,product=product)
+            get_cartitem.delete()
+            # get_cartitem.quantity=(get_cartitem.quantity+1)
+        # check.update({'cart':items})
+    # # print(created)
+    # # order, created = Order.objects.get_or_create(user=user, complete=False)
+    # context ={"cart":cart}
+        # print(cartm.get_cart_total)
+        check.update({'cart':items,'total':cartm})

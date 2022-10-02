@@ -1,6 +1,7 @@
 {% extends 'base.html'%}
 {% load static%}
 {%block content %}
+<div class="main-container">
     <main class="main">
         <section class="contact section" id="contact">
             <span class="section-subtitle">Contact Me</span>
@@ -13,18 +14,18 @@
                         <input type="mail" placeholder="Email" class="contact__input">
                     </div>
 
-                    <input type="text" placeholder="Project" class="contact__input">
+                    <!-- <input type="text" placeholder="Project" class="contact__input"> -->
                     <textarea name="" id="" cols="0" rows="10" placeholder="Message" class="contact__input"></textarea>
 
                     <input type="submit" value="send Message" class="button contact__button">
                 </form>
 
                 <div>
-                    <div class="contact__info">
+                    <!-- <div class="contact__info">
                         <h3 class="contact__subtitle">Phone</h3>
                         <i class="bx bx-phone"></i>
                         <span>+254 701234567</span>
-                    </div>
+                    </div> -->
                     <div class="contact__info">
                         <h3 class="contact__subtitle">E-mail</h3>
                         <i class="bx bx-envelope"></i>
@@ -40,4 +41,5 @@
             </div>
         </section>
     </main>
+</div>
     {%endblock content %}

@@ -2,7 +2,7 @@
 
 {% load static%}
 {%block css%}
-<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/styles2.css' %}"> -->
 <link rel="stylesheet" href="{% static 'css/product.css' %}">
 {%endblock css%}
 {%block content %}
@@ -18,7 +18,7 @@
             <strong>{{product.price}}</strong>
             <form method="POST" action="{% url 'store' %}">
                 {% csrf_token %}
-                <input type="hidden" name="producttitle" value="{{product.title}}" />
+                <input type="hidden" name="product_id" value="{{product.id}}" />
                 <!-- <input min="1" value=1 type="number" name="quantity"> -->
                 <!-- <input class="btn btn-dark" name="view" type="submit" value="view product"> -->
                 <input class="btn btn-dark" name="cart" type="submit" value="Add to Cart">

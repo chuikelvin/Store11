@@ -25,18 +25,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
 
-class Customer(models.Model):
-    # username = models.EmailField(unique=True, null=True)
-    email = models.EmailField(max_length=255,unique=True)
-    password = models.CharField(max_length=255)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    phone=models.CharField(max_length=255)
-    birth_date = models.DateField(null=True)
-
-    def __str__(self):
-        return self.email
-
 class Product(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(null=True, upload_to=upload_path)
@@ -62,7 +50,7 @@ class Address(models.Model):
         return str(self.user)
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
@@ -124,10 +112,13 @@ class Order(models.Model):
     placed_at= models.DateTimeField(auto_now_add=True)
     payment_status =models.CharField(max_length=1 ,choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
     order_id=models.CharField(max_length=255,unique=True)
+    order_total= models.IntegerField()
     user =models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.order_id
+
+    
     # def __str__(self):
     #     return self.title + "   " + self.description
 

@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static%}
 {%block css%}
-<link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/styles2.css' %}"> -->
 <link rel="stylesheet" href="{% static 'css/cart.css' %}">
 {%endblock css%}
 
@@ -104,7 +104,94 @@
 
 </div>
 <script>
+        window.onload = function(){ 
+    let addbuttons = document.querySelectorAll(".item_btn");
+    for (let i = 0; i < addbuttons.length; i++) {
+      addbuttons[i].onclick = function () {
+        let buttontype = $(this).attr('id');
 
+        if (buttontype == "add") {
+          let placeholder = this.previousElementSibling;
+          let input
+
+          while (placeholder) {
+            if (placeholder.classList.contains('item_quantity')) {
+              input = placeholder;
+              break;
+            }
+
+            placeholder = placeholder.previousElementSibling;
+          }
+          input.value++;
+        } else if (buttontype == 'subtract') {
+          let placeholder = this.nextElementSibling;
+          let input
+
+          while (placeholder) {
+            if (placeholder.classList.contains('item_quantity')) {
+              input = placeholder;
+              break;
+            }
+
+            placeholder = placeholder.nextElementSibling;
+          }
+          if (input.value > 0) {
+            input.value--;
+          }
+        }
+      }
+    }
+
+    let update = document.getElementById('update');
+    update.onclick = function () {
+      let items = document.querySelectorAll(".item_quantity");
+
+      var updated_val = {};
+      let keys = [];
+      let values = [];
+      // letref
+      for (let i = 0; i < items.length; i++) {
+        var quantity = items[i].value;
+        var ref = items[i].getAttribute("ref");
+        keys.push(ref);
+        values.push(quantity);
+        updated_val[ref] = quantity
+      }
+      // console.log(JSON.stringify(updated_val))
+      var url = '/updatecart/'
+      fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify(updated_val)
+        })
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          // console.log('data', data)
+        })
+
+
+      // $.ajax({
+      //     url: "{% url 'cartHandler' %}",
+      //     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+      //     contentType: "application/json",
+      //     dataType: 'json',
+      //     type: "POST",
+      //     data: {
+      //       'action': $(this).attr('id'),
+      //       'ref':"JSON.stringify(updated_val)"
+      //     },
+      //   })
+      // console.log(updated_val)
+
+      // console.log();
+
+    }
+  }
 </script>
 
 {%endblock content %}
