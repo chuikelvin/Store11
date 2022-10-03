@@ -12,7 +12,7 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
-  text-align: left!important;
+  text-align: center;
 }
 
 body {
@@ -53,7 +53,13 @@ body {
 .navbarimg {
      padding-right: 10.5rem;
      line-height: 1;
+     margin: auto;
 
+}
+nav {
+     display:flex;
+     flex-direction: row;
+     justify-content: space-between;
 }
 
 .main {

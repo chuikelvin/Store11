@@ -38,7 +38,7 @@
           <div class="profile_pic">
             <img src="{{MEDIA_URL}}{{request.user.profile_pic.url}}" alt="{{request.user.first_name}}" id="">
           </div>
-          <span class="users_name">{{request.user.first_name}}</span>
+          <span class="users_name" style="text-transform:capitalize;">{{request.user.first_name}}</span>
           {%else%}
           <i class='bx bx-user-circle icon'></i>
           

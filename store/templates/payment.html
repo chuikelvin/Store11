@@ -40,7 +40,7 @@
                 <form action="" method="POST" class="payment">
                     {% csrf_token %}
                     <input type="text" value="+254" disabled id="country_code">
-                    <input type="number" name="number" id="number" maxlength="10" required autofocus>
+                    <input type="number" name="number" id="number" maxlength="10" value="{{request.user.phone}}" required autofocus>
                     <br><br>
 
             </div>

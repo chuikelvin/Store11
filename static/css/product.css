@@ -32,8 +32,9 @@
 
 .product_image {
     /* width:50px; */
-    width:max-content;
-    height:max-content;
+    width:50%;
+    /* width:max-content;
+    height:max-content; */
     display:flex;
     justify-content: center;
     align-items: center;    
@@ -57,7 +58,7 @@
     flex-direction: column;
     justify-content:center;
     align-items: center;
-    margin:20px 0;
+    margin: 20px auto;
 }
 
 .manage_address {
@@ -365,6 +366,17 @@ p {
     
             align-items: center;
     
+    }
+
+    .product_image {
+        /* width:50px; */
+        width:max-content;
+        height:max-content;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 60px;   
+        overflow: hidden;
     }
     
 }
