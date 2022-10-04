@@ -550,20 +550,25 @@ def placeorder(request):
             if phone[0] == '0':
                 phone = phone.replace("0", "254", 1)
             # # for order in order:
-            # print(order[0])
+            # print(items)
             for item in items:
                 product=item.product
                 quantity=item.quantity
+                # if quantity <= 0:
+                #     print(quantity)
+                #     return redirect('/')
                 unit_price=item.product.price
                 get_cartitem = OrderItem.objects.get_or_create(order=order[0],product=product,quantity=quantity,unit_price=unit_price)
-                print(quantity)
+                # printquantity)
             
-            
+            domain=request.get_host()
+            url= domain+request.get_full_path()
+            print(url)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
             cartitems.delete()
-            lipa_na_mpesa(phone,order_total,'store11 #54lkjl')
-            print ('store11 '+order_id)
+            lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
+            # print ('store11 '+order_id)
             return JsonResponse({'order':order_id})
     else:
         return redirect('/')

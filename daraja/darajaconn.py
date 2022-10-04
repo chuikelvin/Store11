@@ -30,7 +30,7 @@ def lipa_na_mpesa(phone_number,ammount,order_details,domain):
         "PartyA": phone_number,
         "PartyB": keys.business_shortCode,
         "PhoneNumber": phone_number,
-        "CallBackURL": "https://mydomain.com/placeorder/",
+        "CallBackURL": domain,
         "AccountReference": order_details,
         "TransactionDesc": "Pay School Fees",
     }
