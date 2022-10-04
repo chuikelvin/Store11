@@ -538,6 +538,8 @@ def userdetails(request):
         return redirect('/sign/')
 
 def placeorder(request):
+    if request.method == 'POST':
+        print(request.body)
     if request.user.is_authenticated:
         if request.method == 'POST':
             order_id='#'
