@@ -542,7 +542,7 @@ def userdetails(request):
 def placeorder(request):
     if request.method == 'POST':
         jsonval= json.loads(request.body)
-        print(jsonval)
+        print(jsonval) 
     if request.user.is_authenticated:
         if request.method == 'POST':
             order_id='#'
