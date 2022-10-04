@@ -541,6 +541,8 @@ def userdetails(request):
 @csrf_exempt
 def placeorder(request):
     if request.method == 'POST':
+        print(request.header)
+        print(request.item)
         print(request.body)
     if request.user.is_authenticated:
         if request.method == 'POST':
