@@ -562,7 +562,8 @@ def placeorder(request):
                 # printquantity)
             
             domain=request.get_host()
-            url= domain+request.get_full_path()
+            url= "https://"+domain+request.get_full_path()
+            # url="https://thawing-springs-95517.herokuapp.com/"
             print(url)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
