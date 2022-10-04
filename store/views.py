@@ -541,7 +541,12 @@ def userdetails(request):
 @csrf_exempt
 def placeorder(request):
     if request.method == 'POST':
-        print(request.body)
+        try:
+            json.loads(request.body)
+            print('is json')
+        except ValueError as e:
+            print("NOT JSON")
+        # print(request.body)
     if request.user.is_authenticated:
         if request.method == 'POST':
             order_id='#'
@@ -568,7 +573,7 @@ def placeorder(request):
             domain=request.get_host()
             url= "https://"+domain+request.get_full_path()
             # url="https://thawing-springs-95517.herokuapp.com/"
-            print(url)
+            # print(url)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
             cartitems.delete()
