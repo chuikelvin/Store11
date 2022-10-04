@@ -541,7 +541,8 @@ def userdetails(request):
 @csrf_exempt
 def placeorder(request):
     if request.method == 'POST':
-        print(request.body)
+        jsonval= json.loads(request.body)
+        print(jsonval)
     if request.user.is_authenticated:
         if request.method == 'POST':
             order_id='#'
