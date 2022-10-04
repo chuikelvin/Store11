@@ -542,8 +542,8 @@ def userdetails(request):
 def placeorder(request):
     if request.method == 'POST':
         try:
-            json.loads(request.body)
-            print('is json')
+            bod=json.loads(request.body)
+            print(bod)
         except ValueError as e:
             print("NOT JSON")
         # print(request.body)
@@ -573,7 +573,7 @@ def placeorder(request):
             domain=request.get_host()
             url= "https://"+domain+request.get_full_path()
             # url="https://thawing-springs-95517.herokuapp.com/"
-            # print(url)
+            print(url)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
             cartitems.delete()
