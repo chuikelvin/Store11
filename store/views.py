@@ -542,8 +542,8 @@ def userdetails(request):
 def placeorder(request):
     if request.method == 'POST':
         try:
-            bod=json.loads(request.body)
-            print(bod)
+            response=json.loads(request.body)
+            print(response['ResultCode'])
         except ValueError as e:
             print("NOT JSON")
         # print(request.body)
