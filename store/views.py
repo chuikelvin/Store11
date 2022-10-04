@@ -11,6 +11,8 @@ from . import forms
 
 from daraja.darajaconn import lipa_na_mpesa
 import sys
+
+from django.views.decorators.csrf import csrf_exempt
  
 # adding Folder_2 to the system path
 sys.path.insert(0, 'e:\\Documents\\Python\\unchained-plp\\store\\daraja\\')
@@ -536,7 +538,7 @@ def userdetails(request):
         
     else:
         return redirect('/sign/')
-
+@csrf_exempt
 def placeorder(request):
     if request.method == 'POST':
         print(request.body)
