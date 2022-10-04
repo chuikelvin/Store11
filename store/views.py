@@ -538,13 +538,25 @@ def userdetails(request):
         
     else:
         return redirect('/sign/')
+
 @csrf_exempt
-def placeorder(request):
+def payorder(request):
+    print(request.header)
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
+        return JsonResponse({'order':body})
         content = body['content']
-        print(content) 
+        print(content)
+
+@csrf_exempt
+def placeorder(request):
+    # print(request.header)
+    if request.method == 'POST' and request.get_full_path() != '/placeorder/':
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        # content = body['content']
+        print(body['ResultCode']) 
     if request.user.is_authenticated:
         if request.method == 'POST':
             order_id='#'
