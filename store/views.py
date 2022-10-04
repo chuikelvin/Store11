@@ -552,8 +552,11 @@ def payorder(request):
 @csrf_exempt
 def placeorder(request):
     # print(request.header)
-    if request.method == 'POST':
-        print(request.get_full_path()) 
+    if request.method == 'POST' and request.get_full_path() != '/placeorder/':
+        # body_unicode = request.body.decode('utf-8')
+        # body = json.loads(body_unicode)
+        # content = body['content']
+        print(request.body) 
     if request.user.is_authenticated:
         if request.method == 'POST':
             order_id='#'

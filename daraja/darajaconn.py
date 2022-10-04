@@ -37,7 +37,7 @@ def lipa_na_mpesa(phone_number,ammount,order_details,domain):
 
     response = requests.post(api_url, json=request, headers=headers)
 
-    print(response.text)
+    # print(response.text)
 
 
 # lipa_na_mpesa()
