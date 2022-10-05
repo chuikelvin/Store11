@@ -544,11 +544,11 @@ def placeorder(request):
         try:
             result=json.loads(request.body)
             for key,value in result.items():
-                print(key)
+                # print(key)
                 print(value)
             # if result != 0:
                 # print("payment failed")
-            # print(result['ResultCode'])
+            print(result['stkCallback'])
         except ValueError as e:
             print("NOT JSON")
         # print(request.body)
