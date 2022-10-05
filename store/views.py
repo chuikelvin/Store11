@@ -545,6 +545,7 @@ def placeorder(request):
             result=json.loads(request.body)
             for key,value in result.items():
                 print(key)
+                print(value)
             # if result != 0:
                 # print("payment failed")
             # print(result['ResultCode'])
