@@ -543,9 +543,11 @@ def placeorder(request):
     if request.method == 'POST':
         try:
             result=json.loads(request.body)
-            if result != 0:
-                print("payment failed")
-            print(result['ResultCode'])
+            for key,value in result.items():
+                print(key)
+            # if result != 0:
+                # print("payment failed")
+            # print(result['ResultCode'])
         except ValueError as e:
             print("NOT JSON")
         # print(request.body)
