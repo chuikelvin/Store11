@@ -498,14 +498,15 @@ def userdetails(request):
     if request.user.is_authenticated:
         check= is_logged_in(request)
         if request.method == 'POST':
-            first_name = request.POST["fname"]
-            last_name = request.POST["lname"]
-            phone = request.POST["number"]
-            if phone[0] == '0':
-                phone = phone.replace("0", "254", 1)
-            region = request.POST["region"]
-            postal_address =request.POST['postal_address']
-            city = request.POST['city']
+            if 'update_user' in request.POST:
+                first_name = request.POST["fname"]
+                last_name = request.POST["lname"]
+                phone = request.POST["number"]
+                if phone[0] == '0':
+                    phone = phone.replace("0", "254", 1)
+                region = request.POST["region"]
+                postal_address =request.POST['postal_address']
+                city = request.POST['city']
 
             if Address.objects.filter(user=request.user).exists():
                 address =Address.objects.get(user=request.user)  
