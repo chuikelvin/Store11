@@ -87,21 +87,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME':'sql6516451',
-        # 'HOST':'sql6.freesqldatabase.com',
-        # 'PORT':'3306',
-        # 'USER':'sql6516451',
-        # 'PASSWORD':'aBqmek2Dy7',
-
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME':'kelvinch_test',
-        # 'HOST':'kelvinchui.com',
-        # 'PORT':'3306',
-        # 'USER':'kelvinch_chui11',
-        # 'PASSWORD':'@chui116571',
-
     }
 }
 

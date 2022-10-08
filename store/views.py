@@ -2,6 +2,7 @@ import ast
 import json
 import os
 import sys
+from time import sleep
 from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import render,redirect
@@ -34,6 +35,33 @@ def is_logged_in(request):
     state='visually-hidden'
     
     if request.user.is_authenticated:
+        try:
+            # request.session['cart']
+        # print(request.session['cart'])
+            cart =Cart.objects.get_or_create(user=request.user,complete=False)
+            for prod, quantity in request.session['cart'].items():
+                # print(key, val)
+                cart =Cart.objects.get(user=request.user)
+                product=Product.objects.get(id =prod)
+        # print(product)
+        # print(cart)
+                print(CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity))
+                # sleep(10)
+                    # print('exists')
+                # else:
+                # cartitem =CartItem.objects.get_or_create(cart=cart,product=product,quantity=val)
+                # get_cartitem = CartItem.objects.get_or_create(cart=cart,product=product)
+                #     get_cartitem.quantity=(get_cartitem.quantity+val)
+                #     get_cartitem.save()
+            del request.session['cart']
+                # print(request.session['cart'])
+                    # request.session['cart']
+
+                # print(get_cartitem.quantity)
+            # else:
+            #     cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product,quantity=1)
+        except:
+            print('error')
         if Cart.objects.filter(user=request.user).exists():
             cartm =Cart.objects.get(user=request.user)
             items =cartm.get_cart_items
@@ -55,14 +83,34 @@ def is_logged_in(request):
 
         return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'visually':state}
     elif request.session.has_key('status'):
+        try:
+            print(request.session['cart'])
+            items=0
+            for prod, quantity in request.session['cart'].items():
+                items+= int(quantity)
+            print(items)
+            if items>0:
+                state=''
+        except:
+            print('error1')
         if request.session['status'] == 1:
-            return {"user_status" :'bg-success','action':'SIGN OUT','visually':state}
+            return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'visually':state}
         else :
-            return {"user_status" :'bg-secondary','action':'SIGN IN','visually':state}
+            return {"user_status" :'bg-secondary','action':'SIGN IN','items_no':items,'visually':state}
 
     else:
+        print(request.session['cart'])
+        try:
+            items=0
+            for prod, quantity in request.session['cart'].items():
+                items+= int(quantity)
+            print(items)
+            if items>0:
+                state=''
+        except:
+            print('error2')
         request.session['status'] = 0
-        return {"user_status" :'bg-secondary','action':'SIGN IN','visually':state}
+        return {"user_status" :'bg-secondary','action':'SIGN IN','items_no':items,'visually':state}
 
 def contact(request):
     check= is_logged_in(request)
@@ -90,7 +138,7 @@ def store(request):
                 get_cartitem = CartItem.objects.get(cart=cart,product=product)
                 get_cartitem.quantity=(get_cartitem.quantity+1)
                 get_cartitem.save()
-                print(get_cartitem.quantity)
+                # print(get_cartitem.quantity)
             else:
                 cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product,quantity=1)
         else:
@@ -129,6 +177,34 @@ def store(request):
 
 def usercart(request):
     if request.user.is_authenticated:
+        try:
+            # request.session['cart']
+        # print(request.session['cart'])
+            cart =Cart.objects.get_or_create(user=request.user,complete=False)
+            for prod, quantity in request.session['cart'].items():
+                # print(key, val)
+                cart =Cart.objects.get(user=request.user)
+                product=Product.objects.get(id =prod)
+        # print(product)
+        # print(cart)
+                print(CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity))
+                # sleep(10)
+                    # print('exists')
+                # else:
+                # cartitem =CartItem.objects.get_or_create(cart=cart,product=product,quantity=val)
+                # get_cartitem = CartItem.objects.get_or_create(cart=cart,product=product)
+                #     get_cartitem.quantity=(get_cartitem.quantity+val)
+                #     get_cartitem.save()
+            del request.session['cart']
+                # print(request.session['cart'])
+                    # request.session['cart']
+
+                # print(get_cartitem.quantity)
+            # else:
+            #     cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product,quantity=1)
+        except:
+            print('error')
+            # request.session['cart']=defaultdict(lambda: 0)
         check= is_logged_in(request)
         # print(request.user)
         cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
@@ -151,6 +227,10 @@ def usercart(request):
 
 def cart(request):
     if request.user.is_authenticated:
+        try:
+            request.session['cart']
+        except:
+            request.session['cart']=defaultdict(lambda: 0)
         return redirect('/usercart/')
         check= is_logged_in(request)
         # print(request.user)
@@ -472,6 +552,7 @@ def product_details(request,id):
     return render(request, 'product.html',check)
 
 def updatecart(request):
+    print("woek")
     data =json.loads(request.body)
     if request.user.is_authenticated:
         for productid,value in data.items():
