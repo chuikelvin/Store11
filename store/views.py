@@ -45,7 +45,7 @@ def is_logged_in(request):
                 product=Product.objects.get(id =prod)
         # print(product)
         # print(cart)
-                print(CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity))
+                # print(CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity))
                 # sleep(10)
                     # print('exists')
                 # else:
@@ -80,15 +80,17 @@ def is_logged_in(request):
         
         # cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
         # items =cartm.get_cart_items
-
+        # if request.method == 'POST' and request.is_ajax():
+        #     return JsonResponse({'response':'sent'})
         return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'visually':state}
     elif request.session.has_key('status'):
+        items=0
         try:
-            print(request.session['cart'])
-            items=0
+            # print(request.session['cart'])
+            # items=0
             for prod, quantity in request.session['cart'].items():
                 items+= int(quantity)
-            print(items)
+            # print(items)
             if items>0:
                 state=''
         except:
@@ -100,11 +102,12 @@ def is_logged_in(request):
 
     else:
         # print(request.session['cart'])
+        items=0
         try:
-            items=0
+            # items=0
             for prod, quantity in request.session['cart'].items():
                 items+= int(quantity)
-            print(items)
+            # print(items)
             if items>0:
                 state=''
         except:
@@ -486,9 +489,10 @@ def userhandler(request):
 
 
 def cart_handler(request):
-    key = request.session['cart']
+    check= is_logged_in(request)
+    # key = request.session['cart']
     # value = request.POST['ref']
-    # print('this')
+    # print(check['items_no'])
     # value=value.replace("{",'')
     # value=value.replace("}",'')
     # value=value.replace("\"",'')
@@ -542,7 +546,8 @@ def cart_handler(request):
         return HttpResponse("Success!") # Sending an success response
         return redirect('/')
     else:
-           return HttpResponse("Request method is not a GET")
+        return JsonResponse(check['items_no'],safe=False)
+        #    return HttpResponse("Request method is not a GET")
 
 
 def product_details(request,id):

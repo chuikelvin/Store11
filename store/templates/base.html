@@ -105,15 +105,49 @@
           },
           dataType: 'json',
           success: function (data) {
-            // console.log(data)
+            //console.log(data)
           }
         })
       })
       if (!$('.users_name').text().trim().length) {
         // console.log('empty')
+        
         $(".users_name").css('display', 'none')
     }
-    })
+
+    setInterval(ajaxCall, 100); 
+
+    }
+
+
+    )
+    // setInterval(ajaxCall, 30); //300000 MS == 5 minutes
+
+function ajaxCall() {
+
+        $.ajax({
+          url: "{% url 'cartHandler' %}",
+          type: "GET",
+          data: {
+            'action':'refresh',
+            // 'ref': $(this).attr('name')
+          },
+          dataType: 'json',
+          success: function (data) {
+            //console.log(data)
+            if(data>0){
+              $('#cart_number').removeClass("visually-hidden");
+              $('#cart_number').html(data);
+            }else{
+              $('#cart_number').addClass("visually-hidden");
+            }
+            
+            // if()
+            // $('.cart_number').text()
+          }
+        })
+      }
+     
     </Script>
     {%endblock script%}
     <Script>
