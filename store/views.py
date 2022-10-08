@@ -37,7 +37,7 @@ def is_logged_in(request):
     if request.user.is_authenticated:
         try:
             # request.session['cart']
-        # print(request.session['cart'])
+            # print(request.session['cart'])
             cart =Cart.objects.get_or_create(user=request.user,complete=False)
             for prod, quantity in request.session['cart'].items():
                 # print(key, val)
@@ -45,7 +45,7 @@ def is_logged_in(request):
                 product=Product.objects.get(id =prod)
         # print(product)
         # print(cart)
-                # print(CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity))
+                CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity)
                 # sleep(10)
                     # print('exists')
                 # else:
@@ -64,6 +64,8 @@ def is_logged_in(request):
             print('error')
         if Cart.objects.filter(user=request.user).exists():
             cartm =Cart.objects.get(user=request.user)
+            # print(cartm)
+            total=cartm.get_cart_total
             items =cartm.get_cart_items
             if items <= 0:
                 items=''
@@ -82,7 +84,7 @@ def is_logged_in(request):
         # items =cartm.get_cart_items
         # if request.method == 'POST' and request.is_ajax():
         #     return JsonResponse({'response':'sent'})
-        return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'visually':state}
+        return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'cart':total,'visually':state}
     elif request.session.has_key('status'):
         items=0
         try:
@@ -501,7 +503,7 @@ def cart_handler(request):
     # value =value.strip('\r\n')
     # value =value.strip('\r')
     # value =value.strip('\n')
-    # print(value)
+    # print(check['items_no'])
 
     # data=json.loads(str(value))
 
@@ -557,7 +559,6 @@ def product_details(request,id):
     return render(request, 'product.html',check)
 
 def updatecart(request):
-    print("woek")
     data =json.loads(request.body)
     if request.user.is_authenticated:
         for productid,value in data.items():
@@ -571,7 +572,13 @@ def updatecart(request):
 
             if int(cartitem.quantity) <= 0:
                 cartitem.delete()
-            # print(cartitem.quantity)
+                return redirect('/sign/')
+        check= is_logged_in(request)
+        data=dict()
+        data['items_no']=check['items_no']
+        data['total']=check['cart']
+            # print(data)
+        return JsonResponse(data,safe=False)
     else:
         key = request.session['cart']
         # print(key)
