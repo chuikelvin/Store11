@@ -611,12 +611,14 @@ def userdetails(request):
             if Address.objects.filter(user=request.user).exists():
                 # Address.objects.get(user=request.user).DoesNotExist()
                 address =Address.objects.get(user=request.user)
-                check.update({'details':address,'readonly':'disabled'})
+                print(request.user.birth_date)
+                # address.update({'birth_date':'01-01-1970'})
+                check.update({'address':address,'details':(request.user.birth_date),'readonly':'disabled'})
                 return render(request, 'userdetails.html',check)
             else:
-                # check.update({'details':address,'readonly':'disabled'})
+                # check.update({'address':address,'readonly':'disabled'})
                 return render(request, 'userdetails.html',check)
-            # return render(request, 'userdetails.html',{'details':address,'readonly':'disabled'})
+            # return render(request, 'userdetails.html',{'address':address,'readonly':'disabled'})
         
     else:
         return redirect('/sign/')

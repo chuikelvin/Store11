@@ -20,9 +20,9 @@
                 <li><a href=""><i class='bx bx-box' ></i> <span>orders</span></a></li>
             </ul> -->
             <ul class="nav nav-tabs sections justify-content-center">
-              <li class="nav-item "><a href="#account_details" class="nav-link active" data-bs-toggle="tab" ><i class="bi bi-person-circle"></i><span>account details</span></a></li>
-              <li class="nav-item"><a href="#user_address" class="nav-link" data-bs-toggle="tab"><i class="bi bi-mailbox"></i> <span>address</span></a></li>
-              <li class="nav-item"><a href="#user_orders" class="nav-link" data-bs-toggle="tab"><i class="bi bi-box-seam"></i> <span>orders</span></a></li>
+              <li class="nav-item m-0"><a href="#account_details" class="nav-link active" data-bs-toggle="tab" ><i class="bi bi-person-circle"></i><span>account details</span></a></li>
+              <li class="nav-item m-0"><a href="#user_address" class="nav-link" data-bs-toggle="tab"><i class="bi bi-mailbox"></i> <span>address</span></a></li>
+              <li class="nav-item m-0"><a href="#user_orders" class="nav-link" data-bs-toggle="tab"><i class="bi bi-box-seam"></i> <span>orders</span></a></li>
           </ul>
       
           <div class="tab-content">
@@ -33,21 +33,26 @@
                       <form action="" method="post">
                           {% csrf_token %}
                           <div>
-                              <input type="text" name="fname" id="" placeholder="enter first name" value="{{details.first_name}}" >
-                              <input type="text" name="lname" id="" placeholder="enter last name" value="{{details.last_name}}">
+                              <input type="text" name="fname" id="" placeholder="enter first name" value="{{address.first_name}}" >
+                              <input type="text" name="lname" id="" placeholder="enter last name" value="{{address.last_name}}">
                           </div>
 
                           <div>
                               <input type="text" value="+254" disabled id="country_code">
-                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{details.phone}}">
+                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{address.phone}}">
                           </div>
-                           <div>
-                              <input type="date" name="birth_date" id="" placeholder="">
-                              <input type="file" name="prof_pic" id="" placeholder="postal address" accept="image/*">
+                           <div id="misc">
+                              <input type="date" name="birth_date" id="" value="{{details|date:'Y-m-d'}}" placeholder="">
+                              <label for="inputTag" id="profile_pic">
+                                <i class="bi bi-person-circle"></i>
+                                    profile picture
+                                <input id="inputTag" type="file" name="prof_pic" id="" accept="image/*"/>
+                              </label>
+                              <!-- <input type="file" name="prof_pic" id="" placeholder="postal address" accept="image/*"> -->
                           </div>
-                          <div>
+                          <!-- <div>
                               <input type="text" name="city" id="" placeholder="city">
-                          </div>
+                          </div> -->
                           <div class="actions_container">
                               <!-- <input type="submit" value="update"> -->
                               <button class="button" name="update_user">update</button>
@@ -64,12 +69,12 @@
                       <form action="" method="post">
                           {% csrf_token %}
                           <div>
-                              <input type="text" name="fname" id="" placeholder="enter first name" value="{{details.first_name}}" >
-                              <input type="text" name="lname" id="" placeholder="enter last name" value="{{details.last_name}}">
+                              <input type="text" name="fname" id="" placeholder="enter first name" value="{{address.first_name}}" >
+                              <input type="text" name="lname" id="" placeholder="enter last name" value="{{address.last_name}}">
                           </div>
                           <div>
                               <input type="text" value="+254" disabled id="country_code">
-                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{details.phone}}">
+                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{address.phone}}">
                           </div>
                           <div>
                               <input type="text" name="region" id="" placeholder="region">
@@ -89,29 +94,24 @@
               <div class="tab-pane container text-white fade" id="user_orders">
                 <div class="detail_display">
                   <div class="address">
-                      <h2>Enter user details</h2>
-                      <form action="" method="post">
-                          {% csrf_token %}
-                          <div>
-                              <input type="text" name="fname" id="" placeholder="enter first name" value="{{details.first_name}}" >
-                              <input type="text" name="lname" id="" placeholder="enter last name" value="{{details.last_name}}">
-                          </div>
-                          <div>
-                              <input type="text" value="+254" disabled id="country_code">
-                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{details.phone}}">
-                          </div>
-                          <div>
-                              <input type="text" name="region" id="" placeholder="region">
-                              <input type="text" name="postal_address" id="" placeholder="postal address">
-                          </div>
-                          <div>
-                              <input type="text" name="city" id="" placeholder="city">
-                          </div>
-                          <div class="actions_container">
-
-                              <input type="reset" value="clear">
-                          </div>
-                      </form>
+                    <div id="accordion">
+                        <button class="btn w-100" data-bs-toggle="collapse" data-bs-target="#hidden_content1">Order #5689</button>
+                        <div class="collapse" id="hidden_content1" data-bs-parent="#accordion">
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati exercitationem commodi assumenda molestiae vero quisquam deserunt, veniam ad fugit ipsam est provident soluta fuga natus. Est enim veritatis inventore animi.
+                            Soluta vero numquam voluptatum magni adipisci ipsum quis nihil non neque placeat quibusdam dignissimos, temporibus maxime perferendis doloribus sapiente deserunt nisi? Labore, aliquid beatae? Earum, ex. Tempore quidem in nemo.
+                            Sapiente praesentium labore quis. Eveniet mollitia vitae perspiciatis quod consectetur, illum distinctio amet nisi similique dolorum aperiam deleniti nulla harum debitis totam? Quis corrupti ullam quidem quasi quae vitae ad!
+                            Quibusdam amet, officiis accusantium modi dolorum soluta placeat quo, ea nam a sed non distinctio perspiciatis. Corrupti repudiandae repellat eius eum vel nulla incidunt ex quaerat excepturi. Excepturi, voluptate laboriosam?
+                            Animi obcaecati alias laborum iusto amet adipisci. Impedit voluptatem, quod facilis perspiciatis est voluptas illum placeat quasi laboriosam unde eaque. Impedit eligendi tempore fuga eos sunt obcaecati delectus nostrum deserunt.
+                        </div>
+                        <button class="btn w-100"data-bs-toggle="collapse" data-bs-target="#hidden_content2">
+                            friday is a big day
+                        </button>
+                        <div class="collapse" id="hidden_content2"data-bs-parent="#accordion">
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Earum at, neque recusandae ipsum blanditiis corrupti cupiditate quia ea quas omnis, debitis quod doloribus minima nam. Harum sequi atque mollitia esse?
+                            Nam similique exercitationem illo debitis delectus dignissimos assumenda voluptatem itaque velit aut aperiam excepturi minima, accusantium quasi odio, impedit, quas officia. Dolores velit modi rerum eum non totam harum distinctio!
+                            Eos temporibus vitae repellendus similique magnam, voluptas expedita officiis exercitationem qui voluptatibus reiciendis fugiat vel mollitia! Doloremque ullam ut libero dolores sequi aliquid, possimus maxime tenetur! Repudiandae maiores perferendis mollitia.
+                        </div>
+                    </div>
                   </div>
               </div>
               </div>
