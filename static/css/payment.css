@@ -286,8 +286,13 @@ p {
     margin:0;   
 }
 
-.spinner-border {
+.spinner-border,.failed,.successful {
     color: #ff4b2b !important;;
+}
+.failed,.successful {
+    font-size: 180px;
+    padding: 0;
+line-height: 0;
 }
 
 .hideable {

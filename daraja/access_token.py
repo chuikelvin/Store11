@@ -21,16 +21,17 @@ def generate_access_token():
     except:
         r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret), verify=False)
 
-    print(r.text)
+    # print(r.text)
 
     # json_response = (
     #     r.json()
     # )  # {'access_token': 'orfE9Dun2qqCpuXsORjcWGzvrAIY', 'expires_in': '3599'}
-    json_response = r.json()
-
-    my_access_token = json_response["access_token"]
-
-    return my_access_token
+    try:
+        json_response = r.json()
+        my_access_token = json_response["access_token"]
+        return my_access_token,True
+    except:
+        return 'no access',False
 
 
 # generate_access_token()

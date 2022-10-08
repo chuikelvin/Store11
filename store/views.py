@@ -379,7 +379,7 @@ def payment(request):
 
         # text = text.replace("very", "not very", 1)
         # print(number)
-            lipa_na_mpesa(number,ammount,'store11 #54lkjl')
+            response,state=lipa_na_mpesa(number,ammount,'store11 #54lkjl')
             return JsonResponse({'response':'sent'})
     # if request.session.has_key('status'):
     #     print (request.session['status'])
@@ -443,7 +443,7 @@ def sign(request):
                 user = User(first_name=first_name, last_name= last_name, username= username,password=password)
                 user.save()
                 status = 'registered'
-                return render(request, '/store/',{"status":status})
+                return render(request, '/',{"status":status})
         elif 'signIn' in request.POST:
             username = request.POST["email"]
             password = request.POST['password']
@@ -560,20 +560,26 @@ def product_details(request,id):
 
 def updatecart(request):
     data =json.loads(request.body)
+    refresh= False
     if request.user.is_authenticated:
         for productid,value in data.items():
             product=Product.objects.get(id=productid)
             # print(request.user)
             cart,created =Cart.objects.get_or_create(user=request.user,complete=False)
-            # print(cart.)
+            if int(value)<=0:
+                refresh = True
+            print(value)
             cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product)
             cartitem.quantity = (value)
             cartitem.save()
-
             if int(cartitem.quantity) <= 0:
                 cartitem.delete()
-                return redirect('/sign/')
+            # cartitem.save()
+        
         check= is_logged_in(request)
+        if refresh == True:
+            print('refresh')
+            return render(request, 'cart.html',check)
         data=dict()
         data['items_no']=check['items_no']
         data['total']=check['cart']
@@ -677,10 +683,10 @@ def placeorder(request):
             print(url)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
-            cartitems.delete()
-            lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
+            # cartitems.delete()
+            response,state=lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
             # print ('store11 '+order_id)
-            return JsonResponse({'order':order_id})
+            return JsonResponse({'order':order_id,'state':state})
     else:
         return redirect('/')
 

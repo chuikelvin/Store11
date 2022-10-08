@@ -138,9 +138,13 @@
       var updated_val = {};
       let keys = [];
       let values = [];
+      let refresh
       // letref
       for (let i = 0; i < items.length; i++) {
         var quantity = items[i].value;
+        if (quantity <= 0){
+          refresh=true
+        }
         var ref = items[i].getAttribute("ref");
         keys.push(ref);
         values.push(quantity);
@@ -188,7 +192,10 @@
       //       // $('.cart_number').text()
       //     }
       //   })
-      // console.log(updated_val)
+      if(refresh == true){
+        location.reload();
+        
+      }
 
       // console.log();
 

@@ -47,7 +47,7 @@
             <br>
             <div class="actions_container">
                 <input type="submit" value="Place order">
-                <a href="{% url 'store' %}" id="backtostore">back to cart</a>
+                <a href="{% url 'cart' %}" id="backtostore">back to cart</a>
                 </form>
             </div>
             <br>
@@ -66,12 +66,18 @@
         <br>
         has been placed successfully
         <br>
-        verifying payment
-        <div class="spinner-border text-light p-5 my-5"></div>
-        page will refresh automatically <br>
-        <div class="hideable">
+        <div class="payment_statement" style="font-size:20px;">
+            verifying payment
+        </div>
+        <div id="payment_status">
+            <!-- <div class="spinner-border text-light p-5 my-5"></div> -->
+            <!-- <i class="bi bi-x failed"></i> -->
+            <!-- <i class="bi bi-check successful"></i> -->
+            page will refresh automatically <br>
+        </div>
+        <div class="hideable" style="font-size:20px;">
             <p>this is taking longer than expected</p>
-            <a href="">check order status</a>
+            <a href="{% url 'userdetails' %}">check order status</a>
         </div>
     </div>
 </div>
@@ -91,10 +97,22 @@
             url: "{% url 'placeorder' %}",
             data:$formdata,
             success: function(data){
-                console.log(data.order)
+                console.log(data)
                 $('.order_number').html(data.order)
                 $(".fullscreen_loader").delay(200).css('visibility', 'visible');
-                setTimeout(function(){ $(".hideable").css('visibility', 'visible') }, 10000);
+                if(data.state == false){
+                    $('#payment_status').html('<i class="bi bi-x failed"></i>')
+                    $('.payment_statement').html('payment verification error')
+                    $(".hideable").html("<p>An error has occured initiating payment</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible') 
+                    setTimeout(function(){ 
+                        $(".fullscreen_loader").css('visibility', 'hidden');
+                        $(".hideable").css('visibility', 'hidden');
+                        window.location.href="{% url 'userdetails' %}"
+                 }, 10000);
+                }else{
+                    $('#payment_status').html('<div class="spinner-border text-light p-5 my-5"></div>')
+                }
+                // setTimeout(function(){ $(".hideable").css('visibility', 'visible') }, 10000);
             },
             error: function(data){
 
