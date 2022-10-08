@@ -99,7 +99,7 @@ def is_logged_in(request):
             return {"user_status" :'bg-secondary','action':'SIGN IN','items_no':items,'visually':state}
 
     else:
-        print(request.session['cart'])
+        # print(request.session['cart'])
         try:
             items=0
             for prod, quantity in request.session['cart'].items():
