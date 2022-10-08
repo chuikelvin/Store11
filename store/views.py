@@ -443,7 +443,7 @@ def sign(request):
                 user = User(first_name=first_name, last_name= last_name, username= username,password=password)
                 user.save()
                 status = 'registered'
-                return render(request, 'sign',{"status":status})
+                return render(request, 'sign.html',{"status":status})
         elif 'signIn' in request.POST:
             username = request.POST["email"]
             password = request.POST['password']
