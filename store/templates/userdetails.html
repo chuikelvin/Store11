@@ -30,32 +30,38 @@
                 <div class="detail_display">
                   <div class="address">
                       <h2>Enter user details</h2>
-                      <form action="" method="post">
+                      <form action="" method="post" enctype="multipart/form-data">
                           {% csrf_token %}
                           <div>
-                            <label for="fname">First name <br>
-                                <input type="text" name="fname" id="fname" placeholder="enter first name" value="{{address.first_name}}" >
+                            <label for="fname" class="me-2">First name <br>
+                                <input type="text" name="fname" id="fname" placeholder="enter first name" value="{{request.user.first_name}}" required>
                             </label>
                             <label for="lname">Last name <br>
-                                <input type="text" name="lname" id="" placeholder="enter last name" value="{{address.last_name}}">
+                                <input type="text" name="lname" id="lname" placeholder="enter last name" value="{{request.user.last_name}}" required>
                             </label>
                           </div>
 
                           <div>
-                              <input type="email" name="email" id="number" value="{{request.user.username}}" disabled>
+                            <label class="w-100" for="email">Email <br>
+                                <input class="w-100" type="email" name="email" id="email" value="{{request.user.username}}" disabled style="color: rgb(255, 255, 255);">
+                            </label>
+                              
                           </div>
-                           <div id="misc">
-                              <input type="date" name="birth_date" id="" {% if details%} value="{{details|date:'Y-m-d'}}" {%else%} value="1970-01-01" {% endif %} placeholder="">
-                              <label for="inputTag" id="profile_pic">
-                                <i class="bi bi-person-circle"></i>
-                                    profile picture
+                           <div >
+                            <label class="w-50 me-2" for="date">Date of Birth <br>
+                              <input  type="date" name="birth_date" id="date" {% if details%} value="{{details|date:'Y-m-d'}}" {%else%} value="1970-01-01" {% endif %} required>
+                            </label>
+                            <label class="w-50" for="number">Phone <br>
+                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{request.user.phone}}" required>
+                              </label>
+                           </div>
+                           <label class="w-100" for="profile">Profile <br>
+                              <label class="w-100" for="inputTag" id="profile_pic">
+                                <i class="bi bi-upload"></i>
+                                &nbsp choose file for profile picture
                                 <input id="inputTag" type="file" name="prof_pic" id="" accept="image/*"/>
                               </label>
-                              <!-- <input type="file" name="prof_pic" id="" placeholder="postal address" accept="image/*"> -->
-                          </div>
-                          <!-- <div>
-                              <input type="text" name="city" id="" placeholder="city">
-                          </div> -->
+                              </label>
                           <div class="actions_container">
                               <!-- <input type="submit" value="update"> -->
                               <button class="button" name="update_user">update</button>
@@ -98,6 +104,11 @@
                 <div class="detail_display">
                   <div class="address">
                     <div id="accordion">
+                        
+                        
+                        
+                        
+                        
                         <div class="border-bottom bg-dark text-light w-100 px-5" id="table_heading">
                             <span>Order No</span>
                             <span>Date</span>
@@ -105,15 +116,17 @@
                             <span>Status</span>
                             <span>Action</span>
                         </div>
+                        {%if orders%}
                         <!-- Order #5689 -->
-                        <button class="btn w-100 bg-dark text-light px-5" data-bs-toggle="collapse" data-bs-target="#hidden_content1">
-                            <span>#5689</span>
-                            <span>2022-10-10</span>
-                            <span>ksh 40000</span>
-                            <span>pending</span>
+                        {% for order in orders%}
+                        <button class="btn w-100 bg-dark text-light px-5" data-bs-toggle="collapse" data-bs-target="#o{{order.id}}">
+                            <span>{{order}}</span>
+                            <span>{{order.placed_at|date:'Y-m-d'}}</span>
+                            <span>ksh {{order.order_total}}</span>
+                            <span>{{order.payment_status}}</span>
                             <span>view</span>
                         </button>
-                        <div class="collapse w-100 justify-content-between" id="hidden_content1" data-bs-parent="#accordion">
+                        <div class="collapse w-100 justify-content-between" id="o{{order.id}}" data-bs-parent="#accordion">
                             <div class="row">
                                 <span class="col-5 justify-content-start">Product name</span>
                                 <span class="col">Price</span>
@@ -133,6 +146,8 @@
                                 <span class=" font-weight-bold "><b>order total &nbsp  24000</b></span>
                             </div>
                         </div>
+                        {% endfor %}
+                        {%endif%}
 
 
                     </div>

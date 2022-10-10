@@ -1,45 +1,33 @@
 {% extends 'base.html'%}
 {% load static%}
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/misc.css' %}">
+{%endblock css%}
 {%block content %}
 <div class="main-container">
     <main class="main">
-        <section class="contact section" id="contact">
-            <span class="section-subtitle">Contact Me</span>
+        <section class="section" id="contact">
+            
             <h2 class="section-title">Get In Touch</h2>
+            <span class="section-subtitle p-3">Feel free to leave me a message 🤙🏾 </span>
 
-            <div class="contact__container bg-grid">
-                <form action="#" class="contact__form"  onsubmit="return send()">
-                    <div class="contact__inputs">
-                        <input type="text" placeholder="Name" class="contact__input">
-                        <input type="mail" placeholder="Email" class="contact__input">
+            <div class="w-75 mx-auto">
+                <form action="" class="contact__form" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <input type="text" name="name" placeholder="Name" class="col mx-2 rounded-pill form-control" required>
+                        <input type="email" name="email" placeholder="Email" class="col mx-2 rounded-pill form-control" required>
                     </div>
-
-                    <!-- <input type="text" placeholder="Project" class="contact__input"> -->
-                    <textarea name="" id="" cols="0" rows="10" placeholder="Message" class="contact__input"></textarea>
-
-                    <input type="submit" value="send Message" class="button contact__button">
+                    <div class="row">
+                        <textarea name="message" id="" cols="0" rows="10" placeholder="Message" class="col mx-2 rounded-5 form-control" required></textarea>
+                    </div>
+                    
+                    <input type="submit" value="send Message" class="mt-2 mx-auto btn d-block p-2 w-75">
                 </form>
-
-                <div>
-                    <!-- <div class="contact__info">
-                        <h3 class="contact__subtitle">Phone</h3>
-                        <i class="bx bx-phone"></i>
-                        <span>+254 701234567</span>
-                    </div> -->
-                    <div class="contact__info">
-                        <h3 class="contact__subtitle">E-mail</h3>
-                        <i class="bx bx-envelope"></i>
-                        <span></i>chuikelvin2@gmail.com</span>
-                    </div>
-
-                    <div class="contact__info">
-                        <h3 class="contact__subtitle">Location</h3>
-                        <i class="bx bx-map"></i>
-                        <span>Nairobi, Kenya</span>
-                    </div>
-                </div>
             </div>
+            <br><br>
         </section>
+
     </main>
 </div>
     {%endblock content %}

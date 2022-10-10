@@ -120,6 +120,8 @@ def is_logged_in(request):
 
 def contact(request):
     check= is_logged_in(request)
+    if request.method == 'POST':
+        print(request.body)
     return render(request, 'contact.html',check)
 
 def about(request):
@@ -612,44 +614,47 @@ def userdetails(request):
         check= is_logged_in(request)
         if request.method == 'POST':
             if 'update_user' in request.POST:
+                user=User.objects.get(username=request.user,)
                 first_name = request.POST["fname"]
                 last_name = request.POST["lname"]
+                birth_date = request.POST["birth_date"]
                 phone = request.POST["number"]
-                if phone[0] == '0':
-                    phone = phone.replace("0", "254", 1)
-                region = request.POST["region"]
-                postal_address =request.POST['postal_address']
-                city = request.POST['city']
+                user.first_name=(first_name) 
+                user.last_name= (last_name)
+                user.birth_date=(birth_date) 
+                user.phone=(phone)
+                try:
+                    upload = request.FILES['prof_pic']
+                    user.profile_pic= (upload)
+                except:
+                    noidea='filler'
+                user.save()
 
-            if Address.objects.filter(user=request.user).exists():
-                address =Address.objects.get(user=request.user)  
-                address.first_name = (first_name)
-                address.last_name = (last_name)
-                address.region = (region)
-                address.phone = (phone)
-                address.city = (city)
-                address.postal_address=(postal_address)
-                address.save()
-            else:
-                 address =Address.objects.get_or_create(user=request.user,first_name=first_name, last_name= last_name,region=region,phone=phone,city=city,postal_address=postal_address)
-            check.update({'details':address})
+            # if Address.objects.filter(user=request.user).exists():
+            #     address =Address.objects.get(user=request.user)  
+            #     address.first_name = (first_name)
+            #     address.last_name = (last_name)
+            #     address.region = (region)
+            #     address.phone = (phone)
+            #     address.city = (city)
+            #     address.postal_address=(postal_address)
+            #     address.save()
+            # else:
+            #      address =Address.objects.get_or_create(user=request.user,first_name=first_name, last_name= last_name,region=region,phone=phone,city=city,postal_address=postal_address)
+            # check.update({'details':address})
             return render(request, 'userdetails.html',check)
-        else:
-            # try:
-            #     address =Address.objects.get(user=request.user)
-            # except DoesNotExist:
-            #     print ...
-                
+        else:               
             if Address.objects.filter(user=request.user).exists():
-                # Address.objects.get(user=request.user).DoesNotExist()
                 address =Address.objects.get(user=request.user)
-                print(request.user.birth_date)
-                # address.update({'birth_date':'01-01-1970'})
                 check.update({'address':address,'details':(request.user.birth_date),'readonly':'disabled'})
-                return render(request, 'userdetails.html',check)
-            else:
+                # return render(request, 'userdetails.html',check)
+            if Order.objects.filter(user=request.user).exists():
+                orders=Order.objects.filter(user=request.user)
+                check.update({'orders':orders})
+                # print(order)
+            # else:
                 # check.update({'address':address,'readonly':'disabled'})
-                return render(request, 'userdetails.html',check)
+            return render(request, 'userdetails.html',check)
             # return render(request, 'userdetails.html',{'address':address,'readonly':'disabled'})
         
     else:

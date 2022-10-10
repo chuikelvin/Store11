@@ -1,30 +1,37 @@
 {% extends 'base.html'%}
 {% load static%}
+
+{%block css%}
+<link rel="stylesheet" href="{% static 'css/misc.css' %}">
+{%endblock css%}
+
 {%block content %}
     <main class="main">
+        <!-- <br> -->
         <section class="about section" id="about">
-            <span class="section-subtitle">My intro</span>
+            <!-- <span class="section-subtitle">My intro</span> -->
             <h2 class="section-title">About me</h2>
 
             <div class="about__container bg-grid">
-                <div class="about__data">
-                    <p class="about__description">
-                        My name is Kelvin Chui and I am a Software developer trainee under the Power Learn Project. I specialize in Frontend development, backend development and database development. Some of the technologies I am proficient in are:
+                <!-- <div class="about__data"> -->
+                    <p class="about__description px-3">
+                        My name is Kelvin Chui and I am a Software developer trained in the first cohort of the Power Learn Project. I specialize in Frontend development, backend development and database development. Some of the technologies I have worked on are:
                     </p>
-                    <div class="home__social">
-                       <i class="about__icons bx bxl-python"></i>
-                       <i class="about__icons bx bxl-css3"></i>
-                       <i class="about__icons bx bxl-html5"></i>
-                       <i class="about__icons bx bxl-javascript"></i>
-                       <i class="about__icons bx bxl-flutter"></i>
-                       <i class="about__icons bx bxl-django"></i>
-                       <i class="about__icons bx bxl-git"></i>
-                       <i class="about__icons bx bxl-c-plus-plus"></i>
-                       <i class="about__icons bx bxl-react"></i>
-                       <i class="about__icons bx bxl-nodejs"></i>
+                    <div class="technologies">
+                       <span><i class="about__icons bx bxl-python"></i>PYTHON</span>
+                       <span><i class="about__icons bx bxl-css3"></i>CSS3</span>
+                       <span><i class="about__icons bx bxl-html5"></i>HTML5</span>
+                       <span><i class="about__icons bx bxl-javascript"></i>JAVASCRIPT</span>
+                       <span><i class="about__icons bx bxl-flutter"></i>FLUTTER</span>
+                       <span><i class="about__icons bx bxl-django"></i>DJANGO</span>
+                       <span><i class="about__icons bx bxl-git"></i>GIT</span>
+                       <span><i class="about__icons bx bxl-c-plus-plus"></i>C++</span>
+                       <span><i class="about__icons bx bxl-react"></i>REACT-NATIVE</span>
+                       <span><i class="about__icons bx bxl-nodejs"></i>NODE JS</span>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
+            <br>
         </section>
     </main>
     {%endblock content %}

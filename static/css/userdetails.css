@@ -96,7 +96,7 @@ form{
 
 form div{
     width:100%;
-    margin:20px 0;
+    margin:10px 0 0 0;
     display: flex;
     justify-content: space-around;
     /* flex-direction: column; */
@@ -202,21 +202,30 @@ input {
 }
 input[type=file]{
     display: none;
+    /* border-radius: 20px; */
 }
 
 input[type=date]{
-    width: 50%;
+    /* width: 50%; */
+}
+
+.bi-upload {
+    font-size: 20px;
 }
 
 #profile_pic{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     background-color: #FFFFFF;
     padding:2px 40px;
-    margin:0 5px 0 0;
+    margin:auto;
     font-size: 18px;
     width:50%;
-    border:1px solid #FF4B2B;
+    /* border:1px solid #FF4B2B; */
     border-radius:90px;
-    color:#FF4B2B
+    color:#FF4B2B;
 
 }
 input[type="submit"],input[type="reset"],.button{
@@ -246,8 +255,8 @@ input[type="reset"]{
         padding: 2px 0;
     }
 
-    input[type=date],#profile_pic{
-        font-size: 10px;
+    input[type=number],input[type=date],#profile_pic{
+        /* font-size: 10px; */
         padding:4px 4px;
     }
 
