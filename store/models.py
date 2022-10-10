@@ -40,10 +40,10 @@ class Product(models.Model):
 class Address(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    phone=models.CharField(max_length=255)
-    region = models.CharField(max_length=255)
-    postal_address = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
+    phone=models.CharField(null=True,max_length=255)
+    region = models.CharField(null=True,max_length=255)
+    postal_address = models.CharField(null=True,max_length=255)
+    city = models.CharField(null=True,max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -128,5 +128,5 @@ class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
     unit_price =models.DecimalField(max_digits=10, decimal_places=2)
 
-    # def __str__(self):
-        # return str(self.order+ "   " + self.product)
+    def __str__(self):
+        return str(self.order)

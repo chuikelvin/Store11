@@ -33,16 +33,19 @@
                       <form action="" method="post">
                           {% csrf_token %}
                           <div>
-                              <input type="text" name="fname" id="" placeholder="enter first name" value="{{address.first_name}}" >
-                              <input type="text" name="lname" id="" placeholder="enter last name" value="{{address.last_name}}">
+                            <label for="fname">First name <br>
+                                <input type="text" name="fname" id="fname" placeholder="enter first name" value="{{address.first_name}}" >
+                            </label>
+                            <label for="lname">Last name <br>
+                                <input type="text" name="lname" id="" placeholder="enter last name" value="{{address.last_name}}">
+                            </label>
                           </div>
 
                           <div>
-                              <input type="text" value="+254" disabled id="country_code">
-                              <input type="number" name="number" id="number" maxlength="10" required placeholder="phone number" value="{{address.phone}}">
+                              <input type="email" name="email" id="number" value="{{request.user.username}}" disabled>
                           </div>
                            <div id="misc">
-                              <input type="date" name="birth_date" id="" value="{{details|date:'Y-m-d'}}" placeholder="">
+                              <input type="date" name="birth_date" id="" {% if details%} value="{{details|date:'Y-m-d'}}" {%else%} value="1970-01-01" {% endif %} placeholder="">
                               <label for="inputTag" id="profile_pic">
                                 <i class="bi bi-person-circle"></i>
                                     profile picture
@@ -95,22 +98,43 @@
                 <div class="detail_display">
                   <div class="address">
                     <div id="accordion">
-                        <button class="btn w-100" data-bs-toggle="collapse" data-bs-target="#hidden_content1">Order #5689</button>
-                        <div class="collapse" id="hidden_content1" data-bs-parent="#accordion">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati exercitationem commodi assumenda molestiae vero quisquam deserunt, veniam ad fugit ipsam est provident soluta fuga natus. Est enim veritatis inventore animi.
-                            Soluta vero numquam voluptatum magni adipisci ipsum quis nihil non neque placeat quibusdam dignissimos, temporibus maxime perferendis doloribus sapiente deserunt nisi? Labore, aliquid beatae? Earum, ex. Tempore quidem in nemo.
-                            Sapiente praesentium labore quis. Eveniet mollitia vitae perspiciatis quod consectetur, illum distinctio amet nisi similique dolorum aperiam deleniti nulla harum debitis totam? Quis corrupti ullam quidem quasi quae vitae ad!
-                            Quibusdam amet, officiis accusantium modi dolorum soluta placeat quo, ea nam a sed non distinctio perspiciatis. Corrupti repudiandae repellat eius eum vel nulla incidunt ex quaerat excepturi. Excepturi, voluptate laboriosam?
-                            Animi obcaecati alias laborum iusto amet adipisci. Impedit voluptatem, quod facilis perspiciatis est voluptas illum placeat quasi laboriosam unde eaque. Impedit eligendi tempore fuga eos sunt obcaecati delectus nostrum deserunt.
+                        <div class="border-bottom bg-dark text-light w-100 px-5" id="table_heading">
+                            <span>Order No</span>
+                            <span>Date</span>
+                            <span>Order Total</span>
+                            <span>Status</span>
+                            <span>Action</span>
                         </div>
-                        <button class="btn w-100"data-bs-toggle="collapse" data-bs-target="#hidden_content2">
-                            friday is a big day
+                        <!-- Order #5689 -->
+                        <button class="btn w-100 bg-dark text-light px-5" data-bs-toggle="collapse" data-bs-target="#hidden_content1">
+                            <span>#5689</span>
+                            <span>2022-10-10</span>
+                            <span>ksh 40000</span>
+                            <span>pending</span>
+                            <span>view</span>
                         </button>
-                        <div class="collapse" id="hidden_content2"data-bs-parent="#accordion">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Earum at, neque recusandae ipsum blanditiis corrupti cupiditate quia ea quas omnis, debitis quod doloribus minima nam. Harum sequi atque mollitia esse?
-                            Nam similique exercitationem illo debitis delectus dignissimos assumenda voluptatem itaque velit aut aperiam excepturi minima, accusantium quasi odio, impedit, quas officia. Dolores velit modi rerum eum non totam harum distinctio!
-                            Eos temporibus vitae repellendus similique magnam, voluptas expedita officiis exercitationem qui voluptatibus reiciendis fugiat vel mollitia! Doloremque ullam ut libero dolores sequi aliquid, possimus maxime tenetur! Repudiandae maiores perferendis mollitia.
+                        <div class="collapse w-100 justify-content-between" id="hidden_content1" data-bs-parent="#accordion">
+                            <div class="row">
+                                <span class="col-5 justify-content-start">Product name</span>
+                                <span class="col">Price</span>
+                                <span class="col-2">Quantity</span>
+                                <span class="col-3 justify-content-end">Subtotal</span>
+                            </div>
+                            <div class="row">
+                                <span class="col-5 text-left">Raspberry pi zero w</span>
+                                <span class="col">5000</span>
+                                <span class="col-2">4</span>
+                                <span class="col-3 text-right">20000</span>
+                            </div>
+                            <div class="d-flex flex-column justify-content-end align-items-end mt-3 mx-2 text-capitalize text-warning">
+                                <span>subtotal &nbsp 2000</span>
+                                <span>vat &nbsp  400</span>
+                                <span>shipping and handling &nbsp 200</span>
+                                <span class=" font-weight-bold "><b>order total &nbsp  24000</b></span>
+                            </div>
                         </div>
+
+
                     </div>
                   </div>
               </div>

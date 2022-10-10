@@ -1,6 +1,7 @@
 import ast
 import json
 import os
+import re
 import sys
 from time import sleep
 from django.http import JsonResponse
@@ -428,8 +429,13 @@ def sign(request):
     #     if request.session['status'] == 'login':
     #         return render(request, 'payment.html', {"user_status" :'bg-success'})
     status = ""
+    # return JsonResponse(check['items_no'],safe=False)
     if request.method == 'POST':
-        if 'signUp' in request.POST:
+        if request.POST['form'] == 'signup':
+            print (request.POST['form'])
+            # return JsonResponse("signup",safe=False)
+        # return JsonResponse("post",safe=False)
+        # if 'signUp' in request.POST:
             first_name = request.POST["firstName"]
             last_name = request.POST["lastName"]
             username = request.POST["email"]
@@ -438,13 +444,19 @@ def sign(request):
             if User.objects.filter(username=username).exists():
                 status = 'user exists'
                 print("exists")
-                return render(request, 'sign.html',{"status":status})
+                return JsonResponse('user already exists',safe=False)
+                return render(request, 'sign.html/',{"status":status})
             else:
                 user = User(first_name=first_name, last_name= last_name, username= username,password=password)
                 user.save()
+                address= Address(first_name=first_name, last_name=last_name,user=user)
+                address.save()
+                
                 status = 'registered'
+                return JsonResponse('Account created successfully',safe=False)
                 return render(request, 'sign.html',{"status":status})
-        elif 'signIn' in request.POST:
+        # elif 'signIn' in request.POST:
+        if request.POST['form'] == 'signin':
             username = request.POST["email"]
             password = request.POST['password']
 
@@ -459,11 +471,13 @@ def sign(request):
                 print(status)
                 request.session['status']=1
                 # return redirect(request.META['HTTP_REFERER'])
+                return JsonResponse('logged in',safe=False)
                 return redirect('/')
                 # return render(request, 'store.html',check)
             else:
                 status = 'no user'
                 print(status)
+                return JsonResponse('invalid credentials',safe=False)
                 return redirect('/')
                 # return render(request, 'store.html',{"status":status})
 

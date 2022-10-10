@@ -9,6 +9,7 @@
     <title>Account</title>
     {%block css%}
     <link rel="stylesheet" href="{% static 'css/sign.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     {%endblock css%}
 </head>
 
@@ -36,12 +37,13 @@
 
                 <div class="dog-ear"></div>
 
-                <form method="post" action="">
+                <form method="post" action="" id="signinform">
                     <a href="{% url 'store' %}" id="headerlogo"><img src="{% static 'img/store11-logo.png' %}"
                             alt="store11-logo"></a>
                     {% csrf_token %}
                     <h1>Sign in</h1>
-                    <!-- <div class="status">{{status}}</div> -->
+                    <div class="no_status" id="status">1{{status}}</div>
+                    <input type="text" name="form" value="signin" hidden>
                     <input type="email" placeholder="email" class="mail" name="email">
                     <input type="password" placeholder="Password" class="password" name="password">
                     <a href="#">Forgot your password?</a>
@@ -53,13 +55,14 @@
 
                 <div class="dog-ear"></div>
                 
-                <form method="post" action="">
+                <form method="post" action="" id="signupform">
                     <a href="{% url 'store' %}" id="headerlogo"><img src="{% static 'img/store11-logo.png' %}"
                             alt="store11-logo"></a>
                     {% csrf_token %}
                     <h1>Create Account</h1>
-                    <!-- <div class="status">{{status}}</div> -->
+                    <div class="no_status" id="status">1{{status}}</div>
                     <div class="row">
+                        <input type="text" name="form" value="signup" hidden>
                         <input type="text" placeholder="First Name" class="name" required="name" name="firstName">
                         <input type="text" placeholder="Last Name" class="name" required="name" name="lastName">
                     </div>
@@ -92,6 +95,41 @@
         dog_ear.addEventListener('click', function () {
             card.classList.toggle('is-flipped');
         });
+        // var form = $('#signinform', '#signupform').serialize();
+// $.ajax({
+//     type: "POST",
+//     url: "approve_test.php",
+//     data: form,
+//     success: function(data) {
+//         alert(data); // show response from the php script.
+//     }
+// });
+
+            $(document).on('submit', '#signinform, #signupform', function (e) {
+                e.preventDefault();
+                var form = $(this).serialize();
+                console.log($(this))
+                console.log(form)
+                console.log('prevented')
+                $.ajax({
+                    url: "{% url 'sign' %}",
+                    type: "POST",
+                    data: form,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log($("[id=status]").html(data))
+                        $("[id=status]").addClass('status').removeClass('no_status');
+                        setTimeout(function () {$("[id=status]").addClass('no_status').removeClass('status');},3000)
+                        if (data == "logged in"){
+                            window.location.href="{% url 'userdetails' %}"
+                        }
+                        
+                        console.log(data)
+                    }
+                })
+                // data:$(#)
+            })
+
     </script>
 </body>
 </html>
