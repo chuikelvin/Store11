@@ -118,6 +118,37 @@ class Order(models.Model):
     def __str__(self):
         return self.order_id
 
+    @property
+    def get_order_total(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderitems])
+        return int(total) 
+
+    @property
+    def get_order_items(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.quantity for item in orderitems])
+        return int(total) 
+    # created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def get_order_vat(self):
+        # orderitems = self.orderitem_set.all()
+        total = self.get_order_total*0.06
+        return int(total)
+    
+    @property
+    def get_order_shipping(self):
+        # orderitems = self.orderitem_set.all()
+        total = self.get_order_total*0.02
+        return int(total)
+
+    @property
+    def get_total_payable(self):
+        # orderitems = self.orderitem_set.all()
+        total = self.get_order_total+self.get_order_vat+self.get_order_shipping
+        return int(total)
+
     
     # def __str__(self):
     #     return self.title + "   " + self.description
@@ -127,6 +158,11 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()
     unit_price =models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def get_total(self):
+        total = self.unit_price * self.quantity
+        return int(total)
 
     def __str__(self):
         return str(self.order)

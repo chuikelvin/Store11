@@ -123,9 +123,10 @@
                             <span>{{order}}</span>
                             <span>{{order.placed_at|date:'Y-m-d'}}</span>
                             <span>ksh {{order.order_total}}</span>
-                            <span>{{order.payment_status}}</span>
+                            <span>{{order.get_payment_status_display}}</span>
                             <span>view</span>
                         </button>
+
                         <div class="collapse w-100 justify-content-between" id="o{{order.id}}" data-bs-parent="#accordion">
                             <div class="row">
                                 <span class="col-5 justify-content-start">Product name</span>
@@ -133,17 +134,21 @@
                                 <span class="col-2">Quantity</span>
                                 <span class="col-3 justify-content-end">Subtotal</span>
                             </div>
+                            {%for item in order_items%}
+                            {%if item.order.order_id == order.order_id%}
                             <div class="row">
-                                <span class="col-5 text-left">Raspberry pi zero w</span>
-                                <span class="col">5000</span>
-                                <span class="col-2">4</span>
-                                <span class="col-3 text-right">20000</span>
+                                <span class="col-5 text-left">{{item.product}}</span>
+                                <span class="col">{{item.unit_price}}</span>
+                                <span class="col-2">{{item.quantity}}</span>
+                                <span class="col-3 text-right">{% widthratio item.unit_price 1 item.quantity%}</span>
                             </div>
+                            {%endif%}
+                            {% endfor %}
                             <div class="d-flex flex-column justify-content-end align-items-end mt-3 mx-2 text-capitalize text-warning">
-                                <span>subtotal &nbsp 2000</span>
-                                <span>vat &nbsp  400</span>
-                                <span>shipping and handling &nbsp 200</span>
-                                <span class=" font-weight-bold "><b>order total &nbsp  24000</b></span>
+                                <span>subtotal &nbsp {{order.get_order_total}}</span>
+                                <span>vat &nbsp  {{order.get_order_vat}}</span>
+                                <span>shipping and handling &nbsp {{order.get_order_shipping}}</span>
+                                <span class=" font-weight-bold "><b>order total &nbsp  {{order.get_total_payable}}</b></span>
                             </div>
                         </div>
                         {% endfor %}

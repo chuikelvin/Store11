@@ -371,6 +371,9 @@ def payment(request):
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
         ammount=cartm.get_total_payable
+        if ammount <=0:
+            return redirect('/',request.path)
+        # print(ammount)
 
         if request.method == 'POST':
             print("posted")
@@ -650,7 +653,11 @@ def userdetails(request):
                 # return render(request, 'userdetails.html',check)
             if Order.objects.filter(user=request.user).exists():
                 orders=Order.objects.filter(user=request.user)
-                check.update({'orders':orders})
+                order=Order.objects.get(user=request.user,order_id='#614a74')
+                ordereditem=OrderItem.objects.get(order_id=order,product=2)
+                order_item =OrderItem.objects.all()
+                # print(ordereditem.get_total())
+                check.update({'orders':orders,'order_items': order_item})
                 # print(order)
             # else:
                 # check.update({'address':address,'readonly':'disabled'})
@@ -702,7 +709,7 @@ def placeorder(request):
             print(url)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
-            # cartitems.delete()
+            cartitems.delete()
             response,state=lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
             # print ('store11 '+order_id)
             return JsonResponse({'order':order_id,'state':state})
