@@ -6,6 +6,7 @@
 span {
     font-size: 20px;
 }
+
 .user_greet{
     display:flex;
     justify-content:center;
@@ -260,6 +261,10 @@ input[type="reset"]{
         padding:4px 4px;
     }
 
+    #order_item span{
+        max-width: 145px!important;
+    }
+
     #accordion {
         /* max-width: 800px !important;; */
         margin: auto;
@@ -349,8 +354,22 @@ input[type="reset"]{
         
     }
 
+    #accordion {
+        /* max-width: 800px !important;; */
+        margin: auto;
+        width:100%;
+    }
+
 
     
+}
+
+@media screen and (max-width: 1100px) {
+    #accordion {
+        /* max-width: 800px !important;; */
+        margin: auto;
+        width:100%;
+    }
 }
 
 @media screen and (min-width: 1200px){
@@ -383,6 +402,12 @@ input[type="reset"]{
         /* overflow: hidden; */
     }
 
-    
-
+    /* #order_item span{
+        max-width: 145px!important;
+    } */
+    #accordion {
+        /* max-width: 800px !important;; */
+        margin: auto;
+        width:900px;
+    }
 }
