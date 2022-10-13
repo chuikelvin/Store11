@@ -42,13 +42,14 @@ def is_logged_in(request):
             # request.session['cart']
             # print(request.session['cart'])
             cart =Cart.objects.get_or_create(user=request.user,complete=False)
-            for prod, quantity in request.session['cart'].items():
+            try:
+                for prod, quantity in request.session['cart'].items():
                 # print(key, val)
-                cart =Cart.objects.get(user=request.user)
-                product=Product.objects.get(id =prod)
+                    cart =Cart.objects.get(user=request.user)
+                    product=Product.objects.get(id =prod)
         # print(product)
         # print(cart)
-                CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity)
+                    CartItem.objects.get_or_create(cart=cart,product=product,quantity=quantity)
                 # sleep(10)
                     # print('exists')
                 # else:
@@ -56,7 +57,9 @@ def is_logged_in(request):
                 # get_cartitem = CartItem.objects.get_or_create(cart=cart,product=product)
                 #     get_cartitem.quantity=(get_cartitem.quantity+val)
                 #     get_cartitem.save()
-            del request.session['cart']
+                del request.session['cart']
+            except:
+                request.session['cart']=defaultdict(lambda: 0)
                 # print(request.session['cart'])
                     # request.session['cart']
 
