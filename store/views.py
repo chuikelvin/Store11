@@ -30,7 +30,7 @@ from django.apps import apps
 from django.contrib import admin
 
 import uuid
-from store.models import Order, OrderItem, Product, User, Cart, CartItem, Address
+from store.models import Order, OrderItem, Product, User, Cart, CartItem, Address,MpesaPayment
 
 
 
@@ -657,8 +657,8 @@ def userdetails(request):
                 # return render(request, 'userdetails.html',check)
             if Order.objects.filter(user=request.user).exists():
                 orders=Order.objects.filter(user=request.user)
-                order=Order.objects.get(user=request.user,order_id='#614a74')
-                ordereditem=OrderItem.objects.get(order_id=order,product=2)
+                # order=Order.objects.get(user=request.user,order_id='#614a74')
+                # ordereditem=OrderItem.objects.get(order_id=order,product=2)
                 order_item =OrderItem.objects.all()
                 # print(ordereditem.get_total())
                 check.update({'orders':orders,'order_items': order_item})
@@ -675,12 +675,23 @@ def placeorder(request):
     if request.method == 'POST':
         try:
             result=json.loads(request.body)
-            for key,value in result.items():
+            bodydata=result['Body']
+            for key,value in bodydata.items():
                 # print(key)
                 print(value)
+                if value['ResultCode'] != 0:
+                    mpesa = MpesaPayment.objects.get(checkoutrequestid=value['CheckoutRequestID'])
+                    mpesa.payment_status='F'
+                    mpesa.save()
+                    return JsonResponse({'order':'unsuccessful'})
+                else:
+                    mpesa = MpesaPayment.objects.get_or_create(checkoutrequestid=value['CheckoutRequestID'])
+                    mpesa.payment_status='C'
+                    mpesa.save()
+                    return JsonResponse({'order':'successful'})
             # if result != 0:
                 # print("payment failed")
-            print(result['stkCallback'])
+            # print(result['stkCallback'])
         except ValueError as e:
             print("NOT JSON")
         # print(request.body)
@@ -711,17 +722,24 @@ def placeorder(request):
                 # printquantity)
             
             domain=request.get_host()
-            url= "https://"+domain+request.get_full_path()
-            callback_url="https://thawing-springs-95517.herokuapp.com/"
+            callback_url= "https://"+domain+request.get_full_path()
+            # callback_url="https://thawing-springs-95517.herokuapp.com/"
             # print(url)
             cl = MpesaClient()
             account_reference = order_id
             transaction_desc = 'Description'
             try:
                 response = cl.stk_push(phone, order_total, account_reference, transaction_desc, callback_url)
+                responsedict=json.loads(response.text)
+                checkoutrequestid =responsedict['CheckoutRequestID']
+                # print(checkoutrequestid)
+                order =Order.objects.get(order_id=order_id)
+                Mpesa = MpesaPayment.objects.get_or_create(order_id=order,checkoutrequestid=checkoutrequestid)
                 state=True
             except:
                 state=False
+
+            
             # return HttpResponse(response)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
