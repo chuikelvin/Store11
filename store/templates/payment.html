@@ -98,9 +98,9 @@
             url: "{% url 'placeorder' %}",
             data:$formdata,
             success: function(data){
-                // console.log(data)
+                console.log(data)
                 $('.order_number').html(data.order)
-                setInterval(checkpay(data.order), 100);
+                setInterval(()=>{ checkpay(data.order)}, 1000);
                 $(".fullscreen_loader").delay(200).css('visibility', 'visible');
                 if(data.state == false){
                     $('#payment_status').html('<i class="bi bi-x failed"></i>')
@@ -131,7 +131,7 @@
   )
 
     function checkpay(order_id) {
-
+        console.log(order_id)
         $.ajax({
             url: "{% url 'getpaymentstatus' %}",
             type: "GET",
@@ -140,7 +140,7 @@
             },
             dataType: 'json',
             success: function (data) {
-                //console.log(data)
+                console.log(data)
                 if (data <= 0) {
                     $('#payment_status').html('<i class="bi bi-x failed"></i>')
                     $('.payment_statement').html('payment failed')
