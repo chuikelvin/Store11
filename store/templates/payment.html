@@ -100,6 +100,7 @@
             success: function(data){
                 console.log(data)
                 $('.order_number').html(data.order)
+                setInterval(checkpay, 100);
                 $(".fullscreen_loader").delay(200).css('visibility', 'visible');
                 if(data.state == false){
                     $('#payment_status').html('<i class="bi bi-x failed"></i>')
@@ -126,6 +127,44 @@
         })
         
     })
-  })
-  </Script>
+  }
+  )
+
+    function checkpay(order_id) {
+
+        $.ajax({
+            url: "{% url 'getpaymentstatus' %}",
+            type: "GET",
+            data: {
+                'order_id': order_id,
+            },
+            dataType: 'json',
+            success: function (data) {
+                //console.log(data)
+                if (data <= 0) {
+                    $('#payment_status').html('<i class="bi bi-x failed"></i>')
+                    $('.payment_statement').html('payment failed')
+                    $(".hideable").html("<p>The payment was not completed successfully</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible') 
+                    setTimeout(function(){ 
+                        $(".fullscreen_loader").css('visibility', 'hidden');
+                        $(".hideable").css('visibility', 'hidden');
+                        // window.location.href="{% url 'userdetails' %}"
+                 }, 10000);
+                } else if (data > 0) {
+                    $('#payment_status').html('<i class="bi bi-x failed"></i>')
+                    $('.payment_statement').html('payment completed successfully')
+                    $(".hideable").html("<p>Payment received successfully</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible')
+                    setTimeout(function(){ 
+                        $(".fullscreen_loader").css('visibility', 'hidden');
+                        $(".hideable").css('visibility', 'hidden');
+                        window.location.href="{% url 'userdetails' %}"
+                 }, 10000);
+                }
+
+                // if()
+                // $('.cart_number').text()
+            }
+        })
+    }
+ </Script>
   {%endblock script%}
