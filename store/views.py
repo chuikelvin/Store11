@@ -401,8 +401,8 @@ def payment(request):
             
     #   username = request.session['status']
     #   return render(request, 'loggedin.html', {"username" :'bg-secondary'})
-#    else:
-    #   return render(request, 'login.html', {})
+    else:
+      return render(request, 'login.html')
     check.update({'total':cartm})
     
     return render(request, 'payment.html',check)
