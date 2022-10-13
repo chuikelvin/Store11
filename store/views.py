@@ -682,13 +682,17 @@ def placeorder(request):
                 if value['ResultCode'] != 0:
                     mpesa = MpesaPayment.objects.get(checkoutrequestid=value['CheckoutRequestID'])
                     mpesa.payment_status='F'
+                    order_id=mpesa.order_id
+                    order=Order.objects.get(order_id=order_id)
+                    order.payment_status='F'
+                    order.save()
                     mpesa.save()
-                    return JsonResponse({'order':'unsuccessful'})
+                    # return JsonResponse({'order':'unsuccessful'})
                 else:
                     mpesa = MpesaPayment.objects.get_or_create(checkoutrequestid=value['CheckoutRequestID'])
                     mpesa.payment_status='C'
                     mpesa.save()
-                    return JsonResponse({'order':'successful'})
+                    # return JsonResponse({'order':'successful'})
             # if result != 0:
                 # print("payment failed")
             # print(result['stkCallback'])
