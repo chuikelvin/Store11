@@ -39,6 +39,7 @@
                
                 <form action="" method="POST" class="payment">
                     {% csrf_token %}
+                    <input type="text" name="pay" hidden>
                     <input type="text" value="+254" disabled id="country_code">
                     <input type="number" name="number" id="number" maxlength="10" value="{{request.user.phone}}" required autofocus>
                     <br><br>
@@ -46,7 +47,7 @@
             </div>
             <br>
             <div class="actions_container">
-                <input type="submit" value="Place order">
+                <input type="submit" value="Place order" name="pay">
                 <a href="{% url 'cart' %}" id="backtostore">back to cart</a>
                 </form>
             </div>
@@ -110,7 +111,12 @@
                         window.location.href="{% url 'userdetails' %}"
                  }, 10000);
                 }else{
-                    $('#payment_status').html('<div class="spinner-border text-light p-5 my-5"></div>')
+                    $('#payment_status').html('<div class="spinner-border text-light p-5 my-5"></div><br>page will refresh automatically <br>')
+                    setTimeout(function(){ 
+                        // $(".fullscreen_loader").css('visibility', 'hidden');
+                        $(".hideable").css('visibility', 'visible');
+                        // setTimeout(function(){ window.location.href="{% url 'userdetails' %}"}, 10000);
+                 }, 10000);
                 }
                 // setTimeout(function(){ $(".hideable").css('visibility', 'visible') }, 10000);
             },

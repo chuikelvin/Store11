@@ -117,7 +117,6 @@
                             <span>Action</span>
                         </div>
                         {%if orders%}
-                        <!-- Order #5689 -->
                         {% for order in orders%}
                         <button class="btn w-100 bg-dark text-light px-5" data-bs-toggle="collapse" data-bs-target="#o{{order.id}}">
                             <span>{{order}}</span>
@@ -152,7 +151,11 @@
                             </div>
                         </div>
                         {% endfor %}
+                        {%else%}
+                        <br>
+                        <span>No order has placed yet</span>
                         {%endif%}
+
 
 
                     </div>

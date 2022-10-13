@@ -11,6 +11,8 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse,FileResponse, Http404
 from . import forms
 
+from django_daraja.mpesa.core import MpesaClient
+
 from daraja.darajaconn import lipa_na_mpesa
 import sys
 
@@ -380,6 +382,8 @@ def payment(request):
             number = request.POST["number"]
             if number[0] == '0':
                 number = number.replace("0", "254", 1)
+            
+
         # elif (number[0] == '7'):
         #     number = number.replace("7", "2547", 1)
 
@@ -681,7 +685,10 @@ def placeorder(request):
             print("NOT JSON")
         # print(request.body)
     if request.user.is_authenticated:
-        if request.method == 'POST':
+        if request.method == 'POST' and 'pay' in request.POST:
+            # print(request.POST)
+            # if 'pay' in request.POST:
+            #     print('pay')
             order_id='#'
             order_id+= str(uuid.uuid4())[:6]
             cartitems =Cart.objects.get(user=request.user)
@@ -705,12 +712,21 @@ def placeorder(request):
             
             domain=request.get_host()
             url= "https://"+domain+request.get_full_path()
-            # url="https://thawing-springs-95517.herokuapp.com/"
-            print(url)
+            callback_url="https://thawing-springs-95517.herokuapp.com/"
+            # print(url)
+            cl = MpesaClient()
+            account_reference = order_id
+            transaction_desc = 'Description'
+            try:
+                response = cl.stk_push(phone, order_total, account_reference, transaction_desc, callback_url)
+                state=True
+            except:
+                state=False
+            # return HttpResponse(response)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
-            cartitems.delete()
-            response,state=lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
+            # cartitems.delete()
+            # response,state=lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
             # print ('store11 '+order_id)
             return JsonResponse({'order':order_id,'state':state})
     else:
