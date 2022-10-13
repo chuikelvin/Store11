@@ -673,12 +673,21 @@ def userdetails(request):
 
 
 def getpaymentstatus(request):
-    order_id=request.GET["order_id"]
+    try:
+        result=json.loads(request.body)
+        # bodydata=result['Body']
+        # print(result['order_id'])
+        order_id=result['order_id']
+    except:
+        order_id=request.GET['order_id']
     order=Order.objects.get(order_id=order_id)
     if order.payment_status == 'F':
         return JsonResponse({'order':0})
     elif order.payment_status == 'C':
         return JsonResponse({'order':1})
+    else:
+        return JsonResponse({'order':'P'})
+    # return JsonResponse({'order':1})
 
 @csrf_exempt
 def placeorder(request):
