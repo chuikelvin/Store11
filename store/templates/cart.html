@@ -71,7 +71,7 @@
         <button id="update" class="item_btn" name="{{details.id}}"type="button">UPDATE</button>
         <!-- <a href="{% url 'checkout' %}" onclick="return false;" id="update">UPDATE </a> -->
     </form>
-        <a href="{% url 'checkout' %}">CHECHOUT(ksh {{total}})</a>
+        <a id="checkout_cost"  href="{% url 'checkout' %}">CHECHOUT(ksh {{total}})</a>
     </div>
         
         <!-- <br><br><br> -->
@@ -171,6 +171,8 @@
           return response.json()
         })
         .then((data) => {
+          // console.log(data)
+          $('#cart_number').html(data.items_no)
           $('#checkout_cost').html("CHECHOUT(ksh "+data.total+")");
         })
 

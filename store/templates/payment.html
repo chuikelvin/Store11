@@ -100,15 +100,16 @@
             success: function(data){
                 console.log(data)
                 $('.order_number').html(data.order)
-                setInterval(()=>{ checkpay(data.order)}, 1000);
+                const myInterval = setInterval(()=>{ checkpay(data.order)}, 1000);
                 $(".fullscreen_loader").delay(200).css('visibility', 'visible');
                 if(data.state == false){
                     $('#payment_status').html('<i class="bi bi-x failed"></i>')
-                    $('.payment_statement').html('payment verification error')
+                    $('.payment_statement').html('initiate payment error')
                     $(".hideable").html("<p>An error has occured initiating payment</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible') 
                     setTimeout(function(){ 
                         $(".fullscreen_loader").css('visibility', 'hidden');
                         $(".hideable").css('visibility', 'hidden');
+                        clearInterval(myInterval);
                         // window.location.href="{% url 'userdetails' %}"
                  }, 10000);
                 }else{
@@ -116,6 +117,7 @@
                     setTimeout(function(){ 
                         // $(".fullscreen_loader").css('visibility', 'hidden');
                         $(".hideable").css('visibility', 'visible');
+                        clearInterval(myInterval);
                         // setTimeout(function(){ window.location.href="{% url 'userdetails' %}"}, 10000);
                  }, 10000);
                 }

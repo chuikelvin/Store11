@@ -164,6 +164,8 @@
           return response.json()
         })
         .then((data) => {
+          // console.log(data)
+          $('#cart_number').html(data.items_no)
           $('#checkout_cost').html("CHECHOUT(ksh "+data.total+")");
         })
 

@@ -93,20 +93,32 @@ def is_logged_in(request):
         return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'cart':total,'visually':state}
     elif request.session.has_key('status'):
         items=0
+        total=0
         try:
             # print(request.session['cart'])
             # items=0
             for prod, quantity in request.session['cart'].items():
                 items+= int(quantity)
+                product=Product.objects.get(id =prod)
+                # print(product.price)
+                total += product.price*int(quantity)
             # print(items)
+
+
+            # print(total)
+        # for items in cart.values():
+        #     print(items)
+            # print(value)
+
+
             if items>0:
                 state=''
         except:
             print('error1')
         if request.session['status'] == 1:
-            return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'visually':state}
+            return {"user_status" :'bg-success','action':'SIGN OUT','items_no':items,'cart':total,'visually':state}
         else :
-            return {"user_status" :'bg-secondary','action':'SIGN IN','items_no':items,'visually':state}
+            return {"user_status" :'bg-secondary','action':'SIGN IN','items_no':items,'cart':total,'visually':state}
 
     else:
         # print(request.session['cart'])
@@ -151,9 +163,11 @@ def store(request):
                 get_cartitem = CartItem.objects.get(cart=cart,product=product)
                 get_cartitem.quantity=(get_cartitem.quantity+1)
                 get_cartitem.save()
+                # check= is_logged_in(request)
                 # print(get_cartitem.quantity)
             else:
                 cartitem,created =CartItem.objects.get_or_create(cart=cart,product=product,quantity=1)
+                # check= is_logged_in(request)
         else:
             cart_dict=request.session['cart']
         # request.session['status'] = cart_dict
@@ -172,7 +186,7 @@ def store(request):
         # print(cart_dict[product_id])
             try:
                 cart_dict[product_id]
-                cart_dict[product_id] = cart_dict.get(product_id)+1
+                cart_dict[product_id] = int(cart_dict.get(product_id))+1
             except KeyError:
                 cart_dict[product_id] = 1
         # quantity = request.POST["quantity"]
@@ -183,6 +197,7 @@ def store(request):
         # password = request.POST['password']
     # if request.method == 'GET':
     Product_list = Product.objects.all()
+    check= is_logged_in(request)
     check.update({'Product_list':Product_list})
     response = render(request, 'store.html',check) 
     return response
@@ -218,21 +233,25 @@ def usercart(request):
         except:
             print('error')
             # request.session['cart']=defaultdict(lambda: 0)
-        check= is_logged_in(request)
+        
         # print(request.user)
         cartm,created =Cart.objects.get_or_create(user=request.user,complete=False)
         items =cartm.cartitem_set.all()
         if request.method == 'POST':
             product_id=int(request.POST['delete'])
             product=Product.objects.get(id=product_id)
-            get_cartitem = CartItem.objects.get(cart=cartm,product=product)
-            get_cartitem.delete()
+            try:
+                get_cartitem = CartItem.objects.get(cart=cartm,product=product)
+                get_cartitem.delete()
+            except:
+                print()
             # get_cartitem.quantity=(get_cartitem.quantity+1)
         # check.update({'cart':items})
     # # print(created)
     # # order, created = Order.objects.get_or_create(user=user, complete=False)
     # context ={"cart":cart}
         # print(cartm.get_cart_total)
+        check= is_logged_in(request)
         check.update({'cart':items,'total':cartm})
         return render(request, 'usercart.html',check)
     else:
@@ -258,7 +277,7 @@ def cart(request):
         return render(request, 'cart.html',check)
         # customer=
     else:
-        check= is_logged_in(request)
+       
         try:
             request.session['cart']
         except:
@@ -273,8 +292,11 @@ def cart(request):
         # print(request.session['cart'])
         # print(value)
         # key[value] = key.get(value)+1
-        key.pop(value)
-        request.session['cart']=key
+        try:
+            key.pop(value)
+            request.session['cart']=key
+        except:
+            print()
         # cart_dictrequest.session['cart']
         
         # cart_dict=defaultdict(lambda: 0)
@@ -316,6 +338,7 @@ def cart(request):
     # check.update({'cart':cart_items,'quantity':val})
     # print(cart_items)
     # print(cart)
+    check= is_logged_in(request)
     check.update({'cart':cart})
     for items,values in cart.items():
         for details in items:
@@ -600,11 +623,10 @@ def updatecart(request):
             cartitem.save()
             if int(cartitem.quantity) <= 0:
                 cartitem.delete()
-            # cartitem.save()
         
         check= is_logged_in(request)
         if refresh == True:
-            print('refresh')
+            # print('refresh')
             return render(request, 'cart.html',check)
         data=dict()
         data['items_no']=check['items_no']
@@ -616,8 +638,13 @@ def updatecart(request):
         # print(key)
         # print(data)
         request.session['cart']=data
+        check= is_logged_in(request)
+        print(check)
+        data=dict()
+        data['items_no']=check['items_no']
+        data['total']=check['cart']
     # print(data['2'])
-    return JsonResponse("requesteren",safe=False)
+    return JsonResponse(data,safe=False)
 
 def userdetails(request):
     if request.user.is_authenticated:
@@ -757,6 +784,7 @@ def placeorder(request):
             try:
                 response = cl.stk_push(phone, order_total, account_reference, transaction_desc, callback_url)
                 responsedict=json.loads(response.text)
+                print(response.text)
                 checkoutrequestid =responsedict['CheckoutRequestID']
                 # print(checkoutrequestid)
                 order =Order.objects.get(order_id=order_id)
@@ -769,7 +797,7 @@ def placeorder(request):
             # return HttpResponse(response)
             # get_cartitem = OrderItem.objects.get_or_create(order=order,product=product)
             # orderitem=items.orderitem_set.all()
-            # cartitems.delete()
+            cartitems.delete()
             # response,state=lipa_na_mpesa(phone,order_total,'store11 #54lkjl',url)
             # print ('store11 '+order_id)
             return JsonResponse({'order':order_id,'state':state})
