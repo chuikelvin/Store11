@@ -425,7 +425,7 @@ def payment(request):
     #   username = request.session['status']
     #   return render(request, 'loggedin.html', {"username" :'bg-secondary'})
     else:
-      return render(request, 'login.html')
+      return render(request, 'sign.html')
     check.update({'total':cartm})
     
     return render(request, 'payment.html',check)
@@ -656,6 +656,7 @@ def userdetails(request):
                 last_name = request.POST["lname"]
                 birth_date = request.POST["birth_date"]
                 phone = request.POST["number"]
+
                 user.first_name=(first_name) 
                 user.last_name= (last_name)
                 user.birth_date=(birth_date) 
@@ -666,19 +667,28 @@ def userdetails(request):
                 except:
                     noidea='filler'
                 user.save()
+            elif 'update_address' in request.POST:
+                if Address.objects.filter(user=request.user).exists():
+                    address =Address.objects.get(user=request.user)
+                    first_name = request.POST["fname"]
+                    last_name = request.POST["lname"]
+                    region = request.POST["region"]
+                    phone = request.POST["number"]
+                    city = request.POST["city"]
+                    postal_address = request.POST["postal_address"]
 
-            # if Address.objects.filter(user=request.user).exists():
-            #     address =Address.objects.get(user=request.user)  
-            #     address.first_name = (first_name)
-            #     address.last_name = (last_name)
-            #     address.region = (region)
-            #     address.phone = (phone)
-            #     address.city = (city)
-            #     address.postal_address=(postal_address)
-            #     address.save()
-            # else:
-            #      address =Address.objects.get_or_create(user=request.user,first_name=first_name, last_name= last_name,region=region,phone=phone,city=city,postal_address=postal_address)
-            # check.update({'details':address})
+                    address.first_name = (first_name)
+                    address.last_name = (last_name)
+                    address.region = (region)
+                    address.phone = (phone)
+                    address.city = (city)
+                    address.postal_address=(postal_address)
+                    address.save()
+                else:
+                    address =Address.objects.get_or_create(user=request.user,first_name=first_name, last_name= last_name,region=region,phone=phone,city=city,postal_address=postal_address)
+                check.update({'details':address})
+                # sleep(0.2)
+            return redirect('/userdetails/')
             return render(request, 'userdetails.html',check)
         else:               
             if Address.objects.filter(user=request.user).exists():

@@ -48,6 +48,8 @@ class Address(models.Model):
 
     def __str__(self):
         return str(self.user)
+    def get_model_fields(model):
+        return model._meta.fields
 
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
