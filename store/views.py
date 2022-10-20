@@ -722,6 +722,7 @@ def getpaymentstatus(request):
     except:
         order_id=request.GET['order_id']
     order=Order.objects.get(order_id=order_id)
+    print(order.payment_status)
     if order.payment_status == 'F':
         return JsonResponse({'order':0})
     elif order.payment_status == 'C':
