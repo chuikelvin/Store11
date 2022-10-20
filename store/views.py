@@ -651,7 +651,7 @@ def userdetails(request):
         check= is_logged_in(request)
         if request.method == 'POST':
             if 'update_user' in request.POST:
-                user=User.objects.get(username=request.user,)
+                user=User.objects.get(username=request.user)
                 first_name = request.POST["fname"]
                 last_name = request.POST["lname"]
                 birth_date = request.POST["birth_date"]
@@ -668,14 +668,15 @@ def userdetails(request):
                     noidea='filler'
                 user.save()
             elif 'update_address' in request.POST:
+                first_name = request.POST["fname"]
+                last_name = request.POST["lname"]
+                region = request.POST["region"]
+                phone = request.POST["number"]
+                city = request.POST["city"]
+                postal_address = request.POST["postal_address"]
+
                 if Address.objects.filter(user=request.user).exists():
                     address =Address.objects.get(user=request.user)
-                    first_name = request.POST["fname"]
-                    last_name = request.POST["lname"]
-                    region = request.POST["region"]
-                    phone = request.POST["number"]
-                    city = request.POST["city"]
-                    postal_address = request.POST["postal_address"]
 
                     address.first_name = (first_name)
                     address.last_name = (last_name)
