@@ -142,24 +142,24 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.log(data)
-                if (data <= 0) {
+                console.log(data.order)
+                if (data.order <= 0) {
                     $('#payment_status').html('<i class="bi bi-x failed"></i>')
                     $('.payment_statement').html('payment failed')
-                    $(".hideable").html("<p>The payment was not completed successfully</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible') 
+                    $(".hideable").html("<p>You did not complete the requested payment</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible') 
                     setTimeout(function(){ 
                         $(".fullscreen_loader").css('visibility', 'hidden');
                         $(".hideable").css('visibility', 'hidden');
-                        // window.location.href="{% url 'userdetails' %}"
+                        window.location.href="{% url 'userdetails' %}"
                  }, 10000);
-                } else if (data == 1) {
+                } else if (data.order == 1) {
                     $('#payment_status').html('<i class="bi bi-check"></i>')
                     $('.payment_statement').html('payment completed successfully')
                     $(".hideable").html("<p>Payment received successfully</p><a href='{% url 'userdetails' %}'>check order status</a>").css('visibility', 'visible')
                     setTimeout(function(){ 
                         $(".fullscreen_loader").css('visibility', 'hidden');
                         $(".hideable").css('visibility', 'hidden');
-                        // window.location.href="{% url 'userdetails' %}"
+                        window.location.href="{% url 'userdetails' %}"
                  }, 10000);
                 }
 
