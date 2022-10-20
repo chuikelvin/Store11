@@ -110,16 +110,16 @@
                         $(".fullscreen_loader").css('visibility', 'hidden');
                         $(".hideable").css('visibility', 'hidden');
                         clearInterval(myInterval);
-                        // window.location.href="{% url 'userdetails' %}"
-                 }, 10000);
+                        window.location.href="{% url 'userdetails' %}"
+                 }, 20000);
                 }else{
                     $('#payment_status').html('<div class="spinner-border text-light p-5 my-5"></div><br>page will refresh automatically <br>')
                     setTimeout(function(){ 
                         // $(".fullscreen_loader").css('visibility', 'hidden');
                         $(".hideable").css('visibility', 'visible');
                         clearInterval(myInterval);
-                        // setTimeout(function(){ window.location.href="{% url 'userdetails' %}"}, 10000);
-                 }, 10000);
+                        setTimeout(function(){ window.location.href="{% url 'userdetails' %}"}, 10000);
+                 }, 30000);
                 }
                 // setTimeout(function(){ $(".hideable").css('visibility', 'visible') }, 10000);
             },
