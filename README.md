@@ -5,7 +5,7 @@ Store11 is a fullstack ecommerce web app powered by Python Django.
  <img src="/static/img/webview.PNG">
  
 ### Demo
-[![Heroku link](/static/img/store11-logo.png)](https://thawing-springs-95517.herokuapp.com/)
+[![Heroku link](/static/img/store11-logo.png)](kelvinchui.pythonanywhere.com/)
 
 ### features
 - user login and sign up
